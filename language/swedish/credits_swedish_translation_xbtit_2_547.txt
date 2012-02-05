@@ -1,0 +1,11 @@
+Credits for the Swedish translation of xbtit 2 revision 547 2009-03-09
+
+Dynamite and Viper started the translation sometime 2008. 
+They did a good part of it and I did the rest and fixed some typos and some syntax errors.
+
+Thanks to them and the good team at Bti/xbtit!
+
+
+/mr_island
+
+

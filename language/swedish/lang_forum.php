@@ -1,0 +1,37 @@
+<?php
+$language['charset']='ISO-8859-1';
+$language['SUBFORUM']='understeånde forum';
+$language['SUBFORUMS']='<b>understeånde forum</b>';
+$language['NEW_TOPIC']='Nytt Ämne';
+$language['NO_TOPICS']='Ledsen det finns inga ämnen.';
+$language['LOCKED']='Låsta ämnen';
+$language['LOCKED_NEW']='Låsta ämnen (Ny)';
+$language['UNLOCKED']='Inga nya svar';
+$language['UNLOCKED_NEW']='Nytt svar';
+$language['ERR_CANT_START_TOPICS']='du har inte rättigheter att starta ett ämne i detta forum.';
+$language['BAD_FORUM_ID']='Dåligt Forum ID';
+$language['MOD_OPTION']='moderator inställningar';
+$language['SET_STICKY']='Ja/Unset Sticky';
+$language['SET_LOCKED']='Lås/lås upp Ämne';
+$language['RENAME_TOPIC']='Ändra namnet på ämnet';
+$language['DELETE_TOPIC']='Radera Ämne';
+$language['MOVE_TOPIC']='flytta detta ämne till';
+$language['MOVE']='flytta';
+$language['ADD_REPLY']='Lägg till svar';
+$language['BAD_TOPIC_ID']='Dåligt ämnes ID';
+$language['LAST_10_POSTS']='10 sista skriva meddelandena i omvänd ordning';
+$language['LAST_EDITED_BY']='Sista ändringen av';
+$language['ERR_POST_ID_NA']='InläggsID är N/A';
+$language['ERR_FORUM_TOPIC']='Dåligt forum / ämnes ID.';
+$language['ERR_POST_NOT_FOUND']='Meddelande hittas inte';
+$language['ERR_POST_UNIQUE']='Kan inte radera inlägg; det är det enda inlägget i ämnet. Du måste';
+$language['ERR_POST_UNIQUE_2']='Radera ämnet';
+$language['ERR_POST_UNIQUE_3']='istället';
+$language['TOPIC_LOCKED']='Detta ämne är låst för nya svar.';
+$language['TOPIC_NOT_FOUND']='Ämne hittades inte';
+$language['TOPIC_UNREAD_POSTS']='ämnen med olästa meddelanden';
+$language['POST']='meddelande';
+$language['SEARCH_AGAIN']='sök igen';
+$language['SEARCH_HELP']='skriv in ett eller flera ord.<br />ofta använda ord med mindre en 3 tecken kommer att ignoreras.';
+$language['SEARCHED_FOR']='Sök efter';
+?>
