@@ -389,5 +389,12 @@ $language["STYLE_TYPE"]="Style Type";
 $language["CLA_STYLE"]="xbtit classic style system"; 
 $language["ATM_STYLE"]="atmoner's style system"; 
 $language["PET_STYLE"]="Petr1fied's style system";
+// Torrent Image Upload by Real_ptr / start
+$language["IMAGE_SETTING"]="Image Settings";
+$language["ALLOW_IMAGE_UPLOAD"]="Allow image upload";
+$language["ALLOW_SCREEN_UPLOAD"]="Allow screens upload";
+$language["IMAGE_UPLOAD_DIR"]="Image upload dir";
+$language["FILE_SIZELIMIT"]="Image size limit";
+// Torrent Image Upload by Real_ptr / end
 
 ?>

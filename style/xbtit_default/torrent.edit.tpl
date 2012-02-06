@@ -1,5 +1,5 @@
 <div align="center">
-  <form action="<tag:torrent.link />" method="post" name="edit">
+  <form action="<tag:torrent.link />" method="post" name="edit" enctype="multipart/form-data">
     <table class="lista">
       <tr>
         <td align="right" class="header"><tag:language.FILE /></td>
@@ -9,6 +9,26 @@
         <td align="right" class="header"><tag:language.INFO_HASH /></td>
         <td class="lista"><tag:torrent.info_hash /></td>
       </tr>
+      <if:imageon>
+      <tr>
+      <td class="header" ><tag:language.IMAGE /> (<tag:language.FACOLTATIVE />):<input type="hidden" name="userfileold" value="<tag:torrent.image />" /></td>
+      <td class="lista" align="left"><input type="file" name="userfile" size="15" /></td>
+      </tr>
+      </if:imageon>
+      <if:screenon>
+      <tr>
+      <td class="header" ><tag:language.SCREEN /> (<tag:language.FACOLTATIVE />):<input type="hidden" name="userfileold1" value="<tag:torrent.screen1 />" /></td>
+      <td class="lista">
+      <table class="lista" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <td class="lista" align="left"><input type="file" name="screen1" size="5" /></td>
+      <td class="lista" align="left"><input type="file" name="screen2" size="5" /></td>
+      <td class="lista" align="left"><input type="file" name="screen3" size="5" /></td>
+      </tr>
+      </table>
+      </td>
+      </tr>
+      </if:screenon>
       <tr>
         <td align="right" class="header"><tag:language.DESCRIPTION /></td>
         <td class="lista"><tag:torrent.description /></td>

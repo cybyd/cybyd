@@ -25,4 +25,13 @@ $language['ERR_MOVING_TORR']='Error moving torrent...';
 $language['ERR_ALREADY_EXIST']='This torrent may already exist in our database.';
 $language['MSG_DOWNLOAD_PID']='PID system active get your torrent with your PID';
 $language['MSG_UP_SUCCESS']='Upload successful! The torrent has been added.';
+// Torrent Image Upload by Real_ptr / start
+$language["FILE_UPLOAD_TO_BIG"]="File size to big for upload!! Limit";
+$language["IMAGE_WAS"]="Image size";
+$language["MOVE_IMAGE_TO"]="Could not move image to";
+$language["CHECK_FOLDERS_PERM"]="Please check the folder permissons and try again.";
+$language["ILEGAL_UPLOAD"]="Ilegal upload!! This is not a image<br>Please press back and try again";
+$language["IMAGE"]="Image";
+$language["SCREEN"]="Screenshots";
+// Torrent Image Upload by Real_ptr / end
 ?>

@@ -92,8 +92,11 @@ if(!$CURUSER || $CURUSER["view_torrents"]!="yes")
     exit();
 }
 
+// Torrent Image Upload by Real_ptr / start
+// f.screen1, f.screen2, f.screen3, f.image,
+// Torrent Image Upload by Real_ptr / end
 
-$res = get_result("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true, $btit_settings['cache_duration']);
+$res = get_result("SELECT f.info_hash, f.filename, f.url, f.screen1, f.screen2, f.screen3, f.image, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true, $btit_settings['cache_duration']);
 //die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
 if (count($res)<1)
    stderr($language["ERROR"],"Bad ID!",$GLOBALS["usepopup"]);
@@ -104,6 +107,31 @@ $spacer = "&nbsp;&nbsp;";
 
 $torrenttpl=new bTemplate();
 $torrenttpl->set("language",$language);
+// Torrent Image Upload by Real_ptr / start
+$torrenttpl->set("IMAGEIS",!empty($row["image"]),TRUE);
+$torrenttpl->set("SCREENIS1",!empty($row["screen1"]),TRUE);
+$torrenttpl->set("SCREENIS2",!empty($row["screen2"]),TRUE);
+$torrenttpl->set("SCREENIS3",!empty($row["screen3"]),TRUE);
+$torrenttpl->set("uploaddir",$uploaddir);
+if (!empty($row["image"]))
+{
+$image1 = "".$row["image"]."";
+$uploaddir = $GLOBALS["uploaddir"];
+$image_new = "torrentimg/$image1"; //url of picture
+//$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
+$max_width= "490"; //maximum width allowed for pictures
+$resize_width= "490"; //same as max width
+$size = getimagesize("$image_new"); //get the actual size of the picture
+$width= $size[0]; // get width of picture
+$height= $size[1]; // get height of picture
+if ($width>$max_width){
+$new_width=$resize_width; // Resize Image If over max width
+}else {
+$new_width=$width; // Keep original size from array because smaller than max
+}
+$torrenttpl->set("width",$new_width);
+}
+// Torrent Image Upload by Real_ptr / end
 if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["edit_torrents"]=="yes" || $CURUSER["delete_torrents"]=="yes"))
    {
     $torrenttpl->set("MOD",TRUE,TRUE);

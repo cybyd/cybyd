@@ -187,6 +187,21 @@
       <td class="lista"><input type="text" name="mostpoplimit" value="<tag:config.mostpoplimit />" size="3" maxlength="3" /></td>
     </tr>
     <tr>
+      <td class="header" align="center" colspan="4"><tag:language.IMAGE_SETTING /></td>
+    </tr>
+    <tr>
+      <td class="header"><tag:language.ALLOW_IMAGE_UPLOAD /></td>
+      <td class="lista">&nbsp;&nbsp;Yes&nbsp;<input type="radio" name="imageon" value="true"<tag:config.imageonyes /> />&nbsp;&nbsp;No&nbsp;<input type="radio" name="imageon" value="false"<tag:config.imageonno /> /></td>
+      <td class="header"><tag:language.ALLOW_SCREEN_UPLOAD /></td>
+      <td class="lista">&nbsp;&nbsp;Yes&nbsp;<input type="radio" name="screenon" value="true"<tag:config.screenonyes /> />&nbsp;&nbsp;No&nbsp;<input type="radio" name="screenon" value="false"<tag:config.screenonno /> /></td>
+    </tr>
+    <tr>
+      <td class="header"><tag:language.IMAGE_UPLOAD_DIR /></td>
+      <td class="lista"><input type="text" name="uploaddir" value="<tag:config.uploaddir />" size="40" /></td>
+      <td class="header"><tag:language.FILE_SIZELIMIT /></td>
+      <td class="lista"><input type="text" name="file_limit" value="<tag:config.file_limit />" size="40" /></td>
+    </tr>
+    <tr>
       <td align="center" class="header" colspan="2"><input type="submit" name="write" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
       <td align="center" class="header" colspan="2"><input type="submit" name="cancel" class="btn" value="<tag:language.FRM_CANCEL />" /></td>
     </tr>

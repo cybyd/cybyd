@@ -408,35 +408,39 @@ INSERT INTO `{$db_prefix}countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 -- Table structure for table `{$db_prefix}files`
 -- 
 
-CREATE TABLE `{$db_prefix}files` (
-  `info_hash` varchar(40) NOT NULL default '',
-  `filename` varchar(250) NOT NULL default '',
-  `url` varchar(250) NOT NULL default '',
-  `info` varchar(250) NOT NULL default '',
-  `data` datetime NOT NULL default '0000-00-00 00:00:00',
-  `size` bigint(20) NOT NULL default '0',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
+  `info_hash` varchar(40) NOT NULL DEFAULT '',
+  `filename` varchar(250) NOT NULL DEFAULT '',
+  `url` varchar(250) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `screen1` varchar(255) NOT NULL DEFAULT '',
+  `screen2` varchar(255) NOT NULL DEFAULT '',
+  `screen3` varchar(255) NOT NULL DEFAULT '',
+  `info` varchar(250) NOT NULL DEFAULT '',
+  `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `size` bigint(20) NOT NULL DEFAULT '0',
   `comment` text,
-  `category` int(10) unsigned NOT NULL default '6',
-  `external` enum('yes','no') NOT NULL default 'no',
-  `announce_url` varchar(100) NOT NULL default '',
-  `uploader` int(10) NOT NULL default '1',
-  `lastupdate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL default 'false',
-  `lastsuccess` datetime NOT NULL default '0000-00-00 00:00:00',
-  `dlbytes` bigint(20) unsigned NOT NULL default '0',
-  `seeds` int(10) unsigned NOT NULL default '0',
-  `leechers` int(10) unsigned NOT NULL default '0',
-  `finished` int(10) unsigned NOT NULL default '0',
-  `lastcycle` int(10) unsigned NOT NULL default '0',
-  `lastSpeedCycle` int(10) unsigned NOT NULL default '0',
-  `speed` bigint(20) unsigned NOT NULL default '0',
+  `category` int(10) unsigned NOT NULL DEFAULT '6',
+  `external` enum('yes','no') NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `uploader` int(10) NOT NULL DEFAULT '1',
+  `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `dlbytes` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `seeds` int(10) unsigned NOT NULL DEFAULT '0',
+  `leechers` int(10) unsigned NOT NULL DEFAULT '0',
+  `finished` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastcycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastSpeedCycle` int(10) unsigned NOT NULL DEFAULT '0',
+  `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
   `bin_hash` blob NOT NULL,
-  PRIMARY KEY  (`info_hash`),
+  PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`),
   KEY `bin_hash` (`bin_hash`(20))
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}files`
@@ -958,7 +962,11 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('ipb_autoposter', '0'),
 ('php_log_name', 'xbtit-errors'),
 ('php_log_path', '/full/path/to/the/web/root/include/logs'),
-('php_log_lines', '5');
+('php_log_lines', '5'),
+('imageon', 'true'),
+('uploaddir', 'cybyd_img/'),
+('file_limit', '15'),
+('screenon', 'true');
 
 -- --------------------------------------------------------
 

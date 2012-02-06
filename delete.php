@@ -40,14 +40,22 @@ $id = mysql_real_escape_string($_GET["info_hash"]);
 if (!isset($id) || !$id)
     die("Error ID");
 
+// Torrent Image Upload by Real_ptr / start
+// f.screen1, f.screen2, f.screen3, f.image,
+// Torrent Image Upload by Real_ptr / end
+
 if ($XBTT_USE)
-   $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds+ ifnull(x.seeders,0) as seeds, f.leechers+ ifnull(x.leechers,0) as leechers, f.finished+ ifnull(x.completed,0) as finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
+   $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.screen1, f.screen2, f.screen3, f.image, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds+ ifnull(x.seeders,0) as seeds, f.leechers+ ifnull(x.leechers,0) as leechers, f.finished+ ifnull(x.completed,0) as finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN xbt_files x ON x.info_hash=f.bin_hash LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
 else
-    $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds, f.leechers, f.finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
+   $res = do_sqlquery("SELECT f.info_hash, f.uploader, f.filename, f.screen1, f.screen2, f.screen3, f.image, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, c.name as cat_name, f.seeds, f.leechers, f.finished, f.speed FROM {$TABLE_PREFIX}files f LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category WHERE f.info_hash ='" . $id . "'",true);
 
 $row = mysql_fetch_assoc($res);
-
-
+// Torrent Image Upload by Real_ptr / start
+$image_drop = "" . $row["image"]. "";
+$image_drop1 = "" . $row["screen1"]. "";
+$image_drop2 = "" . $row["screen2"]. "";
+$image_drop3 = "" . $row["screen3"]. "";
+// Torrent Image Upload by Real_ptr / end
 if (!$CURUSER || $CURUSER["uid"]<2 || ($CURUSER["delete_torrents"]!="yes" && $CURUSER["uid"]!=$row["uploader"]))
    {
    stderr($language["SORRY"],$language["CANT_DELETE_TORRENT"]);
@@ -74,6 +82,16 @@ if (isset($_POST["action"])) {
             {
             list($torhash,$torname,$torurl)=mysql_fetch_array($ris);
             }
+// Torrent Image Upload by Real_ptr / start
+      if (!empty($image_drop))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop");
+      if (!empty($image_drop1))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop1");
+      if (!empty($image_drop2))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop2");
+      if (!empty($image_drop3))
+        @unlink("".$GLOBALS["uploaddir"]."$image_drop3");
+// Torrent Image Upload by Real_ptr / end
       write_log("Deleted torrent $torname ($torhash)","delete");
 
       @mysql_query("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"");

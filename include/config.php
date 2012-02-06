@@ -256,7 +256,12 @@ $GLOBALS['ajax_poller']=true;
 $GLOBALS['ipcheck_poller']=false;
 //number of votes per page listed in admincp
 $votesppage=25;
-
+// Torrent Image Upload by Real_ptr / start
+$GLOBALS["imageon"] = $btit_settings["imageon"];
+$GLOBALS["screenon"] = $btit_settings["screenon"];
+$GLOBALS["uploaddir"] = $btit_settings["uploaddir"];
+$GLOBALS["file_limit"] = $btit_settings["file_limit"];
+// Torrent Image Upload by Real_ptr / end
 // inits
 $cached_querys=0;
 $num_querys=0;

@@ -212,6 +212,237 @@ if (!isset($array["announce"]))
            stdfoot();
            exit();
          }
+// Torrent Image Upload by Real_ptr / start
+	$userfile = $_FILES["userfile"];
+        $screen1 = $_FILES["screen1"];
+        $screen2 = $_FILES["screen2"];
+        $screen3 = $_FILES["screen3"];
+        $image_types = Array ("image/bmp",
+                                "image/jpeg",
+                                "image/pjpeg",
+                                "image/gif",
+                                "image/x-png");
+        switch($_FILES["userfile"]["type"]) {
+            case 'image/bmp':
+            $file_name = $hash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name = $hash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name = $hash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name = $hash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name = $hash.".png";
+            break;
+        }
+        switch($_FILES["screen1"]["type"]) {
+            case 'image/bmp':
+            $file_name_s1 = "s1".$hash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s1 = "s1".$hash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s1 = "s1".$hash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s1 = "s1".$hash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s1 = "s1".$hash.".png";
+            break;
+        }
+        switch($_FILES["screen2"]["type"]) {
+            case 'image/bmp':
+            $file_name_s2 = "s2".$hash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s2 = "s2".$hash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s2 = "s2".$hash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s2 = "s2".$hash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s2 = "s2".$hash.".png";
+            break;
+        }
+        switch($_FILES["screen3"]["type"]) {
+            case 'image/bmp':
+            $file_name_s3 = "s3".$hash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s3 = "s3".$hash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s3 = "s3".$hash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s3 = "s3".$hash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s3 = "s3".$hash.".png";
+            break;
+        }
+        $uploadfile = $GLOBALS["uploaddir"] . $file_name;
+        $uploadfile1 = $GLOBALS["uploaddir"] . $file_name_s1;
+        $uploadfile2 = $GLOBALS["uploaddir"] . $file_name_s2;
+        $uploadfile3 = $GLOBALS["uploaddir"] . $file_name_s3;
+        $file_size = $_FILES["userfile"]["size"];
+        $file_size1 = $_FILES["screen1"]["size"];
+        $file_size2 = $_FILES["screen2"]["size"];
+        $file_size3 = $_FILES["screen3"]["size"];
+        $file_type = $_FILES["userfile"]["type"];
+        $file_type1 = $_FILES["screen1"]["type"];
+        $file_type2 = $_FILES["screen2"]["type"];
+        $file_type3 = $_FILES["screen3"]["type"];
+        $file_size = makesize1($file_size);
+        $file_size1 = makesize1($file_size1);
+        $file_size2 = makesize1($file_size2);
+        $file_size3 = makesize1($file_size3);
+        if (isset($_FILES["userfile"]))
+        {
+            if ($_FILES["userfile"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
+                    stdfoot();
+                    exit();
+                }
+                if (in_array (strtolower ($file_type), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile))
+                    {
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen1"]))
+        {
+            if ($_FILES["screen1"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size1 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
+                    stdfoot();
+                    exit();
+                }
+                if (in_array (strtolower ($file_type1), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen1']['tmp_name'], $uploadfile1))
+                    {
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen2"]))
+        {
+            if ($_FILES["screen2"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size2 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size2);
+                    stdfoot();
+                    exit();
+                }
+                if (in_array (strtolower ($file_type2), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen2']['tmp_name'], $uploadfile2))
+                    {
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen3"]))
+        {
+            if ($_FILES["screen3"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size3 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
+                    stdfoot();
+                    exit();
+                }
+                if (in_array (strtolower ($file_type3), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen3']['tmp_name'], $uploadfile3))
+                    {
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+// Torrent Image Upload by Real_ptr / end
 //      if ($announce!=$BASEURL."/announce.php")
         
       if (in_array($announce,$TRACKER_ANNOUNCEURLS)){
@@ -259,6 +490,9 @@ if (!isset($array["announce"]))
                   do_sqlquery("UPDATE xbt_files SET flags=1 WHERE info_hash=0x$hash",true);
              stderr($language["ERROR"],$language["ERR_MOVING_TORR"]);
          }
+// Torrent Image Upload by Real_ptr / start
+	do_sqlquery("UPDATE {$TABLE_PREFIX}files set image='$file_name', screen1='$file_name_s1', screen2='$file_name_s2', screen3='$file_name_s3' WHERE info_hash=\"$hash\"");
+// Torrent Image Upload by Real_ptr / end
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
          @chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);
 //         if ($announce!=$BASEURL."/announce.php")
@@ -318,6 +552,10 @@ case 0:
       $uploadtpl->set("upload.announces",$announcs);
       $uploadtpl->set("upload_categories_combo",$combo_categories);
       $uploadtpl->set("textbbcode",  $bbc);
+// Torrent Image Upload by Real_ptr / start
+$uploadtpl->set("imageon",$GLOBALS["imageon"] == "true", TRUE);
+$uploadtpl->set("screenon",$GLOBALS["screenon"] == "true", TRUE);
+// Torrent Image Upload by Real_ptr / end
       $tplfile="upload";
     break;
 case 1:

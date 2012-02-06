@@ -59,6 +59,260 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    $fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash=AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)","modify");
+
+// Torrent Image Upload by Real_ptr / start
+
+        $userfile = $_FILES["userfile"];
+        $screen1 = $_FILES["screen1"];
+        $screen2 = $_FILES["screen2"];
+        $screen3 = $_FILES["screen3"];
+        $image_types = Array ("image/bmp",
+                                "image/jpeg",
+                                "image/pjpeg",
+                                "image/gif",
+                                "image/x-png");
+        switch($_FILES["userfile"]["type"]) {
+            case 'image/bmp':
+            $file_name = $torhash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name = $torhash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name = $torhash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name = $torhash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name = $torhash.".png";
+            break;
+        }
+        switch($_FILES["screen1"]["type"]) {
+            case 'image/bmp':
+            $file_name_s1 = "s1".$torhash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s1 = "s1".$torhash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s1 = "s1".$torhash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s1 = "s1".$torhash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s1 = "s1".$torhash.".png";
+            break;
+        }
+        switch($_FILES["screen2"]["type"]) {
+            case 'image/bmp':
+            $file_name_s2 = "s2".$torhash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s2 = "s2".$torhash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s2 = "s2".$torhash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s2 = "s2".$torhash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s2 = "s2".$torhash.".png";
+            break;
+        }
+        switch($_FILES["screen3"]["type"]) {
+            case 'image/bmp':
+            $file_name_s3 = "s3".$torhash.".bmp";
+            break;
+            case 'image/jpeg':
+            $file_name_s3 = "s3".$torhash.".jpg";
+            break;
+            case 'image/pjpeg':
+            $file_name_s3 = "s3".$torhash.".jpeg";
+            break;
+            case 'image/gif':
+            $file_name_s3 = "s3".$torhash.".gif";
+            break;
+            case 'image/x-png':
+            $file_name_s3 = "s3".$torhash.".png";
+            break;
+        }
+        $uploadfile = $GLOBALS["uploaddir"] . $file_name;
+        $uploadfile1 = $GLOBALS["uploaddir"] . $file_name_s1;
+        $uploadfile2 = $GLOBALS["uploaddir"] . $file_name_s2;
+        $uploadfile3 = $GLOBALS["uploaddir"] . $file_name_s3;
+        $file_size = $_FILES["userfile"]["size"];
+        $file_size1 = $_FILES["screen1"]["size"];
+        $file_size2 = $_FILES["screen2"]["size"];
+        $file_size3 = $_FILES["screen3"]["size"];
+        $file_type = $_FILES["userfile"]["type"];
+        $file_type1 = $_FILES["screen1"]["type"];
+        $file_type2 = $_FILES["screen2"]["type"];
+        $file_type3 = $_FILES["screen3"]["type"];
+        $file_size = makesize1($file_size);
+        $file_size1 = makesize1($file_size1);
+        $file_size2 = makesize1($file_size2);
+        $file_size3 = makesize1($file_size3);
+        if (isset($_FILES["userfile"]))
+        {
+            if ($_FILES["userfile"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size);
+                    stdfoot();
+                    exit();
+                }
+                elseif (in_array (strtolower ($file_type), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile))
+                    {
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'",true);
+                        $image_drop = "" . $_POST["userfileold"]. "";
+
+                        if (!empty($image_drop))
+                            unlink("".$GLOBALS["uploaddir"]."$image_drop");
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen1"]))
+        {
+            if ($_FILES["screen1"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size1 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size1);
+                    stdfoot();
+                    exit();
+                }
+                elseif (in_array (strtolower ($file_type1), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen1']['tmp_name'], $uploadfile1))
+                    {
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'",true);
+                        $image_drop = "" . $_POST["userfileold1"]. "";
+
+                        if (!empty($image_drop))
+                            unlink("".$GLOBALS["uploaddir"]."$image_drop");
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen2"]))
+        {
+            if ($_FILES["screen2"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size2 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size2);
+                    stdfoot();
+                    exit();
+                }
+                elseif (in_array (strtolower ($file_type2), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen2']['tmp_name'], $uploadfile2))
+                    {
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen2='".$file_name_s2."' WHERE info_hash='" . $torhash . "'",true);
+                        $image_drop = "" . $_POST["userfileold2"]. "";
+
+                        if (!empty($image_drop))
+                            unlink("".$GLOBALS["uploaddir"]."$image_drop");
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+        if (isset($_FILES["screen3"]))
+        {
+            if ($_FILES["screen3"]["name"] =='')
+            {
+            // do nothing...
+            }
+            else
+            {
+                if ($file_size3 > $GLOBALS["file_limit"])
+                {
+                    err_msg($language["ERROR"],$language["FILE_UPLOAD_TO_BIG"].": ".$file_limit.". ".$language["IMAGE_WAS"].": ".$file_size3);
+                    stdfoot();
+                    exit();
+                }
+                if (in_array (strtolower ($file_type3), $image_types, TRUE))
+                {
+                    if (@move_uploaded_file($_FILES['screen3']['tmp_name'], $uploadfile3))
+                    {
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'",true);
+                        $image_drop = "" . $_POST["userfileold3"]. "";
+
+                        if (!empty($image_drop))
+                            unlink("".$GLOBALS["uploaddir"]."$image_drop");
+                    }
+                    else
+                    {
+                        err_msg($language["ERROR"],$language["MOVE_IMAGE_TO"]." ".$GLOBALS["uploaddir"].". ".$language["CHECK_FOLDERS_PERM"]);
+                        stdfoot();
+                        exit();
+                    }
+                }
+                else
+                {
+                    err_msg ($language["ERROR"],$language["ILEGAL_UPLOAD"]);
+                    stdfoot();
+                    exit;
+                }
+            }
+        }
+// Torrent Image Upload by Real_ptr / end
+
    do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . " WHERE info_hash='" . $torhash . "'",true);
    redirect($link);
    exit();
@@ -88,7 +342,7 @@ if (isset($_GET["info_hash"])) {
        $ttables="{$TABLE_PREFIX}files f";
        }
 
-  $query ="SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+  $query = "SELECT f.info_hash, f.filename, f.image, f.screen1, f.screen2, f.screen3, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query,true);
   $results = mysql_fetch_assoc($res);
 
@@ -104,6 +358,11 @@ if (isset($_GET["info_hash"])) {
 
     $torrenttpl=new bTemplate();
     $torrenttpl->set("language",$language);
+// Torrent Image Upload by Real_ptr / start
+    $row=$res[0];
+    $torrenttpl->set("imageon",$GLOBALS["imageon"] == "true", TRUE);
+    $torrenttpl->set("screenon",$GLOBALS["screenon"] == "true", TRUE);
+// Torrent Image Upload by Real_ptr / end
 /*
     $s = "<select name=\"type\">\n<option value=\"0\">(".$language["CHOOSE_ONE"].")</option>\n";
     $cats = genrelist();
