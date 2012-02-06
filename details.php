@@ -117,7 +117,7 @@ if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
 $uploaddir = $GLOBALS["uploaddir"];
-$image_new = "torrentimg/$image1"; //url of picture
+$image_new = "$uploaddir/$image1"; //url of picture
 //$image_new = str_replace(' ','%20',$image_new); //take url and replace spaces
 $max_width= "490"; //maximum width allowed for pictures
 $resize_width= "490"; //same as max width
