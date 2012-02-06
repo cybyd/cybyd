@@ -70,7 +70,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                                 "image/jpeg",
                                 "image/pjpeg",
                                 "image/gif",
-                                "image/x-png");
+                                "image/png");
         switch($_FILES["userfile"]["type"]) {
             case 'image/bmp':
             $file_name = $torhash.".bmp";
@@ -84,7 +84,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name = $torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name = $torhash.".png";
             break;
         }
@@ -101,7 +101,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s1 = "s1".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s1 = "s1".$torhash.".png";
             break;
         }
@@ -118,7 +118,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s2 = "s2".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s2 = "s2".$torhash.".png";
             break;
         }
@@ -135,7 +135,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
             case 'image/gif':
             $file_name_s3 = "s3".$torhash.".gif";
             break;
-            case 'image/x-png':
+            case 'image/png':
             $file_name_s3 = "s3".$torhash.".png";
             break;
         }
@@ -175,9 +175,11 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                     {
                         do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'",true);
                         $image_drop = "" . $_POST["userfileold"]. "";
-
+/*
+// https://sourceforge.net/p/cybyd/tickets/2/
                         if (!empty($image_drop))
                             unlink("".$GLOBALS["uploaddir"]."$image_drop");
+*/
                     }
                     else
                     {
@@ -214,9 +216,11 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                     {
                         do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'",true);
                         $image_drop = "" . $_POST["userfileold1"]. "";
-
+/*
+// https://sourceforge.net/p/cybyd/tickets/2/
                         if (!empty($image_drop))
                             unlink("".$GLOBALS["uploaddir"]."$image_drop");
+*/
                     }
                     else
                     {
