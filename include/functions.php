@@ -101,6 +101,104 @@ if (!isset($TRACKER_ANNOUNCEURLS)) {
   $TRACKER_ANNOUNCEURLS[]=$BASEURL.'/announce.php';
 }
 
+// Gold/Silver Torrent v 1.2 by Losmi / start
+function getStatus($gold=0)
+{
+    if($gold == 0)
+    {
+        return 'Classic';
+    }
+    if($gold == 1)
+    {
+        return 'Silver';
+    }if($gold == 2)
+    {
+        return 'Gold';
+    }
+    return 'none';
+}
+function createUsersLevelCombo($selected=0)
+     {
+
+     global $TABLE_PREFIX;
+
+    $ret = array();
+    $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id");
+
+    while ($row = mysql_fetch_assoc($res))
+        $ret[] = $row;
+
+    unset($row);
+    mysql_free_result($res);
+
+    $gold_select_box = "
+      <select name='level' >";
+      foreach ($ret as $key=>$value)
+      {
+        $s='';
+        if($value['id_level']==$selected)
+        {
+            $s='selected';
+        }
+        $gold_select_box .="<option value='".$value['id_level']."' ".$s.">".$value['level']."</option>";
+        
+      }
+      $gold_select_box .='</select><div id="description"></div>';
+      
+      return $gold_select_box;
+}
+
+function createGoldCategories($selected='')
+{
+        global $TABLE_PREFIX;
+      $gold_categories = array(
+                0=>'Classic (0% free leach)',
+                1=>'Silver (50% free leach)',
+                2=>'Gold (100% free leach)'
+      );
+      $g_desc = '';
+      $s_desc = '';
+      $c_desc = '';
+        $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
+            foreach ($res as $key=>$value)
+            {
+                $g_desc = $value["gold_description"];
+                $s_desc = $value["silver_description"];
+                $c_desc = $value["classic_description"];
+            }
+      $gold_select_box = "
+      <select name='gold' onchange=\"function ajde(val,c_desc,s_desc,g_desc)
+      {
+            var div = document.getElementById('description');
+            if(val==0)
+            {
+            div.innerHTML = 'Note: $c_desc';
+            }
+            if(val==1)
+            {
+            div.innerHTML = 'Note: $s_desc';
+            }
+            if(val==2)
+            {
+            div.innerHTML = 'Note: $g_desc';
+            }
+      }
+      ajde(this.value)\">";
+      foreach ($gold_categories as $key=>$value)
+      {
+        $s='';
+        if($key==$selected)
+        {
+            $s='selected';
+        }
+        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
+        
+      }
+      $gold_select_box .='</select><div id="description"></div>';
+      return $gold_select_box;
+}
+// Gold/Silver Torrent v 1.2 by Losmi / end
+
 function load_css($css_name) {
   // control if input template name exist in current user's stylepath, else return default
   global $BASEURL, $STYLEPATH, $STYLEURL;

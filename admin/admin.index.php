@@ -96,7 +96,12 @@ $admintpl=new bTemplate();
 
 switch ($do)
     {
-
+// Gold/Silver Torrent v 1.2 by Losmi / start
+    case 'gold':
+      include("$ADMIN_PATH/admin.gold.php");
+      $tpl->set("main_content",set_block($language["ACP_GOLD"],"center",$admintpl->fetch(load_template("admin.gold.tpl"))));
+      break;
+// Gold/Silver Torrent v 1.2 by Losmi / end
     case 'language':
       include("$ADMIN_PATH/admin.languages.php");
       $tpl->set("main_content",set_block($language["LANGUAGE_SETTINGS"],"center",$admintpl->fetch(load_template("admin.languages.tpl"))));

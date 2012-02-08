@@ -65,6 +65,12 @@ function CheckForm()
     <tr>
       <td class="header" ><tag:language.CATEGORY_FULL /></td>
       <td class="lista" align="left"><tag:upload_categories_combo /></td>
+	<if:upload_gold_level>
+    <tr>
+      <td class="header" ><tag:language.GOLD_TYPE /></td>
+      <td class="lista" align="left"><tag:upload_gold_combo /></td>
+    </tr>
+	</if:upload_gold_level>
     </tr>
     <tr>
       <td class="header" ><tag:language.FILE_NAME /></td>

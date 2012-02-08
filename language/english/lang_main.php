@@ -503,6 +503,13 @@ $language["ILEGAL_UPLOAD"]="Ilegal upload!! This is not a image<br>Please press 
 $language["IMAGE"]="Image";
 $language["SCREEN"]="Screenshots";
 // Torrent Image Upload by Real_ptr / end
-?>
-
+// Gold/Silver Torrent v 1.2 by Losmi / start
+$language["GOLD_TYPE"]="Torrent type";
+$language["GOLD_PICTURE"]="Gold picture";
+$language["SILVER_PICTURE"]="Silver picture";
+$language["GOLD_DESCRIPTION"]="Gold description";
+$language["SILVER_DESCRIPTION"]="Silver description";
+$language["CLASSIC_DESCRIPTION"]="Classic description";
+$language["GOLD_LEVEL"]="Who can add gold/silver torrents";
+// Gold/Silver Torrent v 1.2 by Losmi / end
 ?>

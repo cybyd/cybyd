@@ -117,7 +117,12 @@ else
             "title"=>$language["ACP_TORRENTS_TOOLS"],
             "menu"=>array(0=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=prunet" ,
-                    "description"=>$language["ACP_PRUNE_TORRENTS"]))
+                    "description"=>$language["ACP_PRUNE_TORRENTS"]),
+// Gold/Silver Torrent v 1.2 by Losmi / start
+                    array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=gold" ,
+                    "description"=>$language["ACP_GOLD"]))
+// Gold/Silver Torrent v 1.2 by Losmi / end
             ),
 
     4=>array(

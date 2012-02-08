@@ -54,7 +54,7 @@
         <loop:torrents>
         <tr>
           <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].category /></td>
-          <td class="lista" valign="middle" onMouseOver="this.className='post'" onMouseOut="this.className='lista'" style="padding-left:10px;overflow:auto;"><tag:torrents[].filename /></td>
+          <td class="lista" valign="middle" onMouseOver="this.className='post'" onMouseOut="this.className='lista'" style="padding-left:10px;overflow:auto;"><tag:torrents[].filename /><tag:torrents[].gold /></td>
           <if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].waiting /></td>
           <else:WT1>

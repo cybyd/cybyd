@@ -123,7 +123,7 @@ if (isset($_GET["search"])) {
 
 // torrents count...
 
-$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where",true,$btit_settings['cache_duration']);
+$res = get_result("SELECT COUNT(*) as torrents FROM $ttables $where", true, $btit_settings['cache_duration']);
 
 $count = $res[0]["torrents"];
 if (!isset($search)) $search = "";
@@ -192,6 +192,7 @@ if ($count>0) {
     $qry_order=str_replace(array("leechers","seeds","finished"),array($tleechs,$tseeds, $tcompletes),$order);
 
     $by_param=2;
+// Gold/Silver Torrent v 1.2 by Losmi
     if (isset($_GET["by"]))
       {
         $by_param=(int)$_GET["by"];
@@ -203,13 +204,16 @@ if ($count>0) {
 
     list($pagertop, $pagerbottom, $limit) = pager($torrentperpage, $count,  $scriptname."&amp;" . $addparam.(strlen($addparam)>0?"&amp;":"")."order=$order_param&amp;by=$by_param&amp;");
 
-    // Do the query with the uploader nickname
+// Do the query with the uploader nickname
+// Gold/Silver Torrent v 1.2 by Losmi / start
+// f.gold as gold,
+// Gold/Silver Torrent v 1.2 by Losmi / end
     if ($SHOW_UPLOADER)
-        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.info_hash as hash, f.gold as gold, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.anonymous, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader as upname, u.username as uploader, prefixcolor, suffixcolor FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id = f.uploader LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id $where ORDER BY $qry_order $by $limit";
 
     // Do the query without the uploader nickname
     else
-        $query = "SELECT f.info_hash as hash, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
+        $query = "SELECT f.info_hash as hash, f.gold as gold, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
     // End the queries
        $results = get_result($query,true,$btit_settings['cache_duration']);
 }
@@ -329,8 +333,27 @@ if ($count>0) {
    // commented out to lower unsed queries (standard template)
    $torrents[$i]["rating"]=$language["NA"];
 
-
-   //waitingtime
+// Gold/Silver Torrent v 1.2 by Losmi / start
+    $silver_picture='';
+    $gold_picture ='';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+       
+    $torrents[$i]["gold"]='';
+    if($data['gold'] == 1)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+    }
+    if($data['gold'] == 2)
+    {
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+    }
+// Gold/Silver Torrent v 1.2 by Losmi / end
+   // waitingtime
    // display only if the curuser have some WT restriction
    if (intval($CURUSER["WT"])>0)
       {

@@ -54,11 +54,22 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    if ($_POST["comment"]=='')
         {
         stderr("Error!","You must specify description.");
+	}
+// Gold/Silver Torrent v 1.2 by Losmi / start
+    $golden = 0;
+   if($_POST["gold"]!='' && isset($_POST["gold"]))
+   {
+    $golden = mysql_real_escape_string($_POST["gold"]);
    }
+// Gold/Silver Torrent v 1.2 by Losmi / end
 
    $fname=htmlspecialchars(AddSlashes(unesc($_POST["name"])));
    $torhash=AddSlashes($_POST["info_hash"]);
    write_log("Modified torrent $fname ($torhash)","modify");
+// Gold/Silver Torrent v 1.2 by Losmi / start
+          if($golden!='' && isset($golden))
+              do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$golden' WHERE info_hash='" . $torhash . "'",true);
+// Gold/Silver Torrent v 1.2 by Losmi / end
 
 // Torrent Image Upload by Real_ptr / start
 
@@ -345,8 +356,13 @@ if (isset($_GET["info_hash"])) {
        $tcompletes="f.finished as finished";
        $ttables="{$TABLE_PREFIX}files f";
        }
-
-  $query = "SELECT f.info_hash, f.filename, f.image, f.screen1, f.screen2, f.screen3, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
+// Gold/Silver Torrent v 1.2 by Losmi / start
+// f.gold,
+// Gold/Silver Torrent v 1.2 by Losmi / end
+// Torrent Image Upload by Real_ptr / start
+// f.image, f.screen1, f.screen2, f.screen3,
+// Torrent Image Upload by Real_ptr / end
+  $query = "SELECT f.info_hash, f.filename, f.image, f.screen1, f.screen2, f.screen3, f.gold, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
   $res = do_sqlquery($query,true);
   $results = mysql_fetch_assoc($res);
 
@@ -381,6 +397,21 @@ if (isset($_GET["info_hash"])) {
 */
 
     $torrent=array();
+// Gold/Silver Torrent v 1.2 by Losmi / start
+    $gold_level='';
+    $resg=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    foreach ($resg as $key=>$value)
+        $gold_level = $value["level"];
+
+    unset($resg);
+
+    if($gold_level>$CURUSER['id_level'])
+         $torrenttpl->set("edit_gold_level",false,true);
+    else
+         $torrenttpl->set("edit_gold_level",true,true);
+
+    $torrent["gold"]=createGoldCategories($results["gold"]);
+// Gold/Silver Torrent v 1.2 by Losmi / end
     $torrent["link"]="index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
     $torrent["filename"]=$results["filename"];
     $torrent["info_hash"]=$results["info_hash"];

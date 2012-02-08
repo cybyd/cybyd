@@ -453,25 +453,52 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
 -- Table structure for table `{$db_prefix}forums`
 -- 
 
-CREATE TABLE `{$db_prefix}forums` (
-  `sort` tinyint(3) unsigned NOT NULL default '0',
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(60) NOT NULL default '',
-  `description` varchar(200) default NULL,
-  `minclassread` tinyint(3) unsigned NOT NULL default '1',
-  `minclasswrite` tinyint(3) unsigned NOT NULL default '1',
-  `postcount` int(10) unsigned NOT NULL default '0',
-  `topiccount` int(10) unsigned NOT NULL default '0',
-  `minclasscreate` tinyint(3) unsigned NOT NULL default '1',
-  `id_parent` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}forums` (
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL DEFAULT '',
+  `description` varchar(200) DEFAULT NULL,
+  `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `postcount` int(10) unsigned NOT NULL DEFAULT '0',
+  `topiccount` int(10) unsigned NOT NULL DEFAULT '0',
+  `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `id_parent` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `sort` (`sort`),
   KEY `id_parent` (`id_parent`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}forums`
--- 
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}gold`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(11) NOT NULL DEFAULT '4',
+  `gold_picture` varchar(255) NOT NULL DEFAULT 'gold.gif',
+  `silver_picture` varchar(255) NOT NULL DEFAULT 'silver.gif',
+  `active` enum('-1','0','1') NOT NULL DEFAULT '1',
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `gold_description` text NOT NULL,
+  `silver_description` text NOT NULL,
+  `classic_description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `{$db_prefix}gold`
+--
+
+INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
+(1, 3, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 
 -- --------------------------------------------------------
 

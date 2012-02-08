@@ -396,5 +396,8 @@ $language["ALLOW_SCREEN_UPLOAD"]="Allow screens upload";
 $language["IMAGE_UPLOAD_DIR"]="Image upload dir";
 $language["FILE_SIZELIMIT"]="Image size limit";
 // Torrent Image Upload by Real_ptr / end
+// Gold/Silver Torrent v 1.2 by Losmi / start
+$language["ACP_GOLD"]="Gold torrents settings";
+// Gold/Silver Torrent v 1.2 by Losmi / end
 
 ?>

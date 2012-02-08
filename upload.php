@@ -128,6 +128,14 @@ else
 
 if (isset($hash) && $hash) $url = $TORRENTSDIR . "/" . $hash . ".btf";
 else $url = 0;
+// Gold/Silver Torrent v 1.2 by Losmi / start
+$gold = mysql_real_escape_string(0);
+// setting gold post var
+if (isset($_POST["gold"]) && $_POST["gold"] != '')
+{
+   $gold = mysql_real_escape_string($_POST["gold"]);
+}
+// Gold/Silver Torrent v 1.2 by Losmi / end
 
 if (isset($_POST["info"]) && $_POST["info"]!="")
    $comment = mysql_real_escape_string($_POST["info"]);
@@ -493,6 +501,9 @@ if (!isset($array["announce"]))
 // Torrent Image Upload by Real_ptr / start
 	do_sqlquery("UPDATE {$TABLE_PREFIX}files set image='$file_name', screen1='$file_name_s1', screen2='$file_name_s2', screen3='$file_name_s3' WHERE info_hash=\"$hash\"");
 // Torrent Image Upload by Real_ptr / end
+// Gold/Silver Torrent v 1.2 by Losmi / start
+	do_sqlquery("UPDATE {$TABLE_PREFIX}files SET gold='$gold' WHERE info_hash=\"$hash\"");
+// Gold/Silver Torrent v 1.2 by Losmi / end
          // try to chmod new moved file, on some server chmod without this could result 600, seems to be php bug
          @chmod($TORRENTSDIR . "/" . $hash . ".btf",0766);
 //         if ($announce!=$BASEURL."/announce.php")
@@ -547,8 +558,27 @@ case 0:
           $category = 0;
 
       $combo_categories=categories( $category[0] );
-
-      $bbc= textbbcode("upload","info");
+// Gold/Silver Torrent v 1.2 by Losmi / start
+	$gold_level='';
+        $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
+            foreach ($res as $key=>$value)
+            {
+                $gold_level = $value["level"];
+                
+            } 
+            
+            if($gold_level>$CURUSER['id_level'])
+            {
+                 $uploadtpl->set("upload_gold_level",false,true);
+            }
+            else 
+            {
+                 $uploadtpl->set("upload_gold_level",true,true);
+            }
+      $gold_select_box = createGoldCategories();
+      $uploadtpl->set("upload_gold_combo",$gold_select_box);
+// Gold/Silver Torrent v 1.2 by Losmi / end
+      $bbc = textbbcode("upload","info");
       $uploadtpl->set("upload.announces",$announcs);
       $uploadtpl->set("upload_categories_combo",$combo_categories);
       $uploadtpl->set("textbbcode",  $bbc);

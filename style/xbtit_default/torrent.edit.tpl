@@ -25,6 +25,12 @@
       <td class="lista" align="left"><input type="file" name="screen2" size="5" /></td>
       <td class="lista" align="left"><input type="file" name="screen3" size="5" /></td>
       </tr>
+    <if:edit_gold_level>
+      <tr>
+        <td align="right" class="header"><tag:language.GOLD_TYPE /></td>
+        <td class="lista"><tag:torrent.gold /></td>
+      </tr>
+    </if:edit_gold_level>
       </table>
       </td>
       </tr>
