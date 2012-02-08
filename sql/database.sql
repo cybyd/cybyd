@@ -416,6 +416,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   `screen1` varchar(255) NOT NULL DEFAULT '',
   `screen2` varchar(255) NOT NULL DEFAULT '',
   `screen3` varchar(255) NOT NULL DEFAULT '',
+  `gold` enum('0','1','2') NOT NULL DEFAULT '0',
   `info` varchar(250) NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',

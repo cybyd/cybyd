@@ -14,7 +14,7 @@ INSERT INTO `{$db_prefix}settings` ( `key` , `value` ) VALUES ('screenon', 'true
 
 
 -- Gold/Silver Torrent v 1.2 by Losmi / start
-ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0';
+ALTER TABLE `{$db_prefix}files` ADD `gold` ENUM( '0', '1', '2' ) NOT NULL DEFAULT '0' AFTER `screen3`;
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
