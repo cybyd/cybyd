@@ -336,7 +336,7 @@ if ($count>0) {
 // Gold/Silver Torrent v 1.2 by Losmi / start
     $silver_picture='';
     $gold_picture ='';
-     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];
@@ -346,11 +346,11 @@ if ($count>0) {
     $torrents[$i]["gold"]='';
     if($data['gold'] == 1)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="SiLVER" align="right" />';
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="SiLVER" align="right"/>';
     }
     if($data['gold'] == 2)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Gold" align="right" />';
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Gold" align="right"/>';
     }
 // Gold/Silver Torrent v 1.2 by Losmi / end
    // waitingtime

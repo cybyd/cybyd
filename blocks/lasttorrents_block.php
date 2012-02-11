@@ -86,7 +86,7 @@ if (max(0,$CURUSER["WT"])>0)
 // Gold/Silver Torrent v 1.2 by Losmi / start
      $silver_picture='';
      $gold_picture ='';
-     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];
@@ -95,11 +95,11 @@ if (max(0,$CURUSER["WT"])>0)
         $gold ='';
         if($data['gold'] == 1)
         {
-        $gold = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+        $gold = '<img src="gold/'.$silver_picture.'" alt="silver" align="right"/>';
         }
         if($data['gold'] == 2)
         {
-        $gold = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+        $gold = '<img src="gold/'.$gold_picture.'" alt="gold" align="right"/>';
         }
 // Gold/Silver Torrent v 1.2 by Losmi / end
 
