@@ -53,6 +53,7 @@ function windowunder(link)
           <td align="right" class="header"><tag:language.CATEGORY_FULL /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.cat_name /></td>
         </tr>
+<if:has_screenshot>
       <tr>
       <td align="right" class="header" valign="top"><tag:language.SCREEN /></td>
       <td class="lista">
@@ -69,6 +70,7 @@ function windowunder(link)
       </table>
       </td>
       </tr>
+</if:has_screenshot>
         <tr>
           <td align="right" class="header"><tag:language.RATING /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.rating /></td>

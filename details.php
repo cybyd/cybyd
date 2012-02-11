@@ -96,16 +96,16 @@ if(!$CURUSER || $CURUSER["view_torrents"]!="yes")
 // f.screen1, f.screen2, f.screen3, f.image,
 // Torrent Image Upload by Real_ptr / end
 
-$res = get_result("SELECT f.info_hash, f.filename, f.url, f.screen1, f.screen2, f.screen3, f.image, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'",true, $btit_settings['cache_duration']);
-//die("SELECT f.info_hash, f.filename, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'");
-if (count($res)<1)
+$res = get_result("SELECT f.info_hash, f.filename, f.url, f.screen1, f.screen2, f.screen3, f.image, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.uploader, c.name as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.external, f.announce_url,UNIX_TIMESTAMP(f.lastupdate) as lastupdate,UNIX_TIMESTAMP(f.lastsuccess) as lastsuccess, f.anonymous, u.username FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id=f.category LEFT JOIN {$TABLE_PREFIX}users u ON u.id=f.uploader WHERE f.info_hash ='" . $id . "'", true, $btit_settings['cache_duration']);
+
+if (count($res) < 1)
    stderr($language["ERROR"],"Bad ID!",$GLOBALS["usepopup"]);
 $row=$res[0];
 
 $spacer = "&nbsp;&nbsp;";
 
 
-$torrenttpl=new bTemplate();
+$torrenttpl = new bTemplate();
 $torrenttpl->set("language",$language);
 // Torrent Image Upload by Real_ptr / start
 $torrenttpl->set("IMAGEIS",!empty($row["image"]),TRUE);
@@ -113,6 +113,9 @@ $torrenttpl->set("SCREENIS1",!empty($row["screen1"]),TRUE);
 $torrenttpl->set("SCREENIS2",!empty($row["screen2"]),TRUE);
 $torrenttpl->set("SCREENIS3",!empty($row["screen3"]),TRUE);
 $torrenttpl->set("uploaddir",$uploaddir);
+// Thanks to Petr1fied / http://www.btiteam.org/smf/index.php?topic=19366.msg112564#msg112564
+// HiDE the screenshots field if there are none posted :)
+$torrenttpl->set("has_screenshot",  ((empty($row["screen1"]) && empty($row["screen2"]) && empty($row["screen3"]))?FALSE:TRUE), TRUE);
 if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";

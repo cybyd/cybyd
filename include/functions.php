@@ -36,13 +36,13 @@ error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 }else{
 error_reporting(E_ALL ^ E_NOTICE);
 }
-//create some logging :)
+// create some logging :)
 require_once($CURRENTPATH.'/conextra.php');
-$signon= getConnection ();
-$prefix=getPrefix ();
-$logname=mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_name' LIMIT 1",$signon));
-$logpath=mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_path' LIMIT 1",$signon));
-$when=date("d.m.y");
+$signon = getConnection ();
+$prefix = getPrefix ();
+$logname = mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_name' LIMIT 1", $signon));
+$logpath = mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_path' LIMIT 1", $signon));
+$when = date("d.m.y");
 ini_set('log_errors','On'); // enable or disable php error logging (use 'On' or 'Off')
 ini_set('error_log',''.$logpath[0].'/'.$logname[0].'_'.$when.'_.log'); // path to server-writable log file
 
@@ -191,10 +191,10 @@ function createGoldCategories($selected='')
         {
             $s='selected';
         }
-        $gold_select_box .="<option value='".$key."' ".$s.">".$value."</option>";
+        $gold_select_box .= "<option value='".$key."' ".$s.">".$value."</option>";
         
       }
-      $gold_select_box .='</select><div id="description"></div>';
+      $gold_select_box .= '</select><div id="description"></div>';
       return $gold_select_box;
 }
 // Gold/Silver Torrent v 1.2 by Losmi / end
@@ -292,7 +292,7 @@ function print_debug($level=3, $key=' - ') {
 function print_version() {
   global $tracker_version;
 
-  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">Btiteam</a>&nbsp;]';
+  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
 }
 
 function print_designer() {
@@ -537,9 +537,9 @@ function userlogin()
     session_name("xbtit");
     session_start();
 
-    $ip = getip(); //$_SERVER["REMOTE_ADDR"];
+    $ip = getip(); // $_SERVER["REMOTE_ADDR"];
     $nip = ip2long($ip);
-    $res = get_result("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE INET_ATON('".$ip."') >= first AND INET_ATON('".$ip."') <= last LIMIT 1;",true,$btit_settings['cache_duration']);
+    $res = get_result("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE INET_ATON('".$ip."') >= first AND INET_ATON('".$ip."') <= last LIMIT 1;", true, $btit_settings['cache_duration']);
     if (count($res) > 0)
     {
         header('HTTP/1.0 403 Forbidden');
@@ -605,7 +605,7 @@ function userlogin()
 
     if($id>1)
     {
-        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = $id LIMIT 1;",true);
+        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = $id LIMIT 1;", true);
         $row = mysql_fetch_assoc($res);
 
         if($btit_settings["secsui_cookie_type"]==1)
@@ -699,7 +699,7 @@ function userlogin()
     }
     if($id==1)
     {
-        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;",true);
+        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;", true);
         $row = mysql_fetch_assoc($res);
     }
 
@@ -770,7 +770,7 @@ function cleandata() {
     return;
 
   $now = time();
-  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='sanity'",true,$btit_settings['cache_duration']);
+  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='sanity'", true, $btit_settings['cache_duration']);
   $row = $res[0];
   if (!$row) {
     do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('sanity',$now)");
@@ -788,7 +788,7 @@ function cleandata() {
 }
 
 function updatedata() {
-  global $CURRENTPATH, $TABLE_PREFIX,$btit_settings;
+  global $CURRENTPATH, $TABLE_PREFIX, $btit_settings;
 
   require_once $CURRENTPATH.'/getscrape.php';
   global $update_interval;
@@ -798,7 +798,7 @@ function updatedata() {
 
   $now = time();
 
-  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='update'",true,$btit_settings['cache_duration']);
+  $res = get_result("SELECT last_time as lt FROM {$TABLE_PREFIX}tasks WHERE task='update'", true, $btit_settings['cache_duration']);
   $row = $res[0];
   if (!$row) {
     do_sqlquery("INSERT INTO {$TABLE_PREFIX}tasks (task, last_time) VALUES ('update',$now)");
@@ -812,17 +812,17 @@ function updatedata() {
   if (!mysql_affected_rows())
     return;
 
-  $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1",true,$btit_settings['cache_duration']);
+  $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1", true, $btit_settings['cache_duration']);
   if (!$res || count($res)==0)
     return;
 
   // get the url to scrape, take 5 torrent at a time (try to getting multiscrape)
   $row = $res[0];
-  $resurl=get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5",true,$btit_settings['cache_duration']);
+  $resurl = get_result("SELECT info_hash FROM {$TABLE_PREFIX}files WHERE external='yes' AND announce_url='".$row['announce_url']."' ORDER BY lastupdate ASC LIMIT 5", true, $btit_settings['cache_duration']);
   if (!$resurl || count($resurl)==0)
     return
 
-  $combinedinfohash=array();
+  $combinedinfohash = array();
   foreach ($resurl as $id=> $rhash)
     $combinedinfohash[]=$rhash['info_hash'];
 
@@ -964,7 +964,7 @@ function sub_categories($val='') {
 function sub_cat($sub) {
   global $TABLE_PREFIX,$CACHE_DURATION;
 
-  $c_q = get_result('SELECT name FROM '.$TABLE_PREFIX.'categories WHERE id='.$sub.' LIMIT 1;',true,$CACHE_DURATION);
+  $c_q = get_result('SELECT name FROM '.$TABLE_PREFIX.'categories WHERE id='.$sub.' LIMIT 1;', true, $CACHE_DURATION);
   return unesc($c_q[0]['name']);
 }
 
