@@ -227,7 +227,13 @@ switch ($pageID) {
         $tpl->set("main_content",set_block($language["EDIT_TORRENT"],"center",$torrenttpl->fetch(load_template("torrent.edit.tpl"))));
         $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Torrent->Edit");
         break;
-
+// Staff Page - Petr1fied / start / http://www.btiteam.org/smf/index.php?topic=19541.msg109523#msg109523
+    case 'staff':
+        require("$THIS_BASEPATH/staff.php");
+        $tpl->set("main_content",set_block($SITENAME . " " . $language["STAFF"],"center",$stafftpl->fetch(load_template("staff.tpl"))));
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Index->Staff");
+        break;
+// Staff Page - Petr1fied / end
     case 'extra-stats':
         require("$THIS_BASEPATH/extra-stats.php");
         $tpl->set("main_content",set_block($language["MNU_STATS"],"center",$out));

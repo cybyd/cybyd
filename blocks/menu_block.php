@@ -42,7 +42,12 @@ global $CURUSER, $FORUMLINK, $language;
    if ($CURUSER["can_upload"]=="yes")
       print("<tr><td class=\"blocklist\" align=\"center\"><a class=\"menu\" href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td></tr>\n");
    if ($CURUSER["view_users"]=="yes")
-      print("<tr><td class=\"blocklist\" align=\"center\"><a class=\"menu\" href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td></tr>\n");
+   {
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td></tr>\n");
+// Staff Page - Petr1fied / start / http://www.btiteam.org/smf/index.php?topic=19541.msg109523#msg109523
+      print("<tr><td class=\"blocklist\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td></tr>\n");
+// Staff Page - Petr1fied / end
+   }
    if ($CURUSER["view_news"]=="yes")
       print("<tr><td class=\"blocklist\" align=\"center\"><a class=\"menu\" href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td></tr>\n");
    if ($CURUSER["view_forum"]=="yes")

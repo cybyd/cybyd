@@ -69,7 +69,12 @@ if ($CURUSER["view_torrents"]=="yes")
 if ($CURUSER["can_upload"]=="yes")
    print("<td class=\"header\" align=\"center\"><a class=\"mainmenu\" href=\"index.php?page=upload\">".$language["MNU_UPLOAD"]."</a></td>\n");
 if ($CURUSER["view_users"]=="yes")
-   print("<td class=\"header\" align=\"center\"><a class=\"mainmenu\" href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
+{
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=users\">".$language["MNU_MEMBERS"]."</a></td>\n");
+// Staff Page - Petr1fied / start / http://www.btiteam.org/smf/index.php?topic=19541.msg109523#msg109523
+   print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td>\n");
+// Staff Page - Petr1fied / end
+}
 if ($CURUSER["view_news"]=="yes")
    print("<td class=\"header\" align=\"center\"><a class=\"mainmenu\" href=\"index.php?page=viewnews\">".$language["MNU_NEWS"]."</a></td>\n");
 if ($CURUSER["view_forum"]=="yes")
