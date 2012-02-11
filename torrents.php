@@ -346,11 +346,11 @@ if ($count>0) {
     $torrents[$i]["gold"]='';
     if($data['gold'] == 1)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="silver"/>';
+    $torrents[$i]["gold"] = '<img src="gold/'.$silver_picture.'" alt="SiLVER" align="right" />';
     }
     if($data['gold'] == 2)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="gold"/>';
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Gold" align="right" />';
     }
 // Gold/Silver Torrent v 1.2 by Losmi / end
    // waitingtime
