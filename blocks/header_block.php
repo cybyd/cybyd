@@ -46,7 +46,7 @@ if ($CURUSER["uid"]==1 || !$CURUSER)
 if($CURUSER["view_torrents"]=="yes") 
 {
 print("</td><td class=\"red\" align=\"center\"><a href=\"index.php?page=torrents\">".$language["MNU_TORRENT"]."</a></td>");
-print("<td class=\"red\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a></td>");
+// print("<td class=\"red\" align=\"center\"><a href=\"index.php?page=viewrequests\">".$language["VR"]."</a></td>");
 print("<td class=\"red\" align=\"center\"><a href='index.php?page=extra-stats'>".$language["MNU_STATS"]."</a></td>");
 }
 if ($CURUSER["view_forum"]=="yes")
@@ -77,4 +77,4 @@ if ($CURUSER["uid"] > 1)
 }
 ?>
 </tr>
-</table>
+</table><br />
