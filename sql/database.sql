@@ -1,3 +1,13 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.10.5
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Feb 12, 2012 at 03:43 AM
+-- Server version: 5.1.41
+-- PHP Version: 5.3.2-1ubuntu4.13
+
+
 -- 
 -- Table structure for table `{$db_prefix}bannedip`
 -- 
@@ -42,25 +52,26 @@ CREATE TABLE `{$db_prefix}blocks` (
 -- 
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES 
-(1, 'menu', 'r', 5, 1, 'BLOCK_MENU', 'no', 3, 8),
-(2, 'clock', 'r', 2, 1, 'BLOCK_CLOCK', 'no', 3, 8),
-(3, 'forum', 'l', 2, 1, 'BLOCK_FORUM', 'no', 3, 8),
+(1, 'menu', 'r', 5, 0, 'BLOCK_MENU', 'no', 3, 8),
+(2, 'clock', 'r', 2, 0, 'BLOCK_CLOCK', 'no', 3, 8),
+(3, 'forum', 'r', 3, 1, 'BLOCK_FORUM', 'no', 3, 8),
 (4, 'lastmember', 'l', 1, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
-(6, 'trackerinfo', 'l', 6, 1, 'BLOCK_INFO', 'no', 3, 8),
-(7, 'user', 'r', 4, 1, 'BLOCK_USER', 'no', 3, 8),
-(8, 'online', 'b', 0, 1, 'BLOCK_ONLINE', 'no', 3, 8),
+(6, 'trackerinfo', 'l', 3, 0, 'BLOCK_INFO', 'no', 3, 8),
+(7, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
+(8, 'online', 'b', 1, 1, 'BLOCK_ONLINE', 'no', 3, 8),
 (10, 'toptorrents', 'c', 5, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
 (11, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
 (12, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
-(13, 'mainmenu', 'e', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
+(13, 'mainmenu', 'e', 1, 0, 'BLOCK_MENU', 'no', 1, 8),
 (14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
 (15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 1, 8),
-(16, 'serverload', 'c', 8, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
-(17, 'poller', 'l', 3, 1, 'BLOCK_POLL', 'no', 3, 8),
+(16, 'serverload', 'c', 6, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
+(17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
 (18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
 (20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8);
+(21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
+(22, 'header', 't', 1, 1, 'BLOCK_HEADER', 'no', 1, 8);
 
 
 -- --------------------------------------------------------
@@ -571,7 +582,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (7, 'Russian','language/russian'),
 (8, 'German','language/german'),
 (9, 'Hungarian','language/hungarian'),
-(10, 'Français', 'language/french'),
+(10, 'FranÃ§ais', 'language/french'),
 (11, 'Finnish','language/finnish'),
 (12, 'Vietnamese','language/vietnamese'),
 (13, 'Greek','language/greek'),

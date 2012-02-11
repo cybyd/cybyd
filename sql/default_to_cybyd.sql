@@ -32,3 +32,8 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
 (1, 4, 'gold.gif', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
 -- Gold/Silver Torrent v 1.2 by Losmi / end
+
+
+-- Restore the main menu / start
+INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'header', 't', '1', '1', 'BLOCK_HEADER', 'no', '1', '8' );
+-- Restore the main menu / end

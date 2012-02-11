@@ -49,7 +49,7 @@ ini_set('error_log',''.$logpath[0].'/'.$logname[0].'_'.$when.'_.log'); // path t
 #
 // Emulate register_globals off
 #
-$php_version=explode(".",phpversion());
+$php_version = explode(".",phpversion());
 if($php_version[0]<=5 && $php_version[1]<=2)
 {
     if (@ini_get('register_globals'))
@@ -292,7 +292,7 @@ function print_debug($level=3, $key=' - ') {
 function print_version() {
   global $tracker_version;
 
-  return '[&nbsp;&nbsp;<u>xbtit '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
+  return '[ <a href="http://sourceforge.net/projects/cybyd/" target="_blank">CyByD`</a> MoDDed by <b>cybernet2u</b> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
 }
 
 function print_designer() {
