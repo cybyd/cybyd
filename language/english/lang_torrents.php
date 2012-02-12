@@ -33,4 +33,9 @@ $language['RATING']='Rating';
 $language['ERR_NO_VOTE']='You must choose a value to vote.';
 $language['VOTES']='Votes';
 $language['SHOW_HIDE']='Show/Hide Files';
+// Torrent's Thanks (AJAX version) / start
+$language["THANKS_BE_FIRST"]="Nobody has said thanks for this torrent, be the first!";
+$language["THANKS_USERS"]="Who thanked";
+$language["THANKS_YOU"]="Say Thank You!";
+// Torrent's Thanks (AJAX version) / end
 ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 12, 2012 at 03:54 AM
+-- Generation Time: Feb 12, 2012 at 04:32 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.13
 
@@ -454,8 +454,25 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}files` (
   KEY `bin_hash` (`bin_hash`(20))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}files`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `{$db_prefix}files_thanks`
+--
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
+  `infohash` char(40) NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  KEY `infohash` (`infohash`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `{$db_prefix}files_thanks`
 -- 
 
 

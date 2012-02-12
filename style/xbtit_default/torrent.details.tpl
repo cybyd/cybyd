@@ -16,6 +16,51 @@ function windowunder(link)
   window.opener.document.location=link;
   window.close();
 }
+
+function disable_button(state)
+{
+ document.getElementById('ty').disabled=(state=='1'?true:false);
+}
+
+at=new sack();
+
+function ShowUpdate()
+{
+  var mytext=at.response + '';
+  var myout=mytext.split('|');
+  document.getElementById('thanks_div').style.display='block';
+  document.getElementById('loading').style.display='none';
+  document.getElementById('thanks_div').innerHTML = myout[0]; //at.response;
+  disable_button(myout[1]);
+}
+
+function thank_you(ia)
+{
+  disable_button('1');
+  at.resetData();
+  at.onLoading=show_wait;
+  at.requestFile='thanks.php';
+  at.setVar('infohash',"'"+ia+"'");
+  at.setVar('thanks',1);
+  at.onCompletion = ShowUpdate;
+  at.runAJAX();
+}
+
+function ShowThank(ia)
+{
+  at.resetData();
+  at.onLoading=show_wait;
+  at.requestFile='thanks.php';
+  at.setVar('infohash',"'"+ia+"'");
+  at.onCompletion = ShowUpdate;
+  at.runAJAX();
+}
+
+function show_wait()
+{
+  document.getElementById('thanks_div').style.display='none';
+  document.getElementById('loading').style.display='block';
+}
 </script>
 <script type="text/javascript" src="jscript/prototype.js"></script>
 <script type="text/javascript" src="jscript/scriptaculous.js?load=effects,builder"></script>
@@ -38,6 +83,17 @@ function windowunder(link)
         <tr>
           <td align="right" class="header"><tag:language.INFO_HASH /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.info_hash /></td>
+        </tr>
+	<tr>
+	<td align="right" class="header" valign="top"><tag:language.THANKS_USERS /></td>
+          <td class="lista" align="center">
+              <form action="thanks.php" method="post" onsubmit="return false">
+              <div id="thanks_div" name="thanks_div" style="display:block;"></div>
+              <div id="loading" name="loading" style="display:none;"><img src="images/ajax-loader.gif" alt="" title="ajax-loader" /></div>
+              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')" />
+              </form>
+              <script type="text/javascript">ShowThank('<tag:torrent.info_hash />');</script>
+          </td>
         </tr>
 <if:IMAGEIS>
         <tr>
