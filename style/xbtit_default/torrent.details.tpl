@@ -97,7 +97,7 @@ function show_wait()
 <if:IMAGEIS>
         <tr>
           <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="<tag:torrent.filename />" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="<tag:torrent.filename /> Poster" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
         </tr>
 </if:IMAGEIS>
         <tr>
