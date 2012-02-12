@@ -30,6 +30,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
+date_default_timezone_set('Europe/London');
+
 $CURRENTPATH = dirname(__FILE__);
 if (version_compare(PHP_VERSION, '5.0.0', '>=')) {
 error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
@@ -82,8 +84,6 @@ if(get_magic_quotes_gpc()){
   remove_magic_quotes($_FILES);
   remove_magic_quotes($_COOKIE);
 }
-
-@date_default_timezone_set(@date_default_timezone_get());
 
 include $CURRENTPATH.'/xbtit_version.php';
 require_once $CURRENTPATH.'/config.php';
