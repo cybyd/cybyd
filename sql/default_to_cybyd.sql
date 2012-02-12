@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}gold` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`, `active`, `date`, `gold_description`, `silver_description`, `classic_description`) VALUES
-(1, 4, 'free.png', 'silver.gif', '1', CURDATE(), 'Gold torrent description', 'Silver torrent description', 'Classic torrent description');
+(1, 4, 'free.png', 'silver.gif', '1', CURDATE(), '100% FREEEEE', 'Not so much :(', 'Classy way :)');
 -- Gold/Silver Torrent v 1.2 by Losmi / end
 
 
@@ -41,10 +41,6 @@ INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid`
 -- login box by cybernet2u / start
 INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'login', 'c', '1', '1', 'BLOCK_LOGIN', 'no', '1', '1' );
 -- login box by cybernet2u / end
-
-UPDATE `pure_cybyd`.`pure_cybyd_gold` SET `gold_description` = '100% FREEEEE',
-`silver_description` = 'Not so much :(',
-`classic_description` = 'Classy way :)' WHERE `pure_cybyd_gold`.`id` =1;
 
 
 -- Torrent's Thanks (AJAX version) / start
