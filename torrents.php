@@ -229,7 +229,7 @@ else
 require(load_language("lang_torrents.php"));
 
 
-$torrenttpl=new bTemplate();
+$torrenttpl = new bTemplate();
 $torrenttpl->set("language",$language);
 $torrenttpl->set("torrent_script","index.php");
 $torrenttpl->set("torrent_search",$trova);
@@ -381,7 +381,7 @@ if ($count>0) {
    $torrents[$i]["download"]="<a href=\"download.php?id=".$data["hash"]."&amp;f=" . urlencode($data["filename"]) . ".torrent\">".image_or_link("images/download.gif","","torrent")."</a>\n";
 
    include("include/offset.php");
-   $torrents[$i]["added"]=date("d/m/Y",$data["added"]-$offset); // data
+   $torrents[$i]["added"]=date("Y-m-d / H:i:s",$data["added"]-$offset); // data
    $torrents[$i]["size"]=makesize($data["size"]);
 
    //Uploaders nick details

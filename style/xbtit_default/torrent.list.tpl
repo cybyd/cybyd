@@ -50,6 +50,7 @@
           <td align="center" width="45" class="header"><tag:torrent_header_speed /></td>
           </if:XBTT>
           <td align="center" width="45" class="header"><tag:torrent_header_average /></td>
+	  <td align="center" width="45" class="header"><tag:torrent_header_uploader /></td>
         </tr>      
         <loop:torrents>
         <tr>
@@ -69,6 +70,7 @@
           <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].speed /></td>
           </if:XBTT1>
           <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].average /></td>
+	  <td align="center" width="45" class="lista" style="text-align: center;"><tag:torrents[].uploader /></td>
         </tr>
         </loop:torrents>
       </table>
