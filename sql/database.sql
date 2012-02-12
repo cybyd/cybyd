@@ -64,7 +64,7 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (12, 'news', 'c', 2, 1, 'BLOCK_NEWS', 'no', 3, 8),
 (13, 'mainmenu', 'e', 1, 0, 'BLOCK_MENU', 'no', 1, 8),
 (14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
-(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 1, 8),
+(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
 (16, 'serverload', 'c', 7, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
 (17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
 (18, 'seedwanted', 'c', 4, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
