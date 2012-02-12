@@ -89,7 +89,6 @@ function show_wait()
           <td class="lista" align="center">
               <form action="thanks.php" method="post" onsubmit="return false">
               <div id="thanks_div" name="thanks_div" style="display:block;"></div>
-              <div id="loading" name="loading" style="display:none;"><img src="images/ajax-loader.gif" alt="" title="ajax-loader" /></div>
               <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')" />
               </form>
               <script type="text/javascript">ShowThank('<tag:torrent.info_hash />');</script>
