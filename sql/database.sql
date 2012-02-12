@@ -59,19 +59,20 @@ INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `s
 (6, 'trackerinfo', 'l', 3, 0, 'BLOCK_INFO', 'no', 3, 8),
 (7, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
 (8, 'online', 'b', 1, 1, 'BLOCK_ONLINE', 'no', 3, 8),
-(10, 'toptorrents', 'c', 5, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
-(11, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
-(12, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
+(10, 'toptorrents', 'c', 6, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
+(11, 'lasttorrents', 'c', 5, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
+(12, 'news', 'c', 2, 1, 'BLOCK_NEWS', 'no', 3, 8),
 (13, 'mainmenu', 'e', 1, 0, 'BLOCK_MENU', 'no', 1, 8),
 (14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
 (15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 1, 8),
-(16, 'serverload', 'c', 6, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
+(16, 'serverload', 'c', 7, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
 (17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
-(18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
+(18, 'seedwanted', 'c', 4, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
-(20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
+(20, 'ajax_shoutbox', 'c', 3, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
 (21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
-(22, 'header', 't', 1, 1, 'BLOCK_HEADER', 'no', 1, 8);
+(22, 'header', 't', 1, 1, 'BLOCK_HEADER', 'no', 1, 8),
+(24, 'login', 'c', 1, 1, 'BLOCK_LOGIN', 'no', 1, 1);
 
 
 -- --------------------------------------------------------

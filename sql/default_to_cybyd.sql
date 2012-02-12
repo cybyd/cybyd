@@ -38,6 +38,10 @@ INSERT INTO `{$db_prefix}gold` (`id`, `level`, `gold_picture`, `silver_picture`,
 INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'header', 't', '1', '1', 'BLOCK_HEADER', 'no', '1', '8' );
 -- Restore the main menu / end
 
+-- login box by cybernet2u / start
+INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'login', 'c', '1', '1', 'BLOCK_LOGIN', 'no', '1', '1' );
+-- login box by cybernet2u / end
+
 
 -- Torrent's Thanks (AJAX version) / start
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
