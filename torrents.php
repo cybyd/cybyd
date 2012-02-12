@@ -350,7 +350,7 @@ if ($count>0) {
     }
     if($data['gold'] == 2)
     {
-    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Gold" align="right"/>';
+    $torrents[$i]["gold"] = '<img src="gold/'.$gold_picture.'" alt="Free" align="right"/>';
     }
 // Gold/Silver Torrent v 1.2 by Losmi / end
    // waitingtime

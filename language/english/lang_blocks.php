@@ -24,5 +24,5 @@ $language['WELCOME_LASTUSER']=' Welcome to our Tracker ';
 $language['BLOCK_MINCLASSVIEW']='Minimum rank that can view';
 $language['BLOCK_MAXCLASSVIEW']='Maximum rank that can view';
 $language['BLOCK_HEADER']='Header Menu';
-$language['BLOCK_LOGIN']='Login Block';
+$language['BLOCK_LOGIN']='login or die();';
 ?>
