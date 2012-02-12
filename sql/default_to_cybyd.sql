@@ -42,6 +42,10 @@ INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid`
 INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'login', 'c', '1', '1', 'BLOCK_LOGIN', 'no', '1', '1' );
 -- login box by cybernet2u / end
 
+UPDATE `pure_cybyd`.`pure_cybyd_gold` SET `gold_description` = '100% FREEEEE',
+`silver_description` = 'Not so much :(',
+`classic_description` = 'Classy way :)' WHERE `pure_cybyd_gold`.`id` =1;
+
 
 -- Torrent's Thanks (AJAX version) / start
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (

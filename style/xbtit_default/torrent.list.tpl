@@ -2,12 +2,7 @@
 <form action="<tag:torrent_script />" method="get" name="torrent_search">
   <input type="hidden" name="page" value="torrents" />
   <table border="0" class="lista" align="center">
-    <tr>
-      <td class="block"><tag:language.TORRENT_SEARCH /></td>
-      <td class="block"><tag:language.CATEGORY_FULL /></td>
-      <td class="block"><tag:language.TORRENT_STATUS /></td>
-      <td class="block">&nbsp;</td>
-    </tr>
+	&nbsp;&nbsp;
     <tr>
       <td><input type="text" name="search" size="25" maxlength="50" value="<tag:torrent_search />" /></td>
       <td>
