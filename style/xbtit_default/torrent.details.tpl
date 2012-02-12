@@ -97,7 +97,7 @@ function show_wait()
 <if:IMAGEIS>
         <tr>
           <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="view image" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="<tag:torrent.filename />" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
         </tr>
 </if:IMAGEIS>
         <tr>
@@ -114,13 +114,13 @@ function show_wait()
       <td class="lista">
       <table class="lista" border="0" cellspacing="0" cellpadding="0">
         <if:SCREENIS1>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="view image" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="<tag:torrent.filename /> #1 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
         </if:SCREENIS1>
         <if:SCREENIS2>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="view image" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="<tag:torrent.filename /> #2 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
         </if:SCREENIS2>
         <if:SCREENIS3>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="view image" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="<tag:torrent.filename /> #3 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
         </if:SCREENIS3>
       </table>
       </td>
