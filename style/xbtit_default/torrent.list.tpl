@@ -62,8 +62,8 @@
           </if:WT1>
           <td align="center" width="20" class="lista" style="text-align: center;"><tag:torrents[].download /></td>
           <td align="center" width="85" class="lista" style="white-space:wrap; text-align:center;"><tag:torrents[].added /></td>
-          <td align="center" width="30" class="<tag:torrents[].classe_seeds />" style="text-align: center;"><tag:torrents[].seeds /></td>
-          <td align="center" width="30" class="<tag:torrents[].classe_leechers />" style="text-align: center;"><tag:torrents[].leechers /></td>
+          <td align="center" width="30" class="lista" style="text-align: center;"><tag:torrents[].seeds /></td>
+          <td align="center" width="30" class="lista" style="text-align: center;"><tag:torrents[].leechers /></td>
           <td align="center" width="30" class="lista" style="text-align: center;"><tag:torrents[].complete /></td>
          <if:XBTT1>
           <else:XBTT1>
