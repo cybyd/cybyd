@@ -14,6 +14,9 @@ $language['DOWN']='Dl';
 $language['ADDED']='AddDate';
 $language['SIZE']='Size';
 $language['UPLOADER']='Uploader';
+// Anonymous fix
+$language["ANONYMOUS"]="Anonymous";
+// Anonymous fix
 $language['SHORT_S']='S';
 $language['SHORT_L']='L';
 $language['SHORT_C']='C';

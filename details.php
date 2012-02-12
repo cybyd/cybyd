@@ -115,7 +115,7 @@ $torrenttpl->set("SCREENIS3",!empty($row["screen3"]),TRUE);
 $torrenttpl->set("uploaddir",$uploaddir);
 // Thanks to Petr1fied / http://www.btiteam.org/smf/index.php?topic=19366.msg112564#msg112564
 // HiDE the screenshots field if there are none posted :)
-$torrenttpl->set("has_screenshot",  ((empty($row["screen1"]) && empty($row["screen2"]) && empty($row["screen3"]))?FALSE:TRUE), TRUE);
+$torrenttpl->set("has_screenshot", ((empty($row["screen1"]) && empty($row["screen2"]) && empty($row["screen3"]))?FALSE:TRUE), TRUE);
 if (!empty($row["image"]))
 {
 $image1 = "".$row["image"]."";
@@ -275,7 +275,7 @@ $torrenttpl->set("files",$dfiles);
 
 // end files in torrents
 include(dirname(__FILE__)."/include/offset.php");
-$row["date"]=date("d/m/Y",$row["data"]-$offset);
+$row["date"]=date("Y-m-d / H:i:s",$row["data"]-$offset);
 
 if ($row["anonymous"]=="true")
 {
@@ -328,7 +328,7 @@ else
    $torrenttpl->set("EXTERNAL",false,TRUE);
 
 // comments...
-$subres = get_result("SELECT c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC",true,$btit_settings['cache_duration']);
+$subres = get_result("SELECT c.id, text, UNIX_TIMESTAMP(added) as data, user, u.id as uid FROM {$TABLE_PREFIX}comments c LEFT JOIN {$TABLE_PREFIX}users u ON c.user=u.username WHERE info_hash = '" . $id . "' ORDER BY added DESC", true, $btit_settings['cache_duration']);
 if (!$subres || count($subres)==0) {
      if($CURUSER["uid"]>1)
        $torrenttpl->set("INSERT_COMMENT",TRUE,TRUE);

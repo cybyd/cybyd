@@ -215,7 +215,7 @@ if ($count>0) {
     else
         $query = "SELECT f.info_hash as hash, f.gold as gold, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished,  f.dlbytes as dwned , IFNULL(f.filename,'') AS filename, f.url, f.info, f.speed, UNIX_TIMESTAMP( f.data ) as added, c.image, c.name as cname, f.category as catid, f.size, f.external, f.uploader FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category $where ORDER BY $qry_order $by $limit";
     // End the queries
-       $results = get_result($query,true,$btit_settings['cache_duration']);
+       $results = get_result($query, true, $btit_settings['cache_duration']);
 }
 
 
@@ -453,7 +453,7 @@ if ($count>0) {
   else {
        $id = $data['hash'];
        if ($XBTT_USE)
-          $subres = get_result("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1",true,$btit_settings['cache_duration']);
+          $subres = get_result("SELECT sum(IFNULL(xfu.left,0)) as to_go, count(xfu.uid) as numpeers FROM xbt_files_users xfu INNER JOIN xbt_files xf ON xf.fid=xfu.fid WHERE xf.info_hash=UNHEX('$id') AND xfu.active=1", true, $btit_settings['cache_duration']);
        else
            $subres = get_result("SELECT sum(IFNULL(bytes,0)) as to_go, count(*) as numpeers FROM {$TABLE_PREFIX}peers where infohash='$id'",true,$btit_settings['cache_duration']);
        $subres2 = get_result("SELECT size FROM {$TABLE_PREFIX}files WHERE info_hash ='$id'",true,$btit_settings['cache_duration']);
