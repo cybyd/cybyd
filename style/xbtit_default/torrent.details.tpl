@@ -69,15 +69,11 @@ function show_wait()
     <div align="center">
       <table width="100%" class="lista" border="0" cellspacing="5" cellpadding="5">
         <tr>
-          <td align="right" class="header"><tag:language.FILE />
+          <td align="right" class="header"><tag:language.TORRENT />
           <if:MOD>
           <tag:mod_task />
           </if:MOD>
           </td>
-          <td class="lista" align="center" style="text-align:left;" valign="top"><tag:torrent.filename /></td>
-        </tr>
-        <tr>
-          <td align="right" class="header"><tag:language.TORRENT /></td>
           <td class="lista" align="center" style="text-align:left;" valign="top"><a href="download.php?id=<tag:torrent.info_hash />&amp;f=<tag:torrent.filename />.torrent"><tag:torrent.filename /></a></td>
         </tr>
         <tr>
