@@ -1,3 +1,7 @@
+<script type="text/javascript">
+_gaq.push(['_setCustomVar', 1, 'PageType', 'UserDetails', 3]);
+_gaq.push(['_setCustomVar', 2, 'UserName', '<tag:current_username />', 3]);
+</script>
 <table class="lista" width="100%">
 
   <tr>

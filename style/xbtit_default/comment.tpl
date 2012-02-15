@@ -4,7 +4,7 @@
 </div>
 </if:PREVIEW>
 <div align="center">
-  <form enctype="multipart/form-data" name="comment" method="post" action="index.php?page=comment&id=<tag:comment_id />">
+  <form enctype="multipart/form-data" name="comment" method="post" action="index.php?page=comment&id=<tag:comment_id />" onclick="_gaq.push(['_trackEvent', 'comment', 'post', '/comments/info_hash/<tag:comment_id />'])">
   <input type="hidden" name="info_hash" value="<tag:comment_id />" />
     <table class="lista" border="0" cellpadding="10">
       <tr>
@@ -26,4 +26,3 @@
     </table>
   </form>
 </div>
-

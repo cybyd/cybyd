@@ -78,9 +78,9 @@ else
     }
 
 
-if ($id>1) {
-   $res=get_result("SELECT u.avatar, u.email, u.cip, u.username, u.custom_title, $udownloaded as downloaded, $uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid, u.ipb_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id",true,$btit_settings['cache_duration']);
-   $num=count($res);
+if ($id > 1) {
+   $res = get_result("SELECT u.avatar, u.email, u.cip, u.username, u.custom_title, $udownloaded as downloaded, $uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid, u.ipb_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
+   $num = count($res);
    if ($num==0)
       {
        err_msg($language["ERROR"],$language["BAD_ID"]);
@@ -101,9 +101,9 @@ else
 include("include/offset.php");
 
 // user's ratio
-if (intval($row["downloaded"])>0)
+if (intval($row["downloaded"]) > 0)
  {
-   $sr = $row["uploaded"]/$row["downloaded"];
+   $sr = $row["uploaded"] / $row["downloaded"];
    if ($sr >= 4)
      $s = "images/smilies/thumbsup.gif";
    else if ($sr >= 2)
@@ -116,16 +116,19 @@ if (intval($row["downloaded"])>0)
      $s = "images/smilies/sad.gif";
    else
      $s = "images/smilies/thumbsdown.gif";
-  $ratio=number_format($sr,2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
+ $ratio = number_format($sr,2)."&nbsp;&nbsp;<img src=\"$s\" alt=\"\" />";
  }
 else
    $ratio='&#8734;';
 
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
-$userdetailtpl= new bTemplate();
+$userdetailtpl = new bTemplate();
 $userdetailtpl-> set("language",$language);
 $userdetailtpl-> set("userdetail_username", unesc($row["username"]));
+// just current username viewing the page - start
+$userdetailtpl-> set("current_username", unesc($CURUSER["username"]));
+// just current username viewing the page - end
 //$userdetailtpl-> set("userdetail_no_guest", $CURUSER["uid"]>1, TRUE);
 if ($CURUSER["uid"]>1 && $id!=$CURUSER["uid"])
     $userdetailtpl -> set("userdetail_send_pm", "&nbsp;&nbsp;&nbsp;<a href=\"index.php?page=usercp&amp;do=pm&amp;action=edit&amp;uid=".$CURUSER["uid"]."&amp;what=new&amp;to=".urlencode(unesc($row["username"]))."\">".image_or_link("$STYLEPATH/images/pm.png","",$language["PM"])."</a>");
@@ -274,19 +277,17 @@ if ($anq[0]['tp']>0)
     list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $anq[0]['tp'], "index.php?page=userdetails&amp;id=$id&amp;pagename=active&amp;",array("pagename" => "active"));
     $userdetailtpl->set("pagertopact",$pagertop);
     if ($XBTT_USE)
-            $anq=get_result("SELECT '127.0.0.1' as ip, f.info_hash as infohash, f.filename, f.size, IF(p.left=0,'seeder','leecher') as status, p.downloaded, p.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
-                        FROM xbt_files_users p INNER JOIN xbt_files x ON p.fid=x.fid INNER JOIN {$TABLE_PREFIX}files f ON f.bin_hash = x.info_hash
-                        WHERE p.uid=$id AND p.active=1 ORDER BY status DESC $limit",true,$btit_settings['cache_duration']);
+            $anq = get_result("SELECT '127.0.0.1' as ip, f.info_hash as infohash, f.filename, f.size, IF(p.left=0,'seeder','leecher') as status, p.downloaded, p.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished FROM xbt_files_users p INNER JOIN xbt_files x ON p.fid=x.fid INNER JOIN {$TABLE_PREFIX}files f ON f.bin_hash = x.info_hash WHERE p.uid=$id AND p.active=1 ORDER BY status DESC $limit", true, $btit_settings['cache_duration']);
     else
       {
         if ($PRIVATE_ANNOUNCE)
-            $anq=get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
+            $anq = get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
                         FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash
-                        WHERE p.pid='".$row["pid"]."' ORDER BY p.status DESC $limit",true,$btit_settings['cache_duration']);
+                        WHERE p.pid='".$row["pid"]."' ORDER BY p.status DESC $limit", true, $btit_settings['cache_duration']);
         else
-            $anq=get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
+            $anq = get_result("SELECT p.ip, p.infohash, f.filename, f.size, p.status, p.downloaded, p.uploaded, f.seeds, f.leechers, f.finished
                         FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash
-                        WHERE p.ip='".($row["cip"])."' ORDER BY p.status DESC $limit",true,$btit_settings['cache_duration']);
+                        WHERE p.ip='".($row["cip"])."' ORDER BY p.status DESC $limit", true, $btit_settings['cache_duration']);
      }
 //    print("<div align=\"center\">$pagertop</div>");
 
@@ -344,7 +345,7 @@ if ($anq[0]['tp']>0)
 unset($anq);
 
 if ($XBTT_USE)
-   $anq=get_result("SELECT count(h.fid) as th FROM xbt_files_users h INNER JOIN xbt_files f ON h.fid=f.fid WHERE h.uid=$id AND h.completed=1",true,$btit_settings['cache_duration']);
+   $anq=get_result("SELECT count(h.fid) as th FROM xbt_files_users h INNER JOIN xbt_files f ON h.fid=f.fid WHERE h.uid=$id AND h.completed=1", true, $btit_settings['cache_duration']);
 else
     $anq=get_result("SELECT count(h.infohash) as th FROM {$TABLE_PREFIX}history h INNER JOIN {$TABLE_PREFIX}files f ON h.infohash=f.info_hash WHERE h.uid=$id AND h.date IS NOT NULL",true,$btit_settings['cache_duration']);
 
@@ -358,11 +359,11 @@ if ($anq[0]['th']>0)
     list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $sanq[0]['th'], "index.php?page=userdetails&amp;id=$id&amp;pagename=history&amp;",array("pagename" => "history"));
     $userdetailtpl->set("pagertophist",$pagertop);
     if ($XBTT_USE)
-       $anq=get_result("SELECT f.filename, f.size, f.info_hash, IF(h.active=1,'yes','no'), 'unknown' as agent, h.downloaded, h.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
-       FROM $ttables INNER JOIN xbt_files_users h ON h.fid=x.fid WHERE h.uid=$id AND h.completed=1 ORDER BY h.mtime DESC $limit",true,$btit_settings['cache_duration']);
+       $anq = get_result("SELECT f.filename, f.size, f.info_hash, IF(h.active=1,'yes','no'), 'unknown' as agent, h.downloaded, h.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
+       FROM $ttables INNER JOIN xbt_files_users h ON h.fid=x.fid WHERE h.uid=$id AND h.completed=1 ORDER BY h.mtime DESC $limit", true, $btit_settings['cache_duration']);
     else
-      $anq=get_result("SELECT f.filename, f.size, f.info_hash, h.active, h.agent, h.downloaded, h.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
-      FROM $ttables INNER JOIN {$TABLE_PREFIX}history h ON h.infohash=f.info_hash WHERE h.uid=$id AND h.date IS NOT NULL ORDER BY date DESC $limit",true,$btit_settings['cache_duration']);
+      $anq = get_result("SELECT f.filename, f.size, f.info_hash, h.active, h.agent, h.downloaded, h.uploaded, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished
+      FROM $ttables INNER JOIN {$TABLE_PREFIX}history h ON h.infohash=f.info_hash WHERE h.uid=$id AND h.date IS NOT NULL ORDER BY date DESC $limit", true, $btit_settings['cache_duration']);
 //    print("<div align=\"center\">$pagertop</div>");
     foreach ($anq as $ud_id=>$torlist)
         {
