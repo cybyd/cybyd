@@ -65,6 +65,10 @@ function show_wait()
 <script type="text/javascript" src="jscript/prototype.js"></script>
 <script type="text/javascript" src="jscript/scriptaculous.js?load=effects,builder"></script>
 <script type="text/javascript" src="jscript/lightbox.js"></script>
+<script type="text/javascript">
+_gaq.push(['_setCustomVar', 1, 'PageType', 'TorrentDetails', 3]);
+_gaq.push(['_setCustomVar', 2, 'UserName', '<tag:current_username />', 3]);
+</script>
 <link rel="stylesheet" href="jscript/lightbox.css" type="text/css" media="screen" />
     <div align="center">
       <table width="100%" class="lista" border="0" cellspacing="5" cellpadding="5">
@@ -85,7 +89,7 @@ function show_wait()
           <td class="lista" align="center">
               <form action="thanks.php" method="post" onsubmit="return false">
               <div id="thanks_div" name="thanks_div" style="display:block;"></div>
-              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />')" />
+              <input type="button" id="ty" disabled="disabled" value="<tag:language.THANKS_YOU />" onclick="thank_you('<tag:torrent.info_hash />');_gaq.push(['_trackEvent', 'thanks', '<tag:current_username />', '<tag:torrent.info_hash />'])" />
               </form>
               <script type="text/javascript">ShowThank('<tag:torrent.info_hash />');</script>
           </td>
@@ -93,7 +97,7 @@ function show_wait()
 <if:IMAGEIS>
         <tr>
           <td align="right" class="header" valign="top"><tag:language.IMAGE /></td>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="<tag:torrent.filename /> Poster" rel="lightbox"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.image />" title="<tag:torrent.filename /> Poster" rel="lightbox" onclick="_gaq.push(['_trackEvent', 'poster', 'main', '/poster/info_hash/<tag:torrent.info_hash />'])"><img src="<tag:uploaddir /><tag:torrent.image />" width=<tag:width />></a></td>
         </tr>
 </if:IMAGEIS>
         <tr>
@@ -110,13 +114,13 @@ function show_wait()
       <td class="lista">
       <table class="lista" border="0" cellspacing="0" cellpadding="0">
         <if:SCREENIS1>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="<tag:torrent.filename /> #1 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen1 />" title="<tag:torrent.filename /> #1 screenshot" rel="lightbox[screen]" onclick="_gaq.push(['_trackEvent', 'screenshot', '1', '/screenshot/info_hash/<tag:torrent.info_hash />'])"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen1 />"></a></td>
         </if:SCREENIS1>
         <if:SCREENIS2>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="<tag:torrent.filename /> #2 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen2 />" title="<tag:torrent.filename /> #2 screenshot" rel="lightbox[screen]" onclick="_gaq.push(['_trackEvent', 'screenshot', '2', '/screenshot/info_hash/<tag:torrent.info_hash />'])"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen2 />"></a></td>
         </if:SCREENIS2>
         <if:SCREENIS3>
-          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="<tag:torrent.filename /> #3 screenshot" rel="lightbox[screen]"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
+          <td class="lista" align="center"><a href="<tag:uploaddir /><tag:torrent.screen3 />" title="<tag:torrent.filename /> #3 screenshot" rel="lightbox[screen]" onclick="_gaq.push(['_trackEvent', 'screenshot', '3', '/screenshot/info_hash/<tag:torrent.info_hash />'])"><img src="thumbnail.php?size=150&path=<tag:uploaddir /><tag:torrent.screen3 />"></a></td>
         </if:SCREENIS3>
       </table>
       </td>
@@ -221,4 +225,3 @@ function show_wait()
     <div align="center">
       <tag:torrent_footer />
     </div>
-TeST
