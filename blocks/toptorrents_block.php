@@ -43,11 +43,11 @@ else
   block_begin(TOP_TORRENTS);
 
   if ($XBTT_USE)
-     $sql = "SELECT f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0  ORDER BY CAST(finished AS UNSIGNED)+ifnull(x.completed,0) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
+     $sql = "SELECT f.info_hash as hash, f.gold as gold, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0  ORDER BY CAST(finished AS UNSIGNED)+ifnull(x.completed,0) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
   else
-     $sql = "SELECT info_hash as hash, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY CAST(finished AS UNSIGNED) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
+     $sql = "SELECT info_hash as hash, f.gold as gold, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY CAST(finished AS UNSIGNED) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
 
-     $row = get_result($sql,true,$btit_settings['cache_duration']);
+     $row = get_result($sql, true, $btit_settings['cache_duration']);
   ?>
   <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
@@ -80,28 +80,47 @@ if (max(0,$CURUSER["WT"])>0)
 
      $data["filename"]=unesc($data["filename"]);
      $filename=cut_string($data["filename"],intval($btit_settings["cut_name"]));
+// Gold/Silver Torrent v 1.2 by Losmi / start
+     $silver_picture='';
+     $gold_picture ='';
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
+            foreach ($res as $key=>$value)
+            {
+                $silver_picture = $value["silver_picture"];
+                $gold_picture = $value["gold_picture"];
+            }
+        $gold ='';
+        if($data['gold'] == 1)
+        {
+        $gold = '<img src="gold/'.$silver_picture.'" alt="silver" align="right"/>';
+        }
+        if($data['gold'] == 2)
+        {
+        $gold = '<img src="gold/'.$gold_picture.'" alt="gold" align="right"/>';
+        }
+// Gold/Silver Torrent v 1.2 by Losmi / end
 
      if ($GLOBALS["usepopup"])
-        echo "\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"toptor\" href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=" . $data['hash'] . "');\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
+        echo "\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"toptor\" href=\"javascript:popdetails('index.php?page=torrent-details&amp;id=" . $data['hash'] . "');\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
      else
-        echo "\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"toptor\" href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
+        echo "\t<td width=\"55%\" class=\"lista\" style=\"padding-left:10px;\"><a class=\"toptor\" href=\"index.php?page=torrent-details&amp;id=" . $data['hash'] . "\" title=\"" . $language["VIEW_DETAILS"] . ": " . $data["filename"] . "\">" . $filename . "</a>".$gold.($data["external"]=="no"?"":" (<span style=\"color:red\">EXT</span>)")."</td>";
 
      echo "\t<td align=\"center\" class=\"lista\" width=\"45\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=torrents&amp;category=$data[catid]\">" . image_or_link( ($data["image"] == "" ? "" : "$STYLEPATH/images/categories/" . $data["image"]), "", $data["cname"]) . "</a></td>";
 
     //waitingtime
     // only if current user is limited by WT
-    if (max(0,$CURUSER["WT"])>0)
+    if (max(0, $CURUSER["WT"]) > 0)
         {
-          $wait=0;
-          if (max(0,$CURUSER['downloaded'])>0) $ratio=number_format($CURUSER['uploaded']/$CURUSER['downloaded'],2);
-          else $ratio=0.0;
+          $wait = 0;
+          if (max(0, $CURUSER['downloaded']) > 0) $ratio = number_format($CURUSER['uploaded'] / $CURUSER['downloaded'], 2);
+          else $ratio = 0.0;
           $vz = $data['added']; // sql_timestamp_to_unix_timestamp($added["data"]);
           $timer = floor((time() - $vz) / 3600);
-          if($ratio<1.0 && $CURUSER['uid']!=$data["uploader"]){
-              $wait=$CURUSER["WT"];
+          if($ratio < 1.0 && $CURUSER['uid'] != $data["uploader"]) {
+              $wait = $CURUSER["WT"];
           }
-          $wait -=$timer;
-          if ($wait<=0)$wait=0;
+          $wait -= $timer;
+          if ($wait<=0) $wait = 0;
 
            echo "\t<td align=\"center\" width=\"20\" class=\"lista\" style=\"text-align: center;\">".$wait." h</td>";
 
