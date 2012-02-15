@@ -553,6 +553,14 @@ function userlogin()
     {
         if($_SESSION["CURUSER_EXPIRE"]>time())
         {
+            if(!isset($STYLEPATH) || empty($STYLEPATH))
+                $STYLEPATH=((is_null($_SESSION["CURUSER"]["style_path"]))?$THIS_BASEPATH."/style/xbtit_default":$_SESSION["CURUSER"]["style_path"]);
+            if(!isset($STYLEURL) || empty($STYLEURL))
+                $STYLEURL=((is_null($_SESSION["CURUSER"]["style_url"]))?$BASEURL."/style/xbtit_default":$_SESSION["CURUSER"]["style_url"]);
+            if(!isset($STYLETYPE) || empty($STYLETYPE))
+                $STYLETYPE=((is_null($_SESSION["CURUSER"]["style_type"]))?3:(int)0+$_SESSION["CURUSER"]["style_type"]);
+            if(!isset($USERLANG) || empty($USERLANG))
+                $USERLANG=((is_null($_SESSION["CURUSER"]["language_path"]))?$THIS_BASEPATH."/language/english":$THIS_BASEPATH."/".$_SESSION["CURUSER"]["language_url"]);
             $GLOBALS["CURUSER"]=$_SESSION["CURUSER"];
             return;
         }

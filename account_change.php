@@ -60,22 +60,12 @@ if (!$CURUSER || $CURUSER["uid"]==1)
 if ($style!=0)
 {
     do_sqlquery("UPDATE {$TABLE_PREFIX}users SET style=$style WHERE id=".(int)$CURUSER["uid"],true);
-    if($btit_settings["cache_duration"]>0)
-    {
-        unset($_SESSION["CURUSER"]["style_url"],$_SESSION["CURUSER"]["style_path"]);
-    }
-    $_SESSION["CURUSER"]["style"]=$style;
    
 }
 if ($langue!=0)
 {
     do_sqlquery("UPDATE {$TABLE_PREFIX}users SET language=$langue WHERE id=".(int)$CURUSER["uid"],true);
-    if($btit_settings["cache_duration"]>0)
-    {
-        unset($_SESSION['CURUSER']['language_path']);
-    }
-    $_SESSION["CURUSER"]["language"]=$langue;
 }
-
+unset($_SESSION["CURUSER"], $_SESSION["CURUSER_EXPIRE"]);
 redirect($url);
 ?>

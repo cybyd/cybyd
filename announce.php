@@ -200,6 +200,7 @@ if (mysql_num_rows($res) > 0)
 
 
 // only for internal tracked torrent!
+// maybe ExT2
 $res_tor =mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
 if (mysql_num_rows($res_tor)==0)
    show_error("Torrent is not authorized for use on this tracker.");
