@@ -63,6 +63,10 @@ function convert() {
       <td align="left" class="header"><tag:language.USER_LEVEL />:</td>
       <td align="left" class="lista"><tag:rank_combo /></td>
     </tr>
+	<tr>
+          <td align="left" class="header"><tag:language.CUSTOM_TITLE />:</td>
+          <td align="left" class="lista"><input type="text" size="40" name="custom_title" maxlength="50" value="<tag:profile.custom_title />"/></td>
+        </tr>
     <tr>
       <td align="left" class="header"><tag:language.USER_LANGUE />:</td>
       <td align="left" class="lista"><tag:language_combo /></td>

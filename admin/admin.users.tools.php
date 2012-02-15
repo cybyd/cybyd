@@ -46,9 +46,9 @@ if ($uid==$CURUSER['uid'] || $uid==1) {
 
 # get uid info
 if ($XBTT_USE)
-    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1',true);
+    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, (u.downloaded+x.downloaded) as downloaded, (u.uploaded+x.uploaded) as uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level LEFT JOIN xbt_users x ON x.uid=u.id WHERE u.id='.$uid.' LIMIT 1', true);
 else
-    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1',true);
+    $curu=get_result('SELECT u.username, u.cip, ul.level, ul.id_level as base_level, u.email, u.avatar, u.joined, u.lastconnect, u.id_level, u.language, u.style, u.flag, u.time_offset, u.topicsperpage, u.postsperpage, u.torrentsperpage, u.downloaded, u.uploaded, u.smf_fid, u.ipb_fid FROM '.$TABLE_PREFIX.'users u INNER JOIN '.$TABLE_PREFIX.'users_level ul ON ul.id=u.id_level WHERE u.id='.$uid.' LIMIT 1', true);
 
 # test for bad id
 if (!isset($curu[0]))
@@ -179,6 +179,9 @@ switch ($action) {
         $opts['id']='id';
         $opts['value']='level';
         $opts['default']=$curu['id_level'];
+// Custom title - start
+	$profile['custom_title']=unesc($curu['custom_title']);
+// Custom title - end
         # rank list
         $ranks=rank_list();
         $admintpl->set('rank_combo',get_combo($ranks, $opts));
@@ -264,6 +267,9 @@ switch ($action) {
             $pass=$_POST['pass'];
             $chpass=(isset($_POST['chpass']) && $pass!='');
             # new level of the user
+// Custom title - start
+	    $custom_title=unesc($_POST["custom_title"]);
+// Custom title - end
             $rlev=do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":(($FORUMLINK=='ipb')?", `ipb_group_mirror`":""))." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
             $reslev=mysql_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
@@ -315,6 +321,10 @@ switch ($action) {
             }
             if ($time != $curu['time_offset'])
                 $set[]='time_offset='.$time;
+// Custom title - start
+	if ($custom_title != $curu['custom_title'])
+                $set[]='custom_title='.sqlesc(htmlspecialchars($custom_title));
+// Custom title - end
             if ($email != $curu['email'])
             {
                 $set[]='email='.sqlesc($email);

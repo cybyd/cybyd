@@ -56,6 +56,14 @@
 
   <tr>
 
+    <td class="header"><tag:language.CUSTOM_TITLE /></td>
+
+    <td class="lista" colspan="2"><tag:custom_title /></td>
+
+  </tr>
+
+  <tr>
+
     <td class="header"><tag:language.USER_JOINED /></td>
 
     <td class="lista" colspan="<tag:userdetail_colspan />"><tag:userdetail_joined /></td>

@@ -52,7 +52,7 @@ else
   else
      $sql = "SELECT info_hash as hash, f.gold as gold, seeds, leechers, dlbytes AS dwned, format(finished,0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE leechers + seeds > 0 ORDER BY data DESC LIMIT " . $GLOBALS["block_last10limit"];
 
-     $row = get_result($sql,true,$btit_settings['cache_duration']);
+     $row = get_result($sql, true, $btit_settings['cache_duration']);
   ?>
   <tr>
       <td align="center" width="20" class="header">&nbsp;<?php echo $language["DOWN"]; ?>&nbsp;</td>
@@ -86,7 +86,7 @@ if (max(0,$CURUSER["WT"])>0)
 // Gold/Silver Torrent v 1.2 by Losmi / start
      $silver_picture='';
      $gold_picture ='';
-     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
+     $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true, $btit_settings['cache_duration']);
             foreach ($res as $key=>$value)
             {
                 $silver_picture = $value["silver_picture"];

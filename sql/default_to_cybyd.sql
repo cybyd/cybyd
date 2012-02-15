@@ -42,6 +42,11 @@ INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid`
 INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid` , `status` , `title` , `cache` , `minclassview`, `maxclassview` ) VALUES ( NULL , 'login', 'c', '1', '1', 'BLOCK_LOGIN', 'no', '1', '1' );
 -- login box by cybernet2u / end
 
+-- Custom Title - start
+ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 51 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'User' COMMENT 'Prefered to be called' AFTER `id_level`;
+ALTER TABLE `{$db_prefix}users` ADD INDEX ( `custom_title` );
+-- Custom Title - end
+
 
 -- Torrent's Thanks (AJAX version) / start
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (

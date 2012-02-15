@@ -515,4 +515,7 @@ $language["GOLD_LEVEL"]="Who can add gold/silver torrents";
 // Staff Page - Petr1fied / start / http://www.btiteam.org/smf/index.php?topic=19541.msg109523#msg109523
 $language["STAFF"] = "Staff";
 // Staff Page - Petr1fied / end
+// Custom title - start
+$language["CUSTOM_TITLE"] = "Custom title";
+// Custom title - end
 ?>
