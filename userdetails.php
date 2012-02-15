@@ -177,8 +177,8 @@ if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
 }
 elseif (substr($GLOBALS["FORUMLINK"],0,3)=="smf")
 {
-   $forum=get_result("SELECT `date".(($GLOBALS["FORUMLINK"]=="smf")?"R":"_r")."egistered`, `posts` FROM `{$db_prefix}members` WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"],true,$btit_settings['cache_duration']);
-   $forum=$forum[0];
+   $forum = get_result("SELECT `date".(($GLOBALS["FORUMLINK"]=="smf")?"R":"_r")."egistered`, `posts` FROM `{$db_prefix}members` WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"], true, $btit_settings['cache_duration']);
+   $forum = $forum[0];
    $memberdays = max(1, round( ( time() - (($GLOBALS["FORUMLINK"]=="smf")?$forum["dateRegistered"]:$forum["date_registered"]) ) / 86400 ));
    $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
@@ -186,23 +186,23 @@ elseif (substr($GLOBALS["FORUMLINK"],0,3)=="smf")
 }
 elseif ($GLOBALS["FORUMLINK"]=="ipb")
 {
-   $forum=get_result("SELECT `joined`, `posts` FROM `{$ipb_prefix}members` WHERE `member_id`=".$row["ipb_fid"],true,$btit_settings['cache_duration']);
-   $forum=$forum[0];
+   $forum = get_result("SELECT `joined`, `posts` FROM `{$ipb_prefix}members` WHERE `member_id`=".$row["ipb_fid"], true, $btit_settings['cache_duration']);
+   $forum = $forum[0];
    $memberdays = max(1, round( ( time() - $forum["joined"] ) / 86400 ));
    $posts_per_day = number_format(round($forum["posts"] / $memberdays,2),2);
    $userdetailtpl-> set("userdetail_forum_posts", $forum["posts"] . " &nbsp; [" . sprintf($language["POSTS_PER_DAY"], $posts_per_day) . "]");
    unset($forum);
 }
 
-$resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC",true,$btit_settings['cache_duration']);
-$numtorrent=$resuploaded[0]['tf'];
+$resuploaded = get_result("SELECT count(*) as tf FROM {$TABLE_PREFIX}files f WHERE uploader=$id AND f.anonymous = \"false\" ORDER BY data DESC", true, $btit_settings['cache_duration']);
+$numtorrent = $resuploaded[0]['tf'];
 unset($resuploaded);
 $userdetailtpl->set("pagertop","");
 if ($numtorrent>0)
    {
    list($pagertop, $pagerbottom, $limit) = pager(($utorrents==0?15:$utorrents), $numtorrent, $_SERVER["PHP_SELF"]."?page=userdetails&amp;id=$id&amp;pagename=uploaded&amp;",array("pagename" => "uploaded"));
    $userdetailtpl->set("pagertop",$pagertop);
-   $resuploaded = get_result("SELECT f.info_hash, f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished FROM $ttables WHERE uploader=$id AND anonymous = \"false\" ORDER BY data DESC $limit",true,$btit_settings['cache_duration']);
+   $resuploaded = get_result("SELECT f.info_hash, f.filename, UNIX_TIMESTAMP(f.data) as added, f.size, $tseeds as seeds, $tleechs as leechers, $tcompletes as finished FROM $ttables WHERE uploader=$id AND anonymous = \"false\" ORDER BY data DESC $limit", true, $btit_settings['cache_duration']);
 }
 
 
@@ -259,9 +259,9 @@ if ($XBTT_USE)
 else
 {
   if ($PRIVATE_ANNOUNCE)
-      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.pid='".$row["pid"]."'",true,$btit_settings['cache_duration']);
+      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.pid='".$row["pid"]."'", true, $btit_settings['cache_duration']);
   else
-      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.ip='".($row["cip"])."'",true,$btit_settings['cache_duration']);
+      $anq=get_result("SELECT count(*) as tp FROM {$TABLE_PREFIX}peers p INNER JOIN {$TABLE_PREFIX}files f ON f.info_hash = p.infohash WHERE p.ip='".($row["cip"])."'", true, $btit_settings['cache_duration']);
   }
 
 

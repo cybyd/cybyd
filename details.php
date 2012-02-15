@@ -62,7 +62,7 @@ if (isset($_GET["vote"]) && $_GET["vote"]==$language["VOTE"])
         exit();
    }
    else {
-      do_sqlquery("INSERT INTO {$TABLE_PREFIX}ratings SET infohash='$id',userid=$CURUSER[uid],rating=".intval($_GET["rating"]).",added='".time()."'",true);
+      do_sqlquery("INSERT INTO {$TABLE_PREFIX}ratings SET infohash='$id',userid=$CURUSER[uid],rating=".intval($_GET["rating"]).",added='".time()."'", true);
       redirect("index.php?page=torrent-details&id=$id");
       exit();
    }
@@ -174,7 +174,7 @@ if (isset($row["cat_name"]))
 else
     $row["cat_name"]=unesc($language["NONE"]);
 
-$vres = get_result("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'",true, $btit_settings['cache_duration']);
+$vres = get_result("SELECT sum(rating) as totrate, count(*) as votes FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id'", true, $btit_settings['cache_duration']);
 $vrow = $vres[0];
 if ($vrow && $vrow["votes"]>=1)
    {
@@ -207,7 +207,7 @@ unset($vres);
 if ($row["username"]!=$CURUSER["username"] && $CURUSER["uid"]>1)
    {
    $ratings = array(5 => $language["FIVE_STAR"] ,4 =>$language["FOUR_STAR"] ,3 =>$language["THREE_STAR"] ,2 =>$language["TWO_STAR"] ,1 =>$language["ONE_STAR"] );
-   $xres = do_sqlquery("SELECT rating, added FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"],true);
+   $xres = do_sqlquery("SELECT rating, added FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"], true);
    $xrow = @mysql_fetch_array($xres);
    if ($xrow)
        $s = $totrate. " (".$language["YOU_RATE"]." \"" . $ratings[$xrow["rating"]] . "\")";
