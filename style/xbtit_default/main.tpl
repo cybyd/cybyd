@@ -3,9 +3,11 @@
 <head>
   <title><tag:main_title /></title>
   <meta http-equiv="content-type" content="text/html; charset=<tag:main_charset />" />
+  <meta name="author" content="cybernet2u" />
+  <meta name="revised" content="cybyd, 1.1" />
   <link rel="stylesheet" href="<tag:main_css />" type="text/css" />
   <tag:more_css />
-    <tag:main_jscript />
+  <tag:main_jscript />
 
 <if:IS_DISPLAYED_1>
 <!--[if lte IE 7]>
@@ -14,6 +16,20 @@
 </style>
 <![endif]-->
 </if:IS_DISPLAYED_1>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29230374-1']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_trackPageLoadTime']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 <body>
 <div id="main">

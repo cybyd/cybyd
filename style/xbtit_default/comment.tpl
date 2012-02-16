@@ -1,3 +1,7 @@
+<script type="text/javascript">
+_gaq.push(['_setCustomVar', 1, 'PageType', 'TorrentComment', 3]);
+_gaq.push(['_setCustomVar', 2, 'UserName', '<tag:current_username />', 3]);
+</script>
 <if:PREVIEW>
 <div width="100%" align="center" class="lista">
 <tag:comment_preview />
