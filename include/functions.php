@@ -307,7 +307,6 @@ function print_designer() {
 }
 function print_top()
 {
-  global $TABLE_PREFIX;
   return '<a href=\'#\'>Back To Top</a>';
 }
 
