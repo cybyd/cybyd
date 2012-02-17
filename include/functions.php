@@ -613,7 +613,7 @@ function userlogin()
 
     if($id>1)
     {
-        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = $id LIMIT 1;", true);
+        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.seedbonus, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = $id LIMIT 1;", true);
         $row = mysql_fetch_assoc($res);
 
         if($btit_settings["secsui_cookie_type"]==1)
@@ -707,7 +707,7 @@ function userlogin()
     }
     if($id==1)
     {
-        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;", true);
+        $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.seedbonus, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;", true);
         $row = mysql_fetch_assoc($res);
     }
 

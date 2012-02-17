@@ -47,7 +47,28 @@ ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 51 ) CHARACTER SET u
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `custom_title` );
 -- Custom Title - end
 
+-- Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+INSERT INTO `{$db_prefix}modules` ( id , name , activated , type , changed , created ) VALUES (NULL , 'seedbonus', 'yes', 'misc', NOW(), NOW());
+INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
+INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
+ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
 
+CREATE TABLE `{$db_prefix}bonus` (
+  `id` int(5) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL default '',
+  `points` decimal(4,1) NOT NULL default '000.0',
+  `traffic` bigint(20) unsigned NOT NULL default '0',
+  `gb` int(9) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
+
+INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES (NULL, '1', 030.0, 1073741824, 1),
+(NULL, '2', 050.0, 2147483648, 2),
+(NULL, '3', 100.0, 5368709120, 5);
+
+-- Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 -- Torrent's Thanks (AJAX version) / start
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (
   `infohash` char(40) NOT NULL DEFAULT '0',

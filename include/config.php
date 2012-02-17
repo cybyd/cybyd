@@ -256,6 +256,14 @@ $GLOBALS['ajax_poller']=true;
 $GLOBALS['ipcheck_poller']=false;
 // number of votes per page listed in admincp
 $votesppage = 25;
+
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+$GLOBALS["bonus"] = $btit_settings["bonus"];
+$GLOBALS["price_vip"] = $btit_settings["price_vip"];
+$GLOBALS["price_ct"] = $btit_settings["price_ct"];
+$GLOBALS["price_name"] = $btit_settings["price_name"];
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
+
 // Torrent Image Upload by Real_ptr / start
 $GLOBALS["imageon"] = $btit_settings["imageon"];
 $GLOBALS["screenon"] = $btit_settings["screenon"];

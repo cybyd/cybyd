@@ -32,7 +32,30 @@
 
 function do_sanity() {
 
-         global $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;
+         global $clean_interval, $XBTT_USE, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;
+
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+if ($XBTT_USE) {
+ $res = do_sqlquery("SELECT uid FROM xbt_files_users as u INNER JOIN xbt_files as x ON u.fid=x.fid WHERE u.left = '0' AND x.flags='0' AND u.active='1'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr["uid"];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE id = '$x'");
+       }
+   } }else
+   {
+ $res = do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}peers WHERE status = 'seeder'");
+   if (mysql_num_rows($res) > 0)
+   {
+       while ($arr = mysql_fetch_assoc($res))
+       {
+       $x=$arr['pid'];
+       quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
+       }
+   } }
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
