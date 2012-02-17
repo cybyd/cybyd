@@ -290,9 +290,9 @@ function print_debug($level=3, $key=' - ') {
 }
 
 function print_version() {
-  global $tracker_version;
+  global $tracker_version, $CyByD_v;
 
-  return '[ <a href="http://sourceforge.net/projects/cybyd/" target="_blank">CyByD`</a> MoDDed by <b>cybernet2u</b> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
+  return '[ <a href="http://sourceforge.net/projects/cybyd/" target="_blank">CyByD`</a> '.$CyByD_v.' MoDDed by <b>cybernet2u</b> / <b><a href="http://xList.ro" target="_blank">xList.ro</b></a> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
 }
 
 function print_designer() {

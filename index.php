@@ -165,9 +165,9 @@ $tpl->set("more_css",$morecss);
 switch ($pageID) {
 
     case 'modules':
-        $module_name=htmlspecialchars($_GET["module"]);
-        $modules=get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1", true, $btit_settings["cache_duration"]);
-        if (count($modules)<1) // MODULE NOT SET
+        $module_name = htmlspecialchars($_GET["module"]);
+        $modules = get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1", true, $btit_settings["cache_duration"]);
+        if (count($modules) < 1) // MODULE NOT SET
            stderr($language["ERROR"],$language["MODULE_NOT_PRESENT"]);
 
         if ($modules[0]["activated"]=="no") // MODULE SET BUT NOT ACTIVED

@@ -5,8 +5,8 @@ if (!defined("IN_BTIT"))
       
 require(load_language("lang_staff.php"));
 
-$stafftpl= new bTemplate();
-$stafftpl-> set("language",$language);
+$stafftpl = new bTemplate();
+$stafftpl->set("language", $language);
 
 if ($CURUSER["view_users"]=="no")
 {
