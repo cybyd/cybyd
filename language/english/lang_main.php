@@ -518,4 +518,19 @@ $language["STAFF"] = "Staff";
 // Custom title - start
 $language["CUSTOM_TITLE"] = "Custom title";
 // Custom title - end
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+$language["BONUS_INFO1"]="Here you can exchange your Seeder-Bonus (current ";
+$language["BONUS_INFO2"]="(If the buttons are deactivated, you do not have enough to trade!)";
+$language["BONUS_INFO3"]="What do I get points for?<br>For every hour the system registers you as seeder you receive ";
+$language["BONUS_INFO4"]=" points per torrent.";
+$language["WHAT_ABOUT"]="What is this about?";
+$language["POINTS"]="Points";
+$language["EXCHANGE"]="Exchange";
+$language["GB_UPLOAD"]=" GB Upload";
+$language["CHANGE_CUSTOM_TITLE"]="Change custom title (price - ";
+$language["NO_CUSTOM_TITLE"]="none";
+$language["UP_TO_VIP"]="Upgrade rank to VIP";
+$language["NEED_MORE_POINTS"]="[need more points]";
+$language["CHANGE_USERNAME"]="Change username (price - ";
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 ?>

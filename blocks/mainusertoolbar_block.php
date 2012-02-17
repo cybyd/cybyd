@@ -46,6 +46,9 @@ print("<td style=\"text-align:center;\" align=\"center\">".$language["USER_LEVEL
 print("<td class=\"green\" align=\"center\">&uarr;&nbsp;".makesize($CURUSER['uploaded']));
 print("</td><td class=\"red\" align=\"center\">&darr;&nbsp;".makesize($CURUSER['downloaded']));
 print("</td><td class=\"yellow\" align=\"center\">(SR ".($CURUSER['downloaded']>0?number_format($CURUSER['uploaded']/$CURUSER['downloaded'],2):"---").")</td>\n");
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+print("<td class=\"green\" align=\"center\"><a href=index.php?page=modules&module=seedbonus>(BON ".($CURUSER['seedbonus']>0?number_format($CURUSER['seedbonus'],2):"---").")</a></td>\n");
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 if ($CURUSER["admin_access"]=="yes")
    print("\n<td align=\"center\" style=\"text-align:center;\"><a class=\"mainuser\" href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."\">".$language["MNU_ADMINCP"]."</a></td>\n");
 

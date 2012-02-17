@@ -34,4 +34,7 @@ $language['PM']                 = 'PM';
 $language['BACK']               = 'Back';
 $language['NO_HISTORY']         = 'No history to display...';
 $language['GUEST_DETAILS']      = 'You can\'t view the details for the Guest account!';
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+$language["POINTS"]             = "Points";
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 ?>

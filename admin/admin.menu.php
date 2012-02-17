@@ -76,9 +76,14 @@ else
                           4=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=security_suite" ,
                     "description"=>$language["ACP_SECSUI_SET"]),
-					      5=>array(
+			  5=>array(
                     "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=php_log" ,
-                    "description"=>$language["LOGS_PHP"])
+                    "description"=>$language["LOGS_PHP"]),
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+                          6=>array(
+                    "url"=>"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=seedbonus" ,
+                    "description"=>$language["ACP_SEEDBONUS"])
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
                                  )),
     1=>array(
             "title"=>$language["ACP_FRONTEND"],

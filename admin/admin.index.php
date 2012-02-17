@@ -214,6 +214,13 @@ switch ($do)
       $tpl->set("main_content",set_block($language["LOGS_PHP"],"center",$admintpl->fetch(load_template("admin.php_errors_log.tpl"))));
       break;
 
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+    case 'seedbonus':
+      include("$ADMIN_PATH/admin.bonus.php");
+      $tpl->set("main_content",set_block($language["ACP_SEEDBONUS"],"center",$admintpl->fetch(load_template("admin.bonus.tpl"))));
+      break;
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
+
     case 'sanity':
       require_once("$THIS_BASEPATH/include/sanity.php");
 

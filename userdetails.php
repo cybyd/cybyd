@@ -79,7 +79,7 @@ else
 
 
 if ($id > 1) {
-   $res = get_result("SELECT u.avatar, u.email, u.cip, u.username, u.custom_title, $udownloaded as downloaded, $uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid, u.ipb_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
+   $res = get_result("SELECT u.avatar, u.email, u.cip, u.username, u.custom_title, u.seedbonus, $udownloaded as downloaded, $uuploaded as uploaded,UNIX_TIMESTAMP(u.joined) as joined,UNIX_TIMESTAMP(u.lastconnect) as lastconnect,ul.level, u.flag, c.name, c.flagpic, u.pid, u.time_offset, u.smf_fid, u.ipb_fid FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id=u.id_level LEFT JOIN {$TABLE_PREFIX}countries c ON u.flag=c.id WHERE u.id=$id", true, $btit_settings['cache_duration']);
    $num = count($res);
    if ($num==0)
       {
@@ -163,6 +163,9 @@ $userdetailtpl -> set("userdetail_local_time", (date("d/m/Y H:i:s",time()-$offse
 $userdetailtpl -> set("userdetail_downloaded", (makesize($row["downloaded"])));
 $userdetailtpl -> set("userdetail_uploaded", (makesize($row["uploaded"])));
 $userdetailtpl -> set("userdetail_ratio", ($ratio));
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+$userdetailtpl -> set("userdetail_bonus", (number_format($row["seedbonus"],2)));
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 $userdetailtpl-> set("userdetail_forum_internal", ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' || substr($GLOBALS["FORUMLINK"],0,3) == 'smf' || $GLOBALS["FORUMLINK"] == 'ipb'), TRUE);
 
 // Only show if forum is internal

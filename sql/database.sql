@@ -665,46 +665,48 @@ CREATE TABLE `{$db_prefix}logs` (
 -- Table structure for table `{$db_prefix}messages`
 -- 
 
-CREATE TABLE `{$db_prefix}messages` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `sender` int(10) unsigned NOT NULL default '0',
-  `receiver` int(10) unsigned NOT NULL default '0',
-  `added` int(10) default NULL,
-  `subject` varchar(50) NOT NULL default '',
+CREATE TABLE IF NOT EXISTS `{$db_prefix}messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sender` int(10) unsigned NOT NULL DEFAULT '0',
+  `receiver` int(10) unsigned NOT NULL DEFAULT '0',
+  `added` int(10) DEFAULT NULL,
+  `subject` varchar(50) NOT NULL DEFAULT '',
   `msg` text,
-  `readed` enum('yes','no') NOT NULL default 'no',
+  `readed` enum('yes','no') NOT NULL DEFAULT 'no',
   `deletedBySender` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}messages`
--- 
+--
 
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `{$db_prefix}modules`
--- 
+--
 
-CREATE TABLE `{$db_prefix}modules` (
-  `id` mediumint(3) NOT NULL auto_increment,
-  `name` varchar(40) NOT NULL default '',
-  `activated` enum('yes','no') NOT NULL default 'yes',
-  `type` enum('staff','misc','torrent','style') NOT NULL default 'misc',
-  `changed` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created` datetime NOT NULL default '0000-00-00 00:00:00',
-  PRIMARY KEY  (`id`),
+CREATE TABLE IF NOT EXISTS `{$db_prefix}modules` (
+  `id` mediumint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL DEFAULT '',
+  `activated` enum('yes','no') NOT NULL DEFAULT 'yes',
+  `type` enum('staff','misc','torrent','style') NOT NULL DEFAULT 'misc',
+  `changed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 
+--
 -- Dumping data for table `{$db_prefix}modules`
--- 
+--
 
+INSERT INTO `{$db_prefix}modules` (`id`, `name`, `activated`, `type`, `changed`, `created`) VALUES
+(NULL, 'seedbonus', 'yes', 'misc', NOW(), NOW());
 
 -- --------------------------------------------------------
 

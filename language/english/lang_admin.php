@@ -399,5 +399,15 @@ $language["FILE_SIZELIMIT"]="Image size limit";
 // Gold/Silver Torrent v 1.2 by Losmi / start
 $language["ACP_GOLD"]="Gold torrents settings";
 // Gold/Silver Torrent v 1.2 by Losmi / end
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+$language["ACP_SEEDBONUS"]="SeedBonus Settings";
+$language["BONUS"]="Points per torrent in hour";
+$language["PRICE_VIP"]="Price for rank VIP";
+$language["PRICE_CT"]="Price for CustomTitle";
+$language["PRICE_NAME"]="Price for change username";
+$language["PRICE_GB"]="Price for GB";
+$language["POINTS"]="Points";
+$language["SEEDBONUS_UPDATED"]="SeedBonus settings updated";
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 
 ?>
