@@ -1,6 +1,12 @@
 <?php
-/////////////////////////////////////////////////////////////////////////////////////
-// xbtit - Bittorrent tracker/frontend
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. xDNS
+// http://xDNS.ro/
+// http://xLIST.ro/
+// Modified By cybernet2u
+
 //
 // Copyright (C) 2004 - 2012  Btiteam
 //

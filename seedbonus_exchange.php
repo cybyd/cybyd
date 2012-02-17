@@ -1,4 +1,12 @@
 <?php
+
+// CyBerFuN.ro & xList.ro
+
+// xList .::. xDNS
+// http://xDNS.ro/
+// http://xLIST.ro/
+// Modified By cybernet2u
+
 require_once ("include/functions.php");
 require_once ("include/config.php");
 dbconn();

@@ -1,5 +1,12 @@
 <?php
 
+// CyBerFuN.ro & xList.ro
+
+// xList .::. xDNS
+// http://xDNS.ro/
+// http://xLIST.ro/
+// Modified By cybernet2u
+
 if (isset($_POST["infohash"]))
 {
 
