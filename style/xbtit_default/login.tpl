@@ -23,33 +23,30 @@ function form_control()
   }
 </script>
 <form method="post" onsubmit="return form_control()" action="<tag:login.action />">
-  <table align="center" class="lista" border="0" cellpadding="4" cellspacing="1">
+  <table align="center" border="0" cellpadding="4" cellspacing="1">
     <if:FALSE_USER>
     <tr>
-      <td align="center" class="lista" colspan="2"><span style="color:#FF0000;"><tag:login_username_incorrect /></span></td>
+      <td align="center" colspan="2"><span style="color:#FF0000;"><tag:login_username_incorrect /></span></td>
     </tr>
     </if:FALSE_USER>
     <if:FALSE_PASSWORD>
     <tr>
-      <td align="center" class="lista" colspan="2"><span style="color:#FF0000;"><tag:login_password_incorrect /></span></td>
+      <td align="center" colspan="2"><span style="color:#FF0000;"><tag:login_password_incorrect /></span></td>
     </tr>
     </if:FALSE_PASSWORD>
     <tr>
-      <td align="right" class="header"><tag:language.USER_NAME />:</td>
-      <td class="lista"><input type="text" size="40" name="uid" id="want_username" value="<tag:login.username />" maxlength="40" /></td>
+      <td align="right"><tag:language.USER_NAME />:</td>
+      <td><input type="text" size="40" name="uid" id="want_username" value="<tag:login.username />" maxlength="40" /></td>
     </tr>
     <tr>
-      <td align="right" class="header"><tag:language.USER_PWD />:</td>
-      <td class="lista"><input type="password" size="40" name="pwd" id="want_password" maxlength="40" /></td>
+      <td align="right"><tag:language.USER_PWD />:</td>
+      <td><input type="password" size="40" name="pwd" id="want_password" maxlength="40" /></td>
     </tr>
     <tr>
       <td colspan="2" align="center"><input type="submit" class="btn" value="<tag:language.FRM_CONFIRM />" /></td>
     </tr>
     <tr>
-      <td colspan="2" class="blocklist" align="center"><tag:language.NEED_COOKIES /></td>
+      <td colspan="2" align="center"><tag:language.NEED_COOKIES /></td>
     </tr>
   </table>
 </form>
-<div align="center" class="lista">
-  <a href="<tag:login.create />"><tag:language.ACCOUNT_CREATE /></a>&nbsp;&nbsp;&nbsp;<a href="<tag:login.recover />"><tag:language.RECOVER_PWD /></a>
-</div>

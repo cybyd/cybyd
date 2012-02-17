@@ -6,7 +6,7 @@
 // http://tracker.cyberfun.ro/
 // http://www.cyberfun.ro/
 // http://xlist.ro/
-// Modified By CyBerNe7
+// Modified By cybernet2u
 
 require_once(load_language("lang_account.php"));
 global $btit_settings;
@@ -59,8 +59,5 @@ function form_control()
     </tr>
   </table>
 </form>
-<div align="center" class="lista">
-
-  <a href="index.php?page=signup"><?php echo $language["ACCOUNT_CREATE"]?></a>&nbsp;&nbsp;&nbsp;<a href="index.php?page=recover"><?php echo $language["RECOVER_PWD"]?></a>
-</div></td>
+</td>
 </table>
