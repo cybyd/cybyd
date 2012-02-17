@@ -122,11 +122,8 @@ _gaq.push(['_setCustomVar', 2, 'UserName', '<tag:current_username />', 3]);
 
   </tr>
   <tr>
-
     <td class="header"><tag:language.POINTS /></td>
-
     <td class="lista" colspan="2"><tag:userdetail_bonus /></td>
-
   </tr>
 
   <if:userdetail_forum_internal>

@@ -166,7 +166,7 @@ switch ($pageID) {
 
     case 'modules':
         $module_name=htmlspecialchars($_GET["module"]);
-        $modules=get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1",true,$btit_settings["cache_duration"]);
+        $modules=get_result("SELECT * FROM {$TABLE_PREFIX}modules WHERE name=".sqlesc($module_name)." LIMIT 1", true, $btit_settings["cache_duration"]);
         if (count($modules)<1) // MODULE NOT SET
            stderr($language["ERROR"],$language["MODULE_NOT_PRESENT"]);
 
@@ -180,7 +180,7 @@ switch ($pageID) {
         // ALL OK, LET GO :)
         require("$THIS_BASEPATH/modules/$module_name/index.php");
         $tpl->set("main_content",set_block(ucfirst($module_name),"center",$module_out));
-        $tpl->set("main_title","Index->Modules->".ucfirst($module_name));
+        $tpl->set("main_title",$btit_settings["name"]." .::. ".ucfirst($module_name));
         break;
 
     case 'admin':
@@ -191,7 +191,7 @@ switch ($pageID) {
                 
     case 'forum':
         require("$THIS_BASEPATH/forum/forum.index.php");
-        $tpl->set("main_title","Index->Forum");
+        $tpl->set("main_title",$btit_settings["name"]." .::. "."Forum");
         break;
 
     case 'torrents':
