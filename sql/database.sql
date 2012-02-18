@@ -47,32 +47,34 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}blocks` (
   `minclassview` int(11) NOT NULL DEFAULT '0',
   `maxclassview` int(11) NOT NULL DEFAULT '8',
   PRIMARY KEY (`blockid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `{$db_prefix}blocks`
 --
 
 INSERT INTO `{$db_prefix}blocks` (`blockid`, `content`, `position`, `sortid`, `status`, `title`, `cache`, `minclassview`, `maxclassview`) VALUES
-(1, 'menu', 'r', 5, 1, 'BLOCK_MENU', 'no', 3, 8),
-(2, 'clock', 'r', 2, 1, 'BLOCK_CLOCK', 'no', 3, 8),
-(3, 'forum', 'l', 2, 1, 'BLOCK_FORUM', 'no', 3, 8),
+(1, 'menu', 'r', 5, 0, 'BLOCK_MENU', 'no', 3, 8),
+(2, 'clock', 'r', 2, 0, 'BLOCK_CLOCK', 'no', 3, 8),
+(3, 'forum', 'r', 3, 1, 'BLOCK_FORUM', 'no', 3, 8),
 (4, 'lastmember', 'l', 1, 1, 'BLOCK_LASTMEMBER', 'no', 3, 8),
-(6, 'trackerinfo', 'l', 6, 1, 'BLOCK_INFO', 'no', 3, 8),
-(7, 'user', 'r', 4, 1, 'BLOCK_USER', 'no', 3, 8),
-(8, 'online', 'b', 0, 1, 'BLOCK_ONLINE', 'no', 3, 8),
-(10, 'toptorrents', 'c', 5, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
-(11, 'lasttorrents', 'c', 4, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
-(12, 'news', 'c', 1, 1, 'BLOCK_NEWS', 'no', 1, 8),
-(13, 'mainmenu', 'e', 1, 1, 'BLOCK_MENU', 'no', 1, 8),
+(6, 'trackerinfo', 'l', 3, 0, 'BLOCK_INFO', 'no', 3, 8),
+(7, 'user', 'r', 4, 0, 'BLOCK_USER', 'no', 3, 8),
+(8, 'online', 'b', 1, 0, 'BLOCK_ONLINE', 'no', 3, 8),
+(10, 'toptorrents', 'c', 6, 1, 'BLOCK_TOPTORRENTS', 'no', 3, 8),
+(11, 'lasttorrents', 'c', 5, 1, 'BLOCK_LASTTORRENTS', 'no', 3, 8),
+(12, 'news', 'c', 2, 0, 'BLOCK_NEWS', 'no', 3, 8),
+(13, 'mainmenu', 'e', 1, 0, 'BLOCK_MENU', 'no', 1, 8),
 (14, 'maintrackertoolbar', 't', 2, 1, 'BLOCK_MAINTRACKERTOOLBAR', 'no', 3, 8),
-(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 1, 8),
-(16, 'serverload', 'c', 8, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
-(17, 'poller', 'l', 3, 1, 'BLOCK_POLL', 'no', 3, 8),
-(18, 'seedwanted', 'c', 3, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
+(15, 'mainusertoolbar', 't', 2, 1, 'BLOCK_MAINUSERTOOLBAR', 'no', 3, 8),
+(16, 'serverload', 'c', 7, 0, 'BLOCK_SERVERLOAD', 'no', 8, 8),
+(17, 'poller', 'l', 2, 1, 'BLOCK_POLL', 'no', 3, 8),
+(18, 'seedwanted', 'c', 4, 1, 'BLOCK_SEEDWANTED', 'no', 3, 8),
 (19, 'paypal', 'r', 1, 1, 'BLOCK_PAYPAL', 'no', 3, 8),
-(20, 'ajax_shoutbox', 'c', 2, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
-(21, 'dropdownmenu', 'd', 1, 1, 'BLOCK_DDMENU', 'no', 1, 8);
+(20, 'ajax_shoutbox', 'c', 3, 1, 'BLOCK_SHOUTBOX', 'no', 3, 8),
+(21, 'dropdownmenu', 'd', 1, 0, 'BLOCK_DDMENU', 'no', 1, 8),
+(22, 'header', 't', 1, 1, 'BLOCK_HEADER', 'no', 1, 8),
+(24, 'login', 'c', 1, 1, 'BLOCK_LOGIN', 'no', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -87,16 +89,16 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}bonus` (
   `traffic` bigint(20) unsigned NOT NULL DEFAULT '0',
   `gb` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `{$db_prefix}bonus`
 --
 
 INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
-(1, '1', 30.0, 1073741824, 1),
-(2, '2', 50.0, 2147483648, 2),
-(3, '3', 100.0, 5368709120, 5);
+(NULL, '1', 30.0, 1073741824, 1),
+(NULL, '2', 50.0, 2147483648, 2),
+(NULL, '3', 100.0, 5368709120, 5);
 
 
 -- --------------------------------------------------------

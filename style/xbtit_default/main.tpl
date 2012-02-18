@@ -49,7 +49,7 @@
    </div></TD>
        </TR>
     </TABLE>
-    <TABLE align="center" width="100%" height="75" cellpadding="0" cellspacing="0" border="0">
+    <TABLE align="center" width="100%" height="10" cellpadding="0" cellspacing="0" border="0">
       <TR>
         <TD valign="top" background="style/xbtit_default/images/spacer.gif"></TD>
        </TR>
@@ -113,11 +113,9 @@
 <else:IS_DISPLAYED_2>
     <div id="bodyarea" style="padding: 1ex 0ex 0ex 0ex;">  
 <table border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-<td valign="top" width="5" style="background: url(images/spacer.gif);" rowspan="2"></td>
+  <tr>
     <td valign="top"><tag:main_content /></td>
-<td valign="top" width="5" style="background: url(images/spacer.gif);" rowspan="2"></td>
-      </tr>
+  </tr>
     </table>
       </div>
 </if:IS_DISPLAYED_2>
