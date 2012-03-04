@@ -68,6 +68,8 @@ INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES
 (NULL, '2', 050.0, 2147483648, 2),
 (NULL, '3', 100.0, 5368709120, 5);
 
+ALTER TABLE `{$db_prefix}users` ADD INDEX ( `seedbonus` );
+
 -- Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
 -- Torrent's Thanks (AJAX version) / start
 CREATE TABLE IF NOT EXISTS `{$db_prefix}files_thanks` (

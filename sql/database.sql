@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2012 at 11:11 PM
+-- Generation Time: Mar 04, 2012 at 09:00 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4.13
+-- PHP Version: 5.3.2-1ubuntu4.14
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -1207,6 +1207,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `dupe_hash` varchar(20) NOT NULL DEFAULT '',
   `id_level` int(10) NOT NULL DEFAULT '1',
   `custom_title` varchar(51) NOT NULL DEFAULT 'User' COMMENT 'Prefered to be called',
+  `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
   `random` int(10) DEFAULT '0',
   `email` varchar(50) NOT NULL DEFAULT '',
   `language` tinyint(4) NOT NULL DEFAULT '1',
@@ -1235,14 +1236,14 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   KEY `smf_fid` (`smf_fid`),
   KEY `ipb_fid` (`ipb_fid`),
   KEY `custom_title` (`custom_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- 
 -- Dumping data for table `{$db_prefix}users`
 -- 
 
-INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `salt`, `pass_type`, `dupe_hash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `ipb_fid`) VALUES
-(1, 'Guest', '', '', 1, '', 1, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0);
+INSERT INTO `{$db_prefix}users` (`id`, `username`, `password`, `salt`, `pass_type`, `dupe_hash`, `id_level`, `custom_title`, `seedbonus`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `smf_fid`, `ipb_fid`) VALUES
+(NULL, 'Guest', '', '', '1', '', 1, 'User', 0.000000, 0, 'none', 1, 1, NOW(), NOW(), 0, 0, 0, NULL, '00000000000000000000000000000000', 0, 10, 10, 10, '127.0.0.2', '0', '', 0, 0);
 
 -- --------------------------------------------------------
 
