@@ -86,7 +86,7 @@ function apply_default_settings() {
     if (!array_key_exists('peercaching',$btit_settings)) $btit_settings['peercaching']=true;
     if (!array_key_exists('maxpid_seeds',$btit_settings)) $btit_settings['maxpid_seeds']=3;
     if (!array_key_exists('maxpid_leech',$btit_settings)) $btit_settings['maxpid_leech']=2;
-    if (!array_key_exists('name',$btit_settings)) $btit_settings['name']='CyByd` Test Site';
+    if (!array_key_exists('name',$btit_settings)) $btit_settings['name']='CyByd` Tracker';
     if (!array_key_exists('url',$btit_settings)) $btit_settings['url']='http://localhost';
     if (!array_key_exists('announce',$btit_settings)) $btit_settings['announce']=serialize(array('http://localhost/announce.php'));
     if (!array_key_exists('email',$btit_settings)) $btit_settings['email']='tracker@localhost';
@@ -121,9 +121,14 @@ function apply_default_settings() {
     if (!array_key_exists('usepopup',$btit_settings)) $btit_settings['usepopup']=false;
     if (!array_key_exists('xbtt_use',$btit_settings)) $btit_settings['xbtt_use']=false;
     if (!array_key_exists('xbtt_url',$btit_settings)) $btit_settings['xbtt_url']='';
-    if (!array_key_exists('cache_duration',$btit_settings)) $btit_settings['cache_duration']=0;
+    if (!array_key_exists('cache_duration',$btit_settings)) $btit_settings['cache_duration']=60;
     if (!array_key_exists('mail_type',$btit_settings)) $btit_settings['mail_type']='php';
     if (!array_key_exists('ajax_poller',$btit_settings)) $btit_settings['ajax_poller']=true;
+    if (!array_key_exists('bonus',$btit_settings)) $btit_settings['bonus']=1;
+    if (!array_key_exists('price_vip',$btit_settings)) $btit_settings['price_vip']=5000;
+    if (!array_key_exists('price_ct',$btit_settings)) $btit_settings['price_ct']=3000;
+    if (!array_key_exists('price_name',$btit_settings)) $btit_settings['price_name']=5000;
+
 }
 
 $btit_settings = get_cached_config('SELECT `key`,`value` FROM '.$TABLE_PREFIX.'settings', $reload_cfg_interval);

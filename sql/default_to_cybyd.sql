@@ -53,7 +53,7 @@ INSERT INTO `{$db_prefix}settings` SET `key`='bonus', `value`='1';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_vip', `value`='750';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_ct', `value`='200';
 INSERT INTO `{$db_prefix}settings` SET `key`='price_name', `value`='500';
-ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0';
+ALTER TABLE `{$db_prefix}users` ADD `seedbonus` DECIMAL( 12,6 ) NOT NULL DEFAULT '0' AFTER `custom_title`;
 
 CREATE TABLE `{$db_prefix}bonus` (
   `id` int(5) NOT NULL auto_increment,

@@ -451,7 +451,7 @@ switch ($action) {
                 quickQuery('UPDATE '.$TABLE_PREFIX.'users SET '.$updateset.' WHERE id='.$uid.' LIMIT 1;');
 
                 success_msg($language['SUCCESS'], $language['INF_CHANGED'].$note.'<br /><a href="index.php?page=admin&amp;user='.$CURUSER['uid'].'&amp;code='.$CURUSER['random'].'">'.$language['MNU_ADMINCP'].'</a>');
-                write_log('Modified user <a href="'.$btit_settings['url'].'/index.php?page=torrent-userdetails&amp;id='.$uid.'">'.$curu['username'].'</a> '.$newname.' ( '.count($set).' changes on uid '.$uid.' )','modified');
+                write_log('Modified user <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$uid.'">'.$curu['username'].'</a> '.$newname.' ( '.count($set).' changes on uid '.$uid.' )','modified');
                 stdfoot(true,false);
                 die();
             } else stderr($language['ERROR'],$language['USER_NO_CHANGE']);

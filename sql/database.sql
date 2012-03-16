@@ -1051,7 +1051,11 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('imageon', 'true'),
 ('uploaddir', 'cybyd_img/'),
 ('file_limit', '15'),
-('screenon', 'true');
+('screenon', 'true'),
+('price_vip', '5000'),
+('price_ct', '3000'),
+('price_name', '5000'),
+('bonus', '1');
 
 -- --------------------------------------------------------
 
