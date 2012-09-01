@@ -38,50 +38,49 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$THIS_BASEPATH=dirname(__FILE__);
+$THIS_BASEPATH = dirname(__FILE__);
 
-require_once("$THIS_BASEPATH/include/functions.php");
+require_once ("$THIS_BASEPATH/include/functions.php");
 require_once ("$THIS_BASEPATH/include/BDecode.php");
 require_once ("$THIS_BASEPATH/include/BEncode.php");
 
 dbconn();
 
-if (!$CURUSER || $CURUSER["can_download"]=="no")
+if (!$CURUSER || $CURUSER["can_download"] == "no")
    {
-       require(load_language("lang_main.php"));
-       die($language["NOT_AUTH_DOWNLOAD"]);
+   require (load_language ("lang_main.php") );
+	die ( $language["NOT_AUTH_DOWNLOAD"] );
    }
 
 if(ini_get('zlib.output_compression'))
-  ini_set('zlib.output_compression','Off');
+   ini_set('zlib.output_compression','Off');
 
-$infohash=mysql_real_escape_string($_GET["id"]);
-$filepath=$TORRENTSDIR."/".$infohash . ".btf";
+$infohash = mysql_real_escape_string($_GET["id"]);
+$filepath = $TORRENTSDIR."/".$infohash . ".btf";
 
 if (!is_file($filepath) || !is_readable($filepath))
    {
+	require (load_language ("lang_main.php") );
+	die ( $language["CANT_FIND_TORRENT"] );
+   }
 
-       require(load_language("lang_main.php"));
-       die($language["CANT_FIND_TORRENT"]);
-    }
-
-$f=rawurlencode(html_entity_decode($_GET["f"]));
+$f = rawurlencode(html_entity_decode($_GET["f"]));
 
 // pid code begin
-$row =get_result("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'],true,$btit_settings['cache_duration']);
-$pid=$row[0]["pid"];
+$row = get_result("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'], true, $btit_settings['cache_duration']);
+$pid = $row[0]["pid"];
 if (!$pid)
-   {
-   $pid=md5(uniqid(rand(),true));
+	{
+   $pid = md5 (uniqid ( rand(), true) );
    do_sqlquery("UPDATE {$TABLE_PREFIX}users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'");
-   if ($XBTT_USE)
-      do_sqlquery("UPDATE xbt_users SET torrent_pass='".$pid."' WHERE uid='".$CURUSER['uid']."'");
-}
+if ($XBTT_USE)
+   do_sqlquery("UPDATE xbt_users SET torrent_pass='".$pid."' WHERE uid='".$CURUSER['uid']."'");
+	}
 
-$result=get_result("SELECT * FROM {$TABLE_PREFIX}files WHERE info_hash='".$infohash."'",true,$btit_settings['cache_duration']);
-$row = $result[0];
+$result = get_result("SELECT external FROM {$TABLE_PREFIX}files WHERE info_hash='".$infohash."'", true, $btit_settings['cache_duration']);
+$xt = $result[0]["external"];
 
-if ($row["external"]=="yes" || !$PRIVATE_ANNOUNCE)
+if ($xt == "yes" || !$PRIVATE_ANNOUNCE)
    {
     $fd = fopen($filepath, "rb");
     $alltorrent = fread($fd, filesize($filepath));
@@ -120,7 +119,7 @@ else
      }
 
 
-    $alltorrent=BEncode($array);
+    $alltorrent = BEncode($array);
 
     header("Content-Type: application/x-bittorrent");
     header('Content-Disposition: attachment; filename="'.$f.'"');
