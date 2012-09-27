@@ -1,12 +1,4 @@
 <?php
-
-// CyBerFuN.ro & xList.ro
-
-// xList .::. xDNS
-// http://xDNS.ro/
-// http://xLIST.ro/
-// Modified By cybernet2u
-
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
@@ -119,10 +111,15 @@ if($files_present==$lang[0])
 
 if($act=="")
 {
-        echo $lang[2];
-        echo $lang[3] . (($files_present==$lang[0]) ? "#00FF00" : "#FF0000") . $lang[4] . $files_present .  $lang[5];
-        if($files_present==$lang[1])
-            die($lang[6] . $lang[8] . $lang[9] . $lang[35]);
+    if(!isset($db_prefix) || empty($db_prefix))
+    {
+        $db_prefix=substr($data, 14, (strlen($data)-16));
+    }
+
+    echo $lang[2];
+    echo $lang[3] . (($files_present==$lang[0]) ? "#00FF00" : "#FF0000") . $lang[4] . $files_present .  $lang[5];
+    if($files_present==$lang[1])
+        die($lang[6] . $lang[8] . $lang[9] . $lang[35]);
 
     // Make sure SMF is installed by checking the tables are there
     // (There should be 41 as of v1.1.4 but lets be generous and ensure
@@ -588,18 +585,20 @@ elseif($act=="import_forum" && $confirm=="yes")
         if($forumlist[$i]["id_parent"]!=0) $subcat.=$i .",";
         $nextboard++;
     }
-    
-    $subcat=explode(",", substr($subcat, 0, strlen($subcat)-1));
-    foreach($subcat AS $v)
+    if(isset($subcat) && !empty($subcat))
     {
-        $main=$forumlist[$v]["id_parent"];
-        $forid=$forumlist[$v]["newid"];
-        $newparent=$forumlist[$main]["newid"];
-        if($smf_type=="smf")
-            $sqlquery="UPDATE `{$db_prefix}boards` SET `ID_PARENT`=$newparent WHERE `ID_BOARD`=".$forid;
-        else
-            $sqlquery="UPDATE `{$db_prefix}boards` SET `id_parent`=$newparent WHERE `id_board`=".$forid;
-        @mysql_query($sqlquery); /* or die(mysql_error()."<br />SQL Query:<br />".$sqlquery); */
+        $subcat=explode(",", substr($subcat, 0, strlen($subcat)-1));
+        foreach($subcat AS $v)
+        {
+            $main=$forumlist[$v]["id_parent"];
+            $forid=$forumlist[$v]["newid"];
+            $newparent=$forumlist[$main]["newid"];
+            if($smf_type=="smf")
+                $sqlquery="UPDATE `{$db_prefix}boards` SET `ID_PARENT`=$newparent WHERE `ID_BOARD`=".$forid;
+            else
+                $sqlquery="UPDATE `{$db_prefix}boards` SET `id_parent`=$newparent WHERE `id_board`=".$forid;
+            @mysql_query($sqlquery); /* or die(mysql_error()."<br />SQL Query:<br />".$sqlquery); */
+        }
     }
     $sqlquery="SELECT * FROM `{$TABLE_PREFIX}topics` ORDER BY `id` ASC";
     $res=mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
@@ -617,10 +616,12 @@ elseif($act=="import_forum" && $confirm=="yes")
             $sqlquery="INSERT INTO `{$db_prefix}topics` (`isSticky`, `ID_BOARD`, `ID_FIRST_MSG`, `ID_LAST_MSG`, `ID_MEMBER_STARTED`, `numViews`, `locked`) ";
         else
             $sqlquery="INSERT INTO `{$db_prefix}topics` (`is_sticky`, `id_board`, `id_first_msg`, `id_last_msg`, `id_member_started`, `num_views`, `locked`) ";
-        $sqlquery.="VALUES (".$topics[$i]["sticky"].", ".$forumlist[$topics[$i]["forumid"]]["newid"].", ".rand(0,2147483647).", ".rand(0,2147483647).", ".$topics[$i]["userid"].", ".$topics[$i]["views"].", ".$topics[$i]["locked"].")";
-        @mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
-        $topics[$i]["newtopicid"]=mysql_insert_id();
-
+        if(isset($forumlist[$topics[$i]["forumid"]]["newid"]) && !empty($forumlist[$topics[$i]["forumid"]]["newid"]))
+        {
+            $sqlquery.="VALUES (".$topics[$i]["sticky"].", ".$forumlist[$topics[$i]["forumid"]]["newid"].", ".rand(0,2147483647).", ".rand(0,2147483647).", ".$topics[$i]["userid"].", ".$topics[$i]["views"].", ".$topics[$i]["locked"].")";
+            @mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
+            $topics[$i]["newtopicid"]=mysql_insert_id();
+        }
     }
     $sqlquery="SELECT `p`.* , `u`.`username`, `u`.`email`, `u`.`lip`, `ua`.`username` `edit_username` FROM `{$TABLE_PREFIX}posts` `p` LEFT JOIN `{$TABLE_PREFIX}users` `u` ON `p`.`userid` = `u`.`id` LEFT JOIN `{$TABLE_PREFIX}users` `ua` ON `p`.`editedby` = `ua`.`id` ORDER BY `p`.`id` ASC";
     $res=mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
@@ -637,9 +638,13 @@ elseif($act=="import_forum" && $confirm=="yes")
             $sqlquery="INSERT INTO `{$db_prefix}messages` (`ID_TOPIC`, `ID_BOARD`, `posterTime`, `ID_MEMBER`, `subject`, `posterName`, `posterEmail`, `posterIP`, `smileysEnabled`, `modifiedTime`, `modifiedName`, `body`) ";
         else
             $sqlquery="INSERT INTO {$db_prefix}messages (`id_topic`, `id_board`, `poster_time`, `id_member`, `subject`, `poster_name`, `poster_email`, `poster_ip`, `smileys_enabled`, `modified_time`, `modified_name`, `body`) ";
-        $sqlquery.="VALUES (".$topics[$posts[$i]["topicid"]]["newtopicid"].", ".$forumlist[$topics[$posts[$i]["topicid"]]["forumid"]]["newid"].", ".$posts[$i]["added"].", ".$posts[$i]["userid"].", '".mysql_real_escape_string($topics[$posts[$i]["topicid"]]["subject"])."', '".$posts[$i]["username"]."', '".$posts[$i]["email"]."', '".long2ip($posts[$i]["lip"])."', 1, ".$posts[$i]["editedat"].", '".(($posts[$i]["editedby"]==0) ? "" : $posts[$i]["edit_username"])."', '".mysql_real_escape_string($posts[$i]["body"])."')";
-        @mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
-        $posts[$i]["newpostid"]=mysql_insert_id();
+
+        if(isset($topics[$posts[$i]["topicid"]]["newtopicid"]) && !empty($topics[$posts[$i]["topicid"]]["newtopicid"]))
+        {
+            $sqlquery.="VALUES (".$topics[$posts[$i]["topicid"]]["newtopicid"].", ".$forumlist[$topics[$posts[$i]["topicid"]]["forumid"]]["newid"].", ".$posts[$i]["added"].", ".$posts[$i]["userid"].", '".mysql_real_escape_string($topics[$posts[$i]["topicid"]]["subject"])."', '".$posts[$i]["username"]."', '".$posts[$i]["email"]."', '".long2ip($posts[$i]["lip"])."', 1, ".$posts[$i]["editedat"].", '".(($posts[$i]["editedby"]==0) ? "" : $posts[$i]["edit_username"])."', '".mysql_real_escape_string($posts[$i]["body"])."')";
+            @mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);
+            $posts[$i]["newpostid"]=mysql_insert_id();
+        }
     }
     $sqlquery="SELECT MAX(".(($smf_type=="smf")?"`ID_MSG`":"`id_msg`").") `max`, ".(($smf_type=="smf")?"`ID_BOARD`":"`id_board`")." `idb` FROM `{$db_prefix}messages` GROUP BY `idb`";
     $res=mysql_query($sqlquery) or die(mysql_error()."<br />SQL Query:<br />".$sqlquery);

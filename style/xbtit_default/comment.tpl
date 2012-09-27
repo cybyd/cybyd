@@ -12,7 +12,6 @@ _gaq.push(['_setCustomVar', 2, 'UserName', '<tag:current_username />', 3]);
   <input type="hidden" name="info_hash" value="<tag:comment_id />" />
     <table class="lista" border="0" cellpadding="10">
       <tr>
-      <tr>
         <td align="left" class="header"><tag:language.USER_NAME /></td>
         <td class="lista" align="left" ><input name="user" TYPE="text" size="20" value="<tag:comment_username />" maxlength="100" disabled; readonly /></td>
       </tr>
