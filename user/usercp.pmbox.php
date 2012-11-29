@@ -106,7 +106,7 @@ switch ($action)
 
      case 'deleteall':
         if(substr($FORUMLINK,0,3)=="smf")
-            redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=outbox":""));
+            redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=".(($FORUMLINK=="smf2")?"sent":"outbox"):""));
         // MODIFIED DELETE ALL VERSION BY gAnDo
             if (isset($_GET["type"]))
                 $what=$_GET["type"];
@@ -132,7 +132,7 @@ switch ($action)
 
     case 'delete':
             if(substr($FORUMLINK,0,3)=="smf")
-                redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=outbox":""));
+                redirect("index.php?page=forum&action=pm".(($_GET["type"]=="out")?";f=".(($FORUMLINK=="smf2")?"sent":"outbox"):""));
             $id=intval($_GET["id"]);
             if($_GET["type"]=="out"){
 			do_sqlquery("UPDATE {$TABLE_PREFIX}messages SET deletedBySender=1 WHERE id='".$id."'",true);
@@ -220,7 +220,7 @@ switch ($action)
         $pmintpl[$i]["senderid"]=($result["sender"]==0||empty($result["sendername"])?"#":((substr($FORUMLINK,0,3)=="smf")?$BASEURL."/index.php?page=forum&amp;action=profile;u=".$result["sender"]:"index.php?page=userdetails&amp;id=".$result["sender"]));
         $pmintpl[$i]["sendername"]=unesc($result["sendername"]);
         $pmintpl[$i]["added"]=get_date_time($result["added"]);
-        $pmintpl[$i]["pmlink"]=((substr($FORUMLINK,0,3)=="smf")?$BASEURL."/index.php?page=forum&amp;action=pm":"index.php?page=usercp&amp;do=pm&amp;action=read&amp;uid=".$uid."&amp;id=".$result["id"]."&amp;what=inbox");
+        $pmintpl[$i]["pmlink"]=((substr($FORUMLINK,0,3)=="smf")?$BASEURL."/index.php?page=forum&amp;action=pm;f=".(($FORUMLINK=="smf2")?"sent":"outbox"):"index.php?page=usercp&amp;do=pm&amp;action=read&amp;uid=".$uid."&amp;id=".$result["id"]."&amp;what=inbox");
         $pmintpl[$i]["subject"]=format_comment(unesc($result["subject"]));
         $pmintpl[$i]["msgid"]=$result["id"];
         $i++;

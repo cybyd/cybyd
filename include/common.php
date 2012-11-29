@@ -337,12 +337,15 @@ function getip() {
    return long2ip(ip2long($ip));
 }
 
-function hex2bin ($input, $assume_safe=true) {
-    if ($assume_safe !== true && ! ((strlen($input)%2) == 0 || preg_match ('/^[0-9a-f]+$/i', $input)))
-        return '';
-    return pack('H*', $input);
+if(!function_exists("hex2bin"))
+{
+    function hex2bin ($input, $assume_safe=true)
+    {
+        if ($assume_safe !== true && ! ((strlen($input)%2) == 0 || preg_match ('/^[0-9a-f]+$/i', $input)))
+            return '';
+        return pack('H*', $input);
+    }
 }
-
 # Runs a query with no regard for the result
 function quickQuery($query) {
     $results = do_sqlquery($query);
