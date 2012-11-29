@@ -1,8 +1,6 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
-
-// xList .::. xDNS
+// xLiST .::. xDNS
 // http://xDNS.ro/
 // http://xLIST.ro/
 // Modified By cybernet2u
@@ -51,7 +49,7 @@ else $action ="viewnews";
 
 if ($CURUSER["edit_news"]!="yes")
    {
-   err_msg(ERROR,ERR_NOT_AUTH);
+   err_msg($language["ERROR"],$language["ERR_NOT_AUTH"]);
    stdfoot();
    exit();
    }
@@ -109,8 +107,6 @@ global $language, $newstpl;
     $newstpl->set("language",$language);
 
     $newstpl->set("ADD_EDIT",true,true);
-    $newstpl->set("VIEW",false,true);
-    $newstpl->set("NO_NEWS",false,true);
 
     $tplnews=array();
     $tplnews["action"]="index.php?page=news&amp;act=confirm";
@@ -131,8 +127,6 @@ global $news, $title, $CURUSER, $language, $newstpl;
     $newstpl->set("language",$language);
 
     $newstpl->set("ADD_EDIT",true,true);
-    $newstpl->set("VIEW",false,true);
-    $newstpl->set("NO_NEWS",false,true);
 
     $tplnews=array();
     $tplnews["action"]="index.php?page=news&amp;act=confirm";
@@ -156,7 +150,7 @@ if (!isset($_POST["conferma"])) ;
               $title=$_POST["title"];
               if ($news=="" || $title=="")
               {
-                  err_msg(ERROR,ERR_INS_TITLE_NEWS);
+                  err_msg($language["ERROR"],$language["ERR_INS_TITLE_NEWS"]);
               }
               else
               {
@@ -182,54 +176,9 @@ if (!isset($_POST["conferma"])) ;
               $news="";
          }
 }
-
 else
 {
-global $CURUSER, $CURRENTPATH, $TABLE_PREFIX;
-
-$limit = $GLOBALS['block_newslimit'];
-if ($limit>0)
-  $limitqry="LIMIT $limit";
-$res=get_result("SELECT {$TABLE_PREFIX}news.id, title, news, UNIX_TIMESTAMP(date) AS news_date, username FROM {$TABLE_PREFIX}news INNER JOIN {$TABLE_PREFIX}users ON {$TABLE_PREFIX}news.user_id={$TABLE_PREFIX}users.id ORDER BY date DESC $limitqry",true,$btit_settings['cache_duration']);
-
-    $newstpl=new bTemplate();
-    $newstpl->set("language",$language);
-    $newstpl->set("ADD_EDIT",false,true);
-    $newstpl->set("VIEW",true,true);
-    $newstpl->set("NO_NEWS",false,true);
-
-if ($res)
-
-  {
-    $news_model=array();
-    $i=0;
-
-    $newstpl->set("EDIT_DEL",$CURUSER["edit_news"]=="yes" || $CURUSER["delete_news"]=="yes",true);
-    $newstpl->set("EDIT_NEWS",$CURUSER["edit_news"]=="yes",true);
-    $newstpl->set("DELETE_NEWS",$CURUSER["delete_news"]=="yes",true);
-    include("$CURRENTPATH/offset.php");
-
-         foreach ($res as $id=>$rows) {
-          $news_model[$i]["add"]="index.php?page=news&amp;act=add";
-          $news_model[$i]["edit"]="index.php?page=news&amp;act=edit&amp;id=".$rows['id']."";
-          $news_model[$i]["delete"]="index.php?page=news&amp;act=del&amp;id=".$rows['id']."";
-          $news_model[$i]["username"]=unesc($rows["username"]);
-          $news_model[$i]["date"]=date("d/m/Y H:i",$rows["news_date"]-$offset);
-          $news_model[$i]["title"]=unesc($rows["title"]);
-          $news=format_comment($rows["news"]);
-          $news_model[$i]["news"]=$news;
-          $i++;
-          }
-
-    $newstpl->set("news_model",$news_model);
-  }
-else
-  {
-    $newstpl->set("NO_NEWS",true,true);
-    $newstpl->set("EDIT_NEWS",$CURUSER["edit_news"]=="yes",true);
-    $newstpl->set("news_add","index.php?page=news&amp;act=add");
-  }
+    header("Location: index.php?page=viewnews");
 }
-
 
 ?>
