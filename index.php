@@ -1,7 +1,5 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
-
 // xList .::. xDNS
 // http://xDNS.ro/
 // http://xLIST.ro/
@@ -57,14 +55,16 @@ include("$THIS_BASEPATH/btemplate/bTemplate.php");
 
 require("$THIS_BASEPATH/include/functions.php");
 
-
+session_name("xbtit");
+session_start();
+dbconn(true);
 
 // If they've updated to SMF 2.0 and their tracker settings still thinks they're using SMF 1.x.x force an update
 if($FORUMLINK=="smf")
 {
     $check_ver=get_result("SELECT `value` FROM `{$db_prefix}settings` WHERE `variable`='smfVersion'", true, 60);
     if(((int)substr($check_ver[0]["value"],0,1))==2)
-        do_sqlquery("UPDATE `{$TABLE_PREFIX}settings` SET `value`='smf2' WHERE `key`='forum'",true);
+        do_sqlquery("UPDATE `{$TABLE_PREFIX}settings` SET `value`='smf2' WHERE `key`='forum'", true);
     foreach (glob($THIS_BASEPATH."/cache/*.txt") as $filename)
         unlink($filename);
 }
@@ -87,11 +87,6 @@ $time_start = get_microtime();
 //require_once ("$THIS_BASEPATH/include/config.php");
 
 clearstatcache();
-
-session_name("xbtit");
-session_start();
-
-dbconn(true);
 
 $style_css=load_css("main.css");
 

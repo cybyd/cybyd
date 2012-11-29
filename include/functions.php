@@ -1,10 +1,8 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
-
-// xList .::. xDNS
+// xLiST .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -321,9 +319,14 @@ function print_top()
 // check online passed session and user's location
 // this function will update the information into
 // online table (session ID, ip, user id and location
-function check_online($session_id, $location) {
+function check_online($session_id, $location) 
+{
   global $TABLE_PREFIX, $CURUSER;
 
+  session_name("xbtit");
+  session_start();
+  $overOneMinute=(((isset($_SESSION["ONLINE_EXPIRE"]) && time() > $_SESSION["ONLINE_EXPIRE"]) || !isset($_SESSION["ONLINE_EXPIRE"]))?true:false);
+  $locationHasChanged=(((isset($_SESSION["ONLINE_LOCATION"]) && $_SESSION["ONLINE_LOCATION"]!=$location) || !isset($_SESSION["ONLINE_LOCATION"]))?true:false);
   $location=sqlesc($location);
   $ip=getip();
   $uid=max(1,(int)$CURUSER['uid']);
@@ -336,20 +339,27 @@ function check_online($session_id, $location) {
   else
     $where="WHERE user_id='$uid' OR session_id='$session_id'";
 
-  @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, lastaction=UNIX_TIMESTAMP() $where");
-  // record don't already exist, then insert it
-  if (mysql_affected_rows()==0) { 
-    @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
-    @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, lastaction=UNIX_TIMESTAMP()");
-  }
-
-  $timeout=time()-900; // 15 minutes
-//  @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id IN (SELECT user_id FROM {$TABLE_PREFIX}online ol WHERE ol.lastaction<$timeout AND ol.user_id>1)");
-  @quickQuery("UPDATE {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}online ol ON ol.user_id = u.id SET u.lastconnect=NOW(), u.cip=ol.user_ip, u.lip=INET_ATON(ol.user_ip) WHERE ol.lastaction<$timeout AND ol.user_id>1");
-  @quickQuery("DELETE FROM {$TABLE_PREFIX}online WHERE lastaction<$timeout");
+    if($locationHasChanged || $overOneMinute)
+    {
+        @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, lastaction=UNIX_TIMESTAMP() $where");
+        // record don't already exist, then insert it
+        if (mysql_affected_rows()==0)
+        { 
+            @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
+            @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, lastaction=UNIX_TIMESTAMP()");
+        }
+    }
+    if($overOneMinute)
+    {
+        $timeout=time()-900; // 15 minutes
+        @quickQuery("UPDATE {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}online ol ON ol.user_id = u.id SET u.lastconnect=NOW(), u.cip=ol.user_ip, u.lip=INET_ATON(ol.user_ip) WHERE ol.lastaction<$timeout AND ol.user_id>1");
+        @quickQuery("DELETE FROM {$TABLE_PREFIX}online WHERE lastaction<$timeout");
+        $_SESSION["ONLINE_EXPIRE"]=(time()+60);
+    }
+    $_SESSION["ONLINE_LOCATION"]=trim($location, "'");
 }
 
-//Disallow special characters in username
+// Disallow special characters in username
 
 function straipos($haystack,$array,$offset=0) {
   $occ = array();
