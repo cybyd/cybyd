@@ -1,9 +1,10 @@
 <?php
 $language['BLOCK_USER']='User Info';
 $language['BLOCK_INFO']='Tracker Info';
-$language['BLOCK_MENU']='Main Menu';
-/* We leave this name (drop down menu) blank so it doesnt use the block head showing its name, it looks unsightly and non professional imho!! TreetopClimber */
+$language['BLOCK_MAINMENU']='';
+// We leave this name ( drop down menu ) blank so it doesnt use the block head showing its name, it looks unsightly and non professional imho !! TreetopClimber
 $language['BLOCK_DDMENU']='';
+$language['BLOCK_MENU']='Main Menu'; // block menu needs the name
 $language['BLOCK_CALENDAR']='Calendar'; 
 $language['BLOCK_CLOCK']='Clock';
 $language['BLOCK_FORUM']='Forum';

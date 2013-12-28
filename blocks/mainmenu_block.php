@@ -52,13 +52,8 @@ elseif ($CURUSER["uid"]==1)
     }
 else
     {
-    print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\">".$language["WELCOME_BACK"]." " . $CURUSER["username"] ." \n");
-    print("<a class=\"mainmenu\" href=\"logout.php\">(".$language["LOGOUT"].")</a></td></tr></table>\n");
+print("<td class=\"lista\" align=\"center\" style=\"text-align:center;\"><a class=\"mainmenu\" href=\"logout.php\">(".$language["LOGOUT"].")</a></td>\n");
     }
-?>
-<table cellpadding="1" cellspacing="1" width="100%">
-  <tr>
-<?php
 print("<td class=\"header\" align=\"center\"><a class=\"mainmenu\" href=\"index.php\">".$language["MNU_INDEX"]."</a></td>\n");
 
 if ($CURUSER["view_torrents"]=="yes")
