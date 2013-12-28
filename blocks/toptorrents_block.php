@@ -55,7 +55,7 @@ else
     <td align="center" width="55%" class="header">&nbsp;<?php echo $language["TORRENT_FILE"]; ?>&nbsp;</td>
     <td align="center" width="45" class="header">&nbsp;<?php echo $language["CATEGORY"]; ?>&nbsp;</td>
 <?php
-if (max(0,$CURUSER["WT"])>0)
+if (max(0,$CURUSER["WT"]) > 0)
     print("<td align=\"center\" width=\"20\" class=\"header\">&nbsp".$language["WT"]."&nbsp;</td>");
 ?>
     <td align="center" width="85" class="header">&nbsp;<?php echo $language["ADDED"]; ?>&nbsp;</td>
@@ -134,8 +134,8 @@ if (max(0,$CURUSER["WT"])>0)
             {
               if ($GLOBALS["usepopup"])
                 {
-                echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
-                echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
+                echo "\t<td align=\"center\" class=\"lista\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
+                echo "\t<td align=\"center\" class=\"lista\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"javascript:poppeer('index.php?page=peers&amp;id=".$data["hash"]."');\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
                 if ($data["finished"]>0)
                    echo "\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a class=\"toptor\" href=\"javascript:poppeer('index.php?page=torrent_history&amp;id=".$data["hash"]."');\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
@@ -144,8 +144,8 @@ if (max(0,$CURUSER["WT"])>0)
                 }
               else
                 {
-                echo "\t<td align=\"center\" class=\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
-                echo "\t<td align=\"center\" class=\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
+                echo "\t<td align=\"center\" class=\"lista\"".linkcolor($data["seeds"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" . $data["seeds"] . "</a></td>\n";
+                echo "\t<td align=\"center\" class=\"lista\"".linkcolor($data["leechers"])."\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=peers&amp;id=".$data["hash"]."\" title=\"".$language["PEERS_DETAILS"]."\">" .$data["leechers"] . "</a></td>\n";
                 if ($data["finished"]>0)
                    echo "\t<td align=\"center\" class=\"lista\" style=\"text-align: center;\"><a class=\"toptor\" href=\"index.php?page=torrent_history&amp;id=".$data["hash"]."\" title=\"History - ".$data["filename"]."\">" . $data["finished"] . "</a></td>";
                 else
