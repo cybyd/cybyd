@@ -48,7 +48,7 @@
 		
 		private $db = NULL;
 	
-		public function __construct(){
+		public function __construct() {
 			parent::__construct();				// Init parent contructor
 			$this->dbConnect();					// Initiate Database connection
 		}
@@ -57,9 +57,9 @@
 		 *  Database connection 
 		*/
 		private function dbConnect() {
-			$this->db = mysql_connect(self::DB_SERVER,self::DB_USER,self::DB_PASSWORD);
+			$this->db = mysql_connect (self::DB_SERVER,self::DB_USER,self::DB_PASSWORD);
 			if ($this->db)
-				mysql_select_db(self::DB,$this->db);
+				mysql_select_db (self::DB,$this->db);
 		}
 		
 		/*
