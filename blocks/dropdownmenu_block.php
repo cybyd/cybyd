@@ -184,8 +184,11 @@ if ($CURUSER["view_news"]=="yes")
     }
 		if ($CURUSER["view_users"]=="yes")
 		{    
-    print("<li><a href='index.php?page=users'>".$language["MNU_MEMBERS"]."</a><b></b></li>\n");
-    }
+	print("<li><a href='index.php?page=users'>".$language["MNU_MEMBERS"]."</a><b></b></li>\n");
+// Staff Page - Petr1fied / start / http://www.btiteam.org/smf/index.php?topic=19541.msg109523#msg109523
+	print("<td class=\"header\" align=\"center\"><a href=\"index.php?page=staff\">".$language["STAFF"]."</a></td>\n");
+// Staff Page - Petr1fied / end
+    		}
 /*		if ($CURUSER["view_users"]=="yes")
 		{
     print("<li><a class='fly' href='#'>".$language["USER_CP"]."</a>\n");
