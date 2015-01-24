@@ -24,7 +24,7 @@ sudo service nginx stop
 
 DIR=$(dirname "$0")
 USER=$(whoami)
-PHPBB_ROOT_PATH=$(realpath "$DIR/../phpBB")
+PHPBB_ROOT_PATH=$(realpath "$DIR/../cybyd")
 NGINX_CONF="/etc/nginx/sites-enabled/default"
 APP_SOCK=$(realpath "$DIR")/php-app.sock
 
