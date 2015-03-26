@@ -235,7 +235,7 @@ for ($i=0;$i<10 && $i<count($msg2);++$i)
 {
   $sql="SELECT u.id as uid,prefixcolor,suffixcolor FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul ON ul.id_level=u.id_level WHERE u.username='".$msg2[$i]['pseudo']."'";
   $res = do_sqlquery($sql);
-  $result=mysql_fetch_assoc($res);
+  $result = mysqli_fetch_assoc($res);
   // user or level don't exit in db
   if (!$result)
     echo '<b>'.'</b>&nbsp;&nbsp;&nbsp;['.date("d/m/y H:i",$msg2[$i]['date']-$offset).']'.'&nbsp;&nbsp;<b>'.$msg2[$i]['pseudo'].'</b>:&nbsp;&nbsp;&nbsp;'.format_shout($msg2[$i]['texte']).'<hr>';
@@ -244,7 +244,7 @@ for ($i=0;$i<10 && $i<count($msg2);++$i)
     echo '<b>'.'</b>&nbsp;&nbsp;&nbsp;['.date("d/m/y H:i",$msg2[$i]['date']-$offset).']'."&nbsp;&nbsp;<a style='text-decoration:none' href='index.php?page=userdetails&amp;id=".$result["uid"]."'>".unesc($result['prefixcolor']).$msg2[$i]['pseudo'].unesc($result['suffixcolor']).'</a>:&nbsp;&nbsp;&nbsp;'.format_shout($msg2[$i]['texte']).'<hr />';
     unset($result);
   }
-  mysql_free_result($res);
+  ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 }
 echo "</td></tr></table></div>";
 
@@ -253,7 +253,7 @@ file_save("chat.php", "<?php\n\$msg = ".var_export($msg,TRUE)."\n?>");
 unset ($_POST['pseudo']);
 unset ($_POST['mess']);
 
-if ($CURUSER["uid"]>1)
+if ($CURUSER["uid"] > 1)
 {
 /*
 header("Expires: Mon, 1 Jan 1990 01:00:00 GMT");

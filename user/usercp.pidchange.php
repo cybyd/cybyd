@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -37,8 +37,8 @@ if (!defined("IN_BTIT"))
 switch ($action)
 {
     case 'post':
-          $pid=md5(uniqid(rand(),true));
-          $res=do_sqlquery("UPDATE {$TABLE_PREFIX}users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'",true);
+          $pid = md5(uniqid(rand(),true));
+          $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'",true);
           if ($res)
              {
              if($XBTT_USE)
@@ -57,13 +57,13 @@ switch ($action)
     case '':
     case 'change':
     default:
-    $result=do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'],true);
-    $row = mysql_fetch_assoc($result);
-    $pid=$row["pid"];
+    $result = do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}users WHERE id=".$CURUSER['uid'],true);
+    $row = mysqli_fetch_assoc($result);
+    $pid = $row["pid"];
     if (!$pid)
       {
-        $pid=md5(uniqid(rand(),true));
-        $res=do_sqlquery("UPDATE {$TABLE_PREFIX}users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'",true);
+        $pid = md5(uniqid(rand(),true));
+        $res = do_sqlquery("UPDATE {$TABLE_PREFIX}users SET pid='".$pid."' WHERE id='".$CURUSER['uid']."'",true);
       }
     else
       {
@@ -71,25 +71,25 @@ switch ($action)
         // we must check if user is currently a peer
         if ($XBTT_USE)
           {
-        $rp=do_sqlquery("SELECT COUNT(*) FROM xbt_files_users xfu INNER JOIN xbt_users xu ON xfu.uid=xu.uid WHERE xu.torrent_pass='$pid' AND xfu.active=1",true);
-        $ispeer=mysql_fetch_row($rp);
+        $rp = do_sqlquery("SELECT COUNT(*) FROM xbt_files_users xfu INNER JOIN xbt_users xu ON xfu.uid=xu.uid WHERE xu.torrent_pass='$pid' AND xfu.active=1",true);
+        $ispeer = mysqli_fetch_row($rp);
         if ($ispeer[0] > "0") $usercptpl->set("IS_PEER",true,true);
-        mysql_free_result($rp);
+        ((mysqli_free_result($rp) || (is_object($rp) && (get_class($rp) == "mysqli_result"))) ? true : false);
           }
         else
           {
-        $rp=do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}peers WHERE pid='$pid'");
-        $ispeer=mysql_fetch_row($rp);
+        $rp = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}peers WHERE pid='$pid'");
+        $ispeer = mysqli_fetch_row($rp);
         if ($ispeer[0] > "0") $usercptpl->set("IS_PEER",true,true);
-        mysql_free_result($rp);
+        ((mysqli_free_result($rp) || (is_object($rp) && (get_class($rp) == "mysqli_result"))) ? true : false);
           }
       }
-    $pid_ctpl=array();
-    $pid_ctpl["frm_action"]="index.php?page=usercp&amp;do=pid_c&amp;action=post&amp;uid=".$uid."";
-    $pid_ctpl["userpid"]=$pid;
-    $pid_ctpl["ispeer"]=($ispeer[0]>0?$language["CURRENTLY_PEER"]."<br />".$language["STOP_PEER"]."\n":"");
-    $pid_ctpl["reset_disabled"]=($ispeer[0]>0?"disabled":"");
-    $pid_ctpl["frm_cancel"]="index.php?page=usercp&amp;uid=".$uid."";
+    $pid_ctpl = array();
+    $pid_ctpl["frm_action"] = "index.php?page=usercp&amp;do=pid_c&amp;action=post&amp;uid=".$uid."";
+    $pid_ctpl["userpid"] = $pid;
+    $pid_ctpl["ispeer"] = ($ispeer[0]>0?$language["CURRENTLY_PEER"]."<br />".$language["STOP_PEER"]."\n":"");
+    $pid_ctpl["reset_disabled"] = ($ispeer[0]>0?"disabled":"");
+    $pid_ctpl["frm_cancel"] = "index.php?page=usercp&amp;uid=".$uid."";
     $usercptpl->set("pid_c",$pid_ctpl);
     break;
 }

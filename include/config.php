@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -45,10 +45,10 @@ function get_cached_config($qrystr, $cachetime=0) {
       return unserialize(file_get_contents($cache_file));
         }
 
-  mysql_connect($dbhost, $dbuser, $dbpass) or die(mysql_error());
-  mysql_select_db($database) or die(mysql_error());
-  $mr = mysql_query($qrystr) or die(mysql_error());
-  while ($mz = mysql_fetch_assoc($mr)) {
+  ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass)) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+  ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+  $mr = mysqli_query($GLOBALS["___mysqli_ston"], $qrystr." -- ".$mySecret) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+  while ($mz = mysqli_fetch_assoc($mr)) {
     if ($mz['value']=='true')
       $return[$mz['key']]= true;
     elseif ($mz['value']=='false')
@@ -60,8 +60,8 @@ function get_cached_config($qrystr, $cachetime=0) {
   }
 
   unset($mz);
-  mysql_free_result($mr);
-  mysql_close();
+  ((mysqli_free_result($mr) || (is_object($mr) && (get_class($mr) == "mysqli_result"))) ? true : false);
+  ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
   if ($cachetime > 0) {
     $fp = fopen($cache_file,'w');
@@ -220,6 +220,7 @@ $LIVESTATS = $btit_settings['livestat'];
 $LOG_ACTIVE = $btit_settings['logactive'];
 // Enable Basic History (torrents/users)
 $LOG_HISTORY = $btit_settings['loghistory'];
+$CAPTCHA_FOLDER = 'access_code';
 // Default language (used for guest)
 $DEFAULT_LANGUAGE = $btit_settings['default_language'];
 // Default charset (used for guest)

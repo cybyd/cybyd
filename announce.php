@@ -674,15 +674,15 @@ if ($LIVESTATS)
      $resstat = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `uploaded`, `downloaded` FROM `{$TABLE_PREFIX}peers` WHERE ".(($PRIVATE_ANNOUNCE)?"`pid`='".$pid."'":"`ip`='".$ip."'")." AND `infohash`='".$info_hash."' AND `peer_id`='".$peer_id."'");
      if ($resstat && mysqli_num_rows($resstat) > 0)
          {
-         $livestat=mysqli_fetch_assoc($resstat);
+         $livestat = mysqli_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded>=$livestat["uploaded"])
-               $newup=max(0,($uploaded-$livestat["uploaded"]));
+               $newup = max(0,($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown=max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0,($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485

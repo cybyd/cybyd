@@ -41,7 +41,7 @@ $settings = array();
 function readGoldSettings()
 {
 	global $TABLE_PREFIX, $settings;
-	 $res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+	 $res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
 
        $count=0;
 
@@ -82,7 +82,7 @@ switch ($action)
        $s_file_uploaded=false;
        if(isset($_FILES['gold_picture']) && $_FILES['gold_picture']['name'] !='')
        {
-       	if($_FILES['gold_picture']['size']>1)
+       	if($_FILES['gold_picture']['size'] > 1)
        	{
        		if(is_uploaded_file($_FILES['gold_picture']['tmp_name']))
        		{
@@ -126,7 +126,7 @@ switch ($action)
        }
        if(isset($_FILES['silver_picture']) && $_FILES['silver_picture']['name'] !='')
        {
-       	if($_FILES['silver_picture']['size']>1)
+       	if($_FILES['silver_picture']['size'] > 1)
        	{
        		if(is_uploaded_file($_FILES['silver_picture']['tmp_name']))
        		{
@@ -186,7 +186,7 @@ switch ($action)
        }
        else 
        {
-       		$res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+       		$res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
        		foreach ($res as $key=>$value)
          	{
          		$gold_picture = $value["gold_picture"];
@@ -198,7 +198,7 @@ switch ($action)
        }
        else 
        {
-       		$res=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+       		$res = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'", true);
        		foreach ($res as $key=>$value)
          	{
          		$silver_picture = $value["silver_picture"];
@@ -212,7 +212,7 @@ switch ($action)
        				classic_description = '$classic_description' ,
        				silver_picture = '$silver_picture' ,
        				gold_picture = '$gold_picture' 
-       				WHERE id='1'",true);
+       				WHERE id='1'", true);
       
        $admintpl->set("settings_done_msg","<div align=\"center\">Settings saved!</div>");
       }

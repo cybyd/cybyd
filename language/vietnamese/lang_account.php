@@ -22,5 +22,5 @@ $language["WEEK"]="y&#7871;u";
 $language["MEDIUM"]="b&#236;nh th&#432;&#7901;ng";
 $language["SAFE"]="an to&#224;n";
 $language["STRONG"]="m&#7841;nh";
-
+$language['ERR_GENERIC']='Generic Error: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 ?>

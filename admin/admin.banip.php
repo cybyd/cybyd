@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -78,14 +78,14 @@ switch ($action)
     default:
         $banned = array();
         $getbanned = do_sqlquery("SELECT b.*, u.username FROM {$TABLE_PREFIX}bannedip b LEFT JOIN {$TABLE_PREFIX}users u ON u.id=b.addedby ORDER BY b.added DESC",true);
-        $rowsbanned = @mysql_num_rows($getbanned);
+        $rowsbanned = @mysqli_num_rows($getbanned);
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=write");
         $i=0;
         if ($rowsbanned > 0)
         {
            $admintpl->set("no_records",false,true);
 
-           while ($arr=mysql_fetch_assoc($getbanned))
+           while ($arr = mysqli_fetch_assoc($getbanned))
               {
               $banned[$i]["first_ip"] = long2ip($arr["first"]);
               $banned[$i]["last_ip"] = long2ip($arr["last"]);
