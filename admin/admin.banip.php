@@ -76,12 +76,12 @@ switch ($action)
     case '':
     case 'read':
     default:
-        $banned=array();
+        $banned = array();
         $getbanned = do_sqlquery("SELECT b.*, u.username FROM {$TABLE_PREFIX}bannedip b LEFT JOIN {$TABLE_PREFIX}users u ON u.id=b.addedby ORDER BY b.added DESC",true);
         $rowsbanned = @mysql_num_rows($getbanned);
         $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=banip&amp;action=write");
         $i=0;
-        if ($rowsbanned>0)
+        if ($rowsbanned > 0)
         {
            $admintpl->set("no_records",false,true);
 

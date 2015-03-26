@@ -44,23 +44,23 @@ switch($action)
     case 'tables':
         if (isset($_POST["doit"]) && isset($_POST["tname"]))
           {
-            $table_action=strtoupper($_POST["doit"]);
-            $tables=implode(",",$_POST["tname"]);
+            $table_action = strtoupper($_POST["doit"]);
+            $tables = implode(",",$_POST["tname"]);
             if (isset($_POST["tname"]))
               {
                 switch ($table_action)
                    {
                     case strtoupper($language['DBUTILS_REPAIR']):
-                        $dbres=do_sqlquery("REPAIR TABLE $tables");
+                        $dbres = do_sqlquery("REPAIR TABLE $tables");
                         break;
                     case strtoupper($language['DBUTILS_ANALYSE']):
-                        $dbres=do_sqlquery("ANALYZE TABLE $tables");
+                        $dbres = do_sqlquery("ANALYZE TABLE $tables");
                         break;
                     case strtoupper($language['DBUTILS_OPTIMIZE']):
-                        $dbres=do_sqlquery("OPTIMIZE TABLE $tables");
+                        $dbres = do_sqlquery("OPTIMIZE TABLE $tables");
                         break;
                     case strtoupper($language['DBUTILS_CHECK']):
-                        $dbres=do_sqlquery("CHECK TABLE $tables");
+                        $dbres = do_sqlquery("CHECK TABLE $tables");
                         break;
                         /*
                     case strtoupper($language['DBUTILS_DELETE']):
@@ -70,8 +70,8 @@ switch($action)
                         break;
                             */
                  }
-                 $t=array();
-                 while ($tstatus=mysql_fetch_array($dbres))
+                 $t = array();
+                 while ($tstatus = mysqli_fetch_array($dbres))
                       {
                          $t[$i]["table"]=$tstatus['Table'];
                          $t[$i]["operation"]=$tstatus['Op'];
@@ -93,8 +93,8 @@ switch($action)
 
     case 'status':
     default:
-        $dbstatus=do_sqlquery("SHOW TABLE STATUS");
-        if (mysql_num_rows($dbstatus)>0)
+        $dbstatus = do_sqlquery("SHOW TABLE STATUS");
+        if (mysqli_num_rows($dbstatus) > 0)
             {
               $admintpl->set("frm_action","index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=dbutil&amp;action=tables");
               $i=0;
@@ -103,7 +103,7 @@ switch($action)
               $overhead=0;
               $tables=array();
               // display current status for tables
-              while ($tstatus=mysql_fetch_array($dbstatus))
+              while ($tstatus=mysqli_fetch_array($dbstatus))
                   {
                   $tables[$i]["name"]=$tstatus['Name'];
                   $tables[$i]["rows"]=$tstatus['Rows'];

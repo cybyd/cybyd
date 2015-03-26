@@ -270,10 +270,10 @@ switch ($action) {
 // Custom title - start
 	    $custom_title=unesc($_POST["custom_title"]);
 // Custom title - end
-            $rlev=do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":(($FORUMLINK=='ipb')?", `ipb_group_mirror`":""))." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
-            $reslev=mysql_fetch_assoc($rlev);
+            $rlev = do_sqlquery("SELECT `id_level` `base_level`, `level` `name`".((substr($FORUMLINK,0,3)=='smf')?", `smf_group_mirror`":(($FORUMLINK=='ipb')?", `ipb_group_mirror`":""))." FROM {$TABLE_PREFIX}users_level WHERE id=".$level." LIMIT 1");
+            $reslev = mysqli_fetch_assoc($rlev);
             if ( ($CURUSER['id_level'] < $reslev['base_level']))
-                $level=0;
+                $level = 0;
             # check avatar image extension if someone have better idea ;)
             if ($avatar && $avatar!='' && !in_array(substr($avatar,strlen($avatar)-4),array('.gif','.jpg','.bmp','.png')))
                 stderr($language['ERROR'], $language['ERR_AVATAR_EXT']);
@@ -286,12 +286,12 @@ switch ($action) {
             if ($level>0 && $level != $curu['id_level']) {
                 if (substr($FORUMLINK,0,3)=='smf') {
                     # find the coresponding level in smf
-                    if($reslev["smf_group_mirror"]==0)
+                    if ($reslev["smf_group_mirror"]==0)
                         $smf_group=get_result("SELECT ".(($FORUMLINK=="smf")?"`ID_GROUP`":"`id_group`")." FROM `{$db_prefix}membergroups` WHERE `group".(($FORUMLINK=="smf")?"N":"_n")."ame`='".$reslev["name"]."' LIMIT 1", true, $CACHE_DURATION);
                     # if there is one update it
-                    if (isset($smf_group[0]) || $reslev["smf_group_mirror"]>0)
+                    if (isset($smf_group[0]) || $reslev["smf_group_mirror"] > 0)
                     {
-                        if($reslev["smf_group_mirror"]>0)
+                        if ($reslev["smf_group_mirror"]>0)
                         {
                             if($FORUMLINK=="smf")
                                 $smf_group[0]['ID_GROUP']=$reslev["smf_group_mirror"];
