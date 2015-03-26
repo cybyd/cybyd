@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// CyBerFuN.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -39,11 +39,11 @@
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-$BASEPATH=dirname(__FILE__);
+$BASEPATH = dirname(__FILE__);
 
 require("$BASEPATH/include/config.php");
 require("$BASEPATH/include/common.php");
-# protection against sql injection, xss attack
+// protection against sql injection, xss attack
 require_once $BASEPATH.'/include/crk_protection.php';
 
 
@@ -70,7 +70,7 @@ if ($XBTT_USE)
 
     $query_string=implode_with_keys("&", $_GET);
 
-    if ($pid!="") // private announce
+    if ($pid != "") // private announce
     {
        header("Location: $XBTT_URL/$pid/scrape?" . $query_string);
     }
@@ -111,14 +111,14 @@ error_reporting(0);
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass)) or show_error("Tracker errore - mysql_connect: " . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker errore - mysql_connect: " . mysql_error());
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass)) or show_error("Tracker errore - mysql_connect: " . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
-    mysql_select_db($database) or show_error("Tracker errore - $database - ".mysql_error());
+    ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or show_error("Tracker errore - $database - ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
 if (isset($_GET["pid"])) $pid = $_GET["pid"];
-else $pid = "";
+	else $pid = "";
 
 if (strpos($pid, "?"))
 {
@@ -140,7 +140,7 @@ if (($pid=="" || !$pid) && $PRIVATE_SCRAPE)
 
 if (isset($_GET["info_hash"]))
 {
-  if ($pid!="")
+  if ($pid != "")
      $qryStr=substr($_SERVER["QUERY_STRING"],strlen("?pid=$pid"));
   else
       $qryStr=$_SERVER["QUERY_STRING"];
@@ -150,7 +150,7 @@ if (isset($_GET["info_hash"]))
    {
     if (substr($item, 0, 10) == "info_hash=")
       {
-        $ihash=urldecode(substr($item,10));
+        $ihash = urldecode(substr($item,10));
 
         if (strlen($ihash) == 20)
             $ihash = bin2hex($ihash);
@@ -159,7 +159,7 @@ if (isset($_GET["info_hash"]))
         else
             continue; // showError(INVALID_INFO_HASH);
 
-         $newmatches[]=$ihash;
+         $newmatches[] = $ihash;
       }
     }
 
@@ -176,23 +176,23 @@ if (isset($_GET["info_hash"]))
 
 if ($usehash)
 //    $query = mysql_query("SELECT info_hash, filename FROM namemap WHERE external='no' AND info_hash=\"$info_hash\"");
-    $query = mysql_query("SELECT info_hash, filename FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash IN $info_hash");
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT info_hash, filename FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash IN $info_hash");
 else
-    $query = mysql_query("SELECT info_hash, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT info_hash, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
 
 $namemap = array();
-while ($row = mysql_fetch_row($query))
+while ($row = mysqli_fetch_row($query))
     $namemap[$row[0]] = $row[1];
 
 if ($usehash)
-    $query = mysql_query("SELECT f.info_hash, f.seeds, f.leechers, f.finished FROM {$TABLE_PREFIX}files f WHERE external='no' AND info_hash IN $info_hash") or show_error("Database error. Cannot complete request.");
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT f.info_hash, f.seeds, f.leechers, f.finished FROM {$TABLE_PREFIX}files f WHERE external='no' AND info_hash IN $info_hash") or show_error("Database error. Cannot complete request.");
 else
-    $query = mysql_query("SELECT f.info_hash, f.seeds, f.leechers, f.finished FROM {$TABLE_PREFIX}files f WHERE external='no' ORDER BY info_hash") or show_error("Database error. Cannot complete request.");
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT f.info_hash, f.seeds, f.leechers, f.finished FROM {$TABLE_PREFIX}files f WHERE external='no' ORDER BY info_hash") or show_error("Database error. Cannot complete request.");
 
 
 $result="d5:filesd";
 
-while ($row = mysql_fetch_row($query))
+while ($row = mysqli_fetch_row($query))
 {
     $hash = hex2bin($row[0]);
     $result.="20:".$hash."d";
@@ -204,10 +204,10 @@ while ($row = mysql_fetch_row($query))
     $result.="e";
 }
 
-$result.="ee";
+$result .= "ee";
 
 echo $result;
 
-mysql_close();
+((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
 ?>

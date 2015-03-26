@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -30,7 +30,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
-$BASEDIR=dirname(__FILE__);
+$BASEDIR = dirname(__FILE__);
 
 require_once($BASEDIR."/functions.php");
 
@@ -40,7 +40,7 @@ function scrape($url,$infohash='')
 
     if (isset($url))
     {
-        $url_c=parse_url($url);
+        $url_c = parse_url($url);
 
         if(!isset($url_c["port"]) || empty($url_c["port"]))
             $url_c["port"]=80;
@@ -56,7 +56,7 @@ function scrape($url,$infohash='')
 
             $ret = $scraper->scrape($url_c["scheme"]."://".$url_c["host"].":".$url_c["port"].(($url_c["scheme"]=="udp")?"":"/announce"),array($infohash));
             do_sqlquery("UPDATE `{$TABLE_PREFIX}files` SET `lastupdate`=NOW(), `lastsuccess`=NOW(), `seeds`=".$ret[$infohash]["seeders"].", `leechers`=".$ret[$infohash]["leechers"].", `finished`=".$ret[$infohash]["completed"]." WHERE `announce_url` = '".$url."'".($infohash==""?"":" AND `info_hash`='".$infohash."'"), true);
-            if (mysql_affected_rows()==1)
+            if (mysqli_affected_rows($GLOBALS["___mysqli_ston"])==1)
                 write_log('SUCCESS update external torrent from '.$url.' tracker (infohash: '.$infohash.')','');
         }
         catch(ScraperException $e)

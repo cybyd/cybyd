@@ -54,7 +54,7 @@ if ($keywords != "")
     $ekeywords = sqlesc($keywords);
 
     $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}posts WHERE MATCH (body) AGAINST ($ekeywords IN BOOLEAN MODE)",true);
-    $arr = mysql_fetch_row($res);
+    $arr = mysqli_fetch_row($res);
     $hits = intval(0 + $arr[0]);
     if ($hits == 0)
       {

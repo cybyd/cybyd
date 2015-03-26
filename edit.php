@@ -1,14 +1,14 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// CyBerFuN.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -65,7 +65,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
     $golden = 0;
    if($_POST["gold"]!='' && isset($_POST["gold"]))
    {
-    $golden = mysql_real_escape_string($_POST["gold"]);
+    $golden = mysqli_real_escape_string($_POST["gold"]);
    }
 // Gold/Silver Torrent v 1.2 by Losmi / end
 
@@ -311,7 +311,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['screen3']['tmp_name'], $uploadfile3))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen3='".$file_name_s3."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold3"]. "";
 
                         if (!empty($image_drop))
@@ -334,7 +334,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
         }
 // Torrent Image Upload by Real_ptr / end
 
-   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . " WHERE info_hash='" . $torhash . "'",true);
+   do_sqlquery("UPDATE {$TABLE_PREFIX}files SET filename='$fname', comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . " WHERE info_hash='" . $torhash . "'", true);
    redirect($link);
    exit();
    }
@@ -369,10 +369,10 @@ if (isset($_GET["info_hash"])) {
 // f.image, f.screen1, f.screen2, f.screen3,
 // Torrent Image Upload by Real_ptr / end
   $query = "SELECT f.info_hash, f.filename, f.image, f.screen1, f.screen2, f.screen3, f.gold, f.url, UNIX_TIMESTAMP(f.data) as data, f.size, f.comment, f.category as cat_name, $tseeds, $tleechs, $tcompletes, f.speed, f.uploader FROM $ttables WHERE f.info_hash ='" . AddSlashes($_GET["info_hash"]) . "'";
-  $res = do_sqlquery($query,true);
-  $results = mysql_fetch_assoc($res);
+  $res = do_sqlquery($query, true);
+  $results = mysqli_fetch_assoc($res);
 
-  if (!$results || mysql_num_rows($res)==0)
+  if (!$results || mysqli_num_rows($res)==0)
      err_msg($language["ERROR"],$language["TORRENT_EDIT_ERROR"]);
 
   else {
@@ -382,10 +382,10 @@ if (isset($_GET["info_hash"])) {
            stderr($language["ERROR"],$language["CANT_EDIT_TORR"]);
        }
 
-    $torrenttpl=new bTemplate();
+    $torrenttpl = new bTemplate();
     $torrenttpl->set("language",$language);
 // Torrent Image Upload by Real_ptr / start
-    $row=$res[0];
+    $row = $res[0];
     $torrenttpl->set("imageon",$GLOBALS["imageon"] == "true", TRUE);
     $torrenttpl->set("screenon",$GLOBALS["screenon"] == "true", TRUE);
 // Torrent Image Upload by Real_ptr / end
@@ -402,10 +402,10 @@ if (isset($_GET["info_hash"])) {
     $s .= "</select>\n";
 */
 
-    $torrent=array();
+    $torrent = array();
 // Gold/Silver Torrent v 1.2 by Losmi / start
     $gold_level='';
-    $resg=get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
+    $resg = get_result("SELECT * FROM {$TABLE_PREFIX}gold  WHERE id='1'",true);
     foreach ($resg as $key=>$value)
         $gold_level = $value["level"];
 
@@ -416,25 +416,25 @@ if (isset($_GET["info_hash"])) {
     else
          $torrenttpl->set("edit_gold_level",true,true);
 
-    $torrent["gold"]=createGoldCategories($results["gold"]);
+    $torrent["gold"] = createGoldCategories($results["gold"]);
 // Gold/Silver Torrent v 1.2 by Losmi / end
-    $torrent["link"]="index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
-    $torrent["filename"]=$results["filename"];
-    $torrent["info_hash"]=$results["info_hash"];
-    $torrent["description"]=textbbcode("edit","comment",unesc($results["comment"]));
-    $torrent["size"]=makesize($results["size"]);
+    $torrent["link"] = "index.php?page=edit&info_hash=".$results["info_hash"]."&returnto=".urlencode($link);
+    $torrent["filename"] = $results["filename"];
+    $torrent["info_hash"] = $results["info_hash"];
+    $torrent["description"] = textbbcode("edit","comment",unesc($results["comment"]));
+    $torrent["size"] = makesize($results["size"]);
 
     include(dirname(__FILE__)."/include/offset.php");
 
-    $torrent["date"]=date("d/m/Y",$results["data"]-$offset);
-    $torrent["complete"]=$results["finished"]." ".$language["X_TIMES"];
-    $torrent["peers"]=$language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"]+$results["seeds"]). " ". $language["PEERS"];
-    $torrent["cat_combo"]= categories($results["cat_name"]); //$s;
+    $torrent["date"] 		= date("d/m/Y",$results["data"]-$offset);
+    $torrent["complete"] 	= $results["finished"]." ".$language["X_TIMES"];
+    $torrent["peers"] 		= $language["SEEDERS"] .": " .$results["seeds"].",".$language["LEECHERS"] .": ". $results["leechers"]."=". ($results["leechers"]+$results["seeds"]). " ". $language["PEERS"];
+    $torrent["cat_combo"] 	= categories($results["cat_name"]); //$s;
 
     $torrenttpl->set("torrent",$torrent);
 
     unset($results);
-    mysql_free_result($res);
+    ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 
   }
 }

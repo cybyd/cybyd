@@ -131,26 +131,26 @@ require_once ("include/config.php");
 
 dbconn();
 
-     $res =mysql_query("SELECT * FROM {$TABLE_PREFIX}polls WHERE status='true'") or die(mysql_error());
-     $result=mysql_fetch_array($res);
-   $pid=$result["pid"];
+     $res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM {$TABLE_PREFIX}polls WHERE status='true'") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+     $result = mysql_fetch_array($res);
+   $pid = $result["pid"];
 if($result){
-     $res2=mysql_query("SELECT * FROM {$TABLE_PREFIX}poll_voters WHERE pid='$pid'") or die(mysql_error());
-     $question=$result["poll_question"];
+     $res2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM {$TABLE_PREFIX}poll_voters WHERE pid='$pid'") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+     $question = $result["poll_question"];
      block_begin("Poll: $question");
      print("<tr><td class=blocklist align=center>\n");
      print("<table cellspacing=2 cellpading=2>\n");
 if(!isset ($CURUSER)) global $CURUSER;
 $total_votes = 0;
-$check=0;
-if($CURUSER["id_level"]<3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check=1;
-else $check=0;
-while($voters=mysql_fetch_array($res2)){
+$check =0 ;
+if($CURUSER["id_level"] < 3 || (isset($_POST['showres']) && $_POST['showres'] == 'Show Results')) $check=1;
+else $check = 0;
+while($voters = mysqli_fetch_array($res2)) {
 if($CURUSER["uid"]==$voters["memberid"]) $check=1;
 }
 
 
-        if($check==1){  
+        if($check==1) {  
           
           $poll_answers = unserialize(stripslashes($result["choices"]));
           
@@ -220,7 +220,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll
   $memberid=$CURUSER["uid"];
   $ip= $_SERVER['REMOTE_ADDR'];
   $new_poll_array=array();
-  mysql_query("INSERT INTO poll_voters SET ip='$ip', votedate='".time()."', pid='$pid', memberid='$memberid'");
+  mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO poll_voters SET ip='$ip', votedate='".time()."', pid='$pid', memberid='$memberid'");
   $poll_answers = unserialize(stripslashes($result["choices"]));
   reset($poll_answers);
 
@@ -233,7 +233,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Submit' && isset($_POST['poll
   }
   $votings= addslashes(serialize($new_poll_array));
   $uvotes=$result["votes"]+1;
-  mysql_query("UPDATE {$TABLE_PREFIX}polls SET votes='$uvotes', choices='$votings' WHERE pid='$pid'");
+  mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$TABLE_PREFIX}polls SET votes='$uvotes', choices='$votings' WHERE pid='$pid'");
   redirect("index.php");
   
 }
