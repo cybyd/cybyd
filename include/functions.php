@@ -8,7 +8,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -722,7 +722,7 @@ function userlogin()
                 $id=1;
         }
     }
-    if($id==1)
+    if($id == 1)
     {
         $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.seedbonus, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;", true);
         $row = mysql_fetch_assoc($res);
@@ -759,26 +759,26 @@ function dbconn($do_clean=false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 
   if ($GLOBALS['persist'])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass);
+    $conres=($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
   else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass);
+    $conres=($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
 
   if (!$conres) {
-    switch (mysql_errno()) {
+    switch (((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
       case 1040:
       case 2002:
         if ($_SERVER['REQUEST_METHOD'] == 'GET')
           die('<html><head><meta http-equiv=refresh content="20;'.$_SERVER['REQUEST_URI'].'"></head><body><table border="0" width="100%" height="100%"><tr><td><h3 align="center">'.$language['ERR_SERVER_LOAD'].'</h3></td></tr></table></body></html>');
         die($language['ERR_CANT_CONNECT']);
       default:
-        die('['.mysql_errno().'] dbconn: mysql_connect: '.mysql_error());
+        die('['.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)).'] dbconn: mysql_connect: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
   }
 
   if($GLOBALS["charset"]=="UTF-8")
       do_sqlquery("SET NAMES utf8");
 
-  mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
+  ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
   userlogin();
 
