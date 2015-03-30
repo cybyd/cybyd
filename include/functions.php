@@ -286,7 +286,7 @@ function print_debug($level=3, $key=' - ') {
         case '3':
             $return[]='[ GZIP: '.$gzip.' ]';
         case '2':
-            $return[]='[ Script Execution: '.number_format(($time_end-$time_start),4).' sec. ]';
+            $return[]='[ Script Execution: '.number_format(($time_end-$time_start), 4).' sec. ]';
         case '1':
             $return[]='[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
             break;
@@ -299,7 +299,7 @@ function print_debug($level=3, $key=' - ') {
 function print_version() {
   global $tracker_version, $CyByD_v;
 
-  return '[ <a href="https://github.com/cybernet/cybyd" target="_blank">CyByD`</a> '.$CyByD_v.' MoDDed by <b>cybernet2u</b> @ <b><a href="http://xList.ro" target="_blank">xList.ro</b></a> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
+  return '[ <a href="https://github.com/cybyd/cybyd" target="_blank">CyByD`</a> '.$CyByD_v.' MoDDed by <b>cybernet2u</b> @ <b><a href="http://xLiST.ro" target="_blank">xLiST.ro</b></a> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
 }
 
 function print_designer() {

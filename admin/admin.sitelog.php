@@ -48,7 +48,7 @@ else
     $delete_timeout=time() - (60*60*24*7); // delete log older then 7 days
     do_sqlquery("DELETE FROM {$TABLE_PREFIX}logs where added<$delete_timeout");
     $logres=do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}logs ORDER BY added DESC");
-    $lognum=mysql_fetch_row($logres);
+    $lognum=mysqli_fetch_row($logres);
     $num=$lognum[0];
     $perpage=(max(0,$CURUSER["postsperpage"])>0?$CURUSER["postsperpage"]:20);
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=logview&amp;");
@@ -65,7 +65,7 @@ else
 
     if ($logres)
         {
-        while ($logview=mysql_fetch_assoc($logres))
+        while ($logview = mysqli_fetch_assoc($logres))
             {
             if ($logview["type"]=="delete")
                 $log[$i]["class"]="class=\"deleted\"";
@@ -87,7 +87,7 @@ else
     $admintpl->set("logs",$log);
 
     unset($logview);
-    mysql_free_result($logres);
+    ((mysqli_free_result($logres) || (is_object($logres) && (get_class($logres) == "mysqli_result"))) ? true : false);
     unset($log);
 
 }

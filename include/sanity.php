@@ -32,14 +32,14 @@
 
 function do_sanity() {
 
-         global $clean_interval, $XBTT_USE, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CURRENTPATH,$LIVESTATS,$LOG_HISTORY, $TABLE_PREFIX;
+         global $clean_interval, $XBTT_USE, $PRIVATE_ANNOUNCE, $TORRENTSDIR, $CAPTCHA_FOLDER, $CURRENTPATH, $LIVESTATS, $LOG_HISTORY, $TABLE_PREFIX;
 
-// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / start
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 757 by cybernet2u / start
 if ($XBTT_USE) {
  $res = do_sqlquery("SELECT uid FROM xbt_files_users as u INNER JOIN xbt_files as x ON u.fid=x.fid WHERE u.left = '0' AND x.flags='0' AND u.active='1'");
-   if (mysql_num_rows($res) > 0)
+   if (mysqli_num_rows($res) > 0)
    {
-       while ($arr = mysql_fetch_assoc($res))
+       while ($arr = mysqli_fetch_assoc($res))
        {
        $x=$arr["uid"];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE id = '$x'");
@@ -47,20 +47,20 @@ if ($XBTT_USE) {
    } }else
    {
  $res = do_sqlquery("SELECT pid FROM {$TABLE_PREFIX}peers WHERE status = 'seeder'");
-   if (mysql_num_rows($res) > 0)
+   if (mysqli_num_rows($res) > 0)
    {
-       while ($arr = mysql_fetch_assoc($res))
+       while ($arr = mysqli_fetch_assoc($res))
        {
        $x=$arr['pid'];
        quickQuery("UPDATE {$TABLE_PREFIX}users SET seedbonus = seedbonus+".$GLOBALS["bonus"]."*".$clean_interval."/3600 WHERE pid = '$x'");
        }
    } }
-// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 743 by cybernet2u / end
+// Bonus system by Real_ptr 1.3 (2.3.0) - upgraded to rev 757 by cybernet2u / end
 
          // SANITY FOR TORRENTS
          $results = do_sqlquery("SELECT info_hash, seeds, leechers, dlbytes, filename FROM {$TABLE_PREFIX}files WHERE external='no'");
          $i = 0;
-         while ($row = mysql_fetch_row($results))
+         while ($row = mysqli_fetch_row($results))
          {
              list($hash, $seeders, $leechers, $bytes, $filename) = $row;
 
@@ -68,7 +68,7 @@ if ($XBTT_USE) {
 
          // for testing purpose -- begin
          $resupd=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}peers where lastupdate < ".$timeout ." AND infohash='$hash'");
-         if (mysql_num_rows($resupd)>0)
+         if (mysqli_num_rows($resupd)>0)
             {
             while ($resupdate = mysql_fetch_array($resupd))
               {
@@ -89,7 +89,7 @@ if ($XBTT_USE) {
                   if ($LOG_HISTORY)
                      {
                           $resuser=do_sqlquery("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." ORDER BY lastconnect DESC LIMIT 1");
-                          $curu=@mysql_fetch_row($resuser);
+                          $curu=@mysqli_fetch_row($resuser);
                           quickquery("UPDATE {$TABLE_PREFIX}history SET active='no' WHERE uid=$curu[0] AND infohash='$hash'");
                      }
 
@@ -102,7 +102,7 @@ if ($XBTT_USE) {
 
              $results2 = do_sqlquery("SELECT status, COUNT(status) from {$TABLE_PREFIX}peers WHERE infohash='$hash' GROUP BY status");
              $counts = array();
-             while ($row = mysql_fetch_row($results2))
+             while ($row = mysqli_fetch_row($results2))
                  $counts[$row[0]] = 0+$row[1];
 
              quickQuery("UPDATE {$TABLE_PREFIX}files SET leechers=".(isset($counts["leecher"])?$counts["leecher"]:0).",seeds=".(isset($counts["seeder"])?$counts["seeder"]:0)." WHERE info_hash=\"$hash\"");
@@ -124,16 +124,16 @@ if ($XBTT_USE) {
          quickQuery("DELETE readposts FROM {$TABLE_PREFIX}readposts LEFT JOIN users ON readposts.userid = users.id WHERE users.id IS NULL");
          
          // deleting orphan image in torrent's folder (if image code is enabled)
-         $tordir=realpath("$CURRENTPATH/../$TORRENTSDIR");
-         if ($dir = @opendir($tordir."/"))
-           {
-            while(false !== ($file = @readdir($dir)))
-               {
-                   if ($ext = substr(strrchr($file, "."), 1)=="png")
-                       unlink("$tordir/$file");
-               }
-            @closedir($dir);
-         }
+         $CAPTCHA_FOLDER = realpath("$CURRENTPATH/../$CAPTCHA_FOLDER");
+ if ($dir = @opendir($CAPTCHA_FOLDER."/"))
+	{
+	while(false !== ($file = @readdir($dir)))
+        {
+	if($ext = substr(strrchr($file, "."), 1) == "png")
+              unlink("$CAPTCHA_FOLDER/$file");
+	}
+        @closedir($dir);
+	}
 
 }
 ?>

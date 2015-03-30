@@ -79,7 +79,7 @@ $userid = intval($CURUSER["uid"]);
 //------ Get topic info
 
 $res = do_sqlquery("SELECT t.*, f.name, f.minclassread, minclasswrite FROM {$TABLE_PREFIX}topics t LEFT JOIN {$TABLE_PREFIX}forums f ON t.forumid=f.id WHERE t.id=$topicid LIMIT 1",true);
-$arr = mysql_fetch_assoc($res);
+$arr = mysqli_fetch_assoc($res);
 
 $locked = ($arr["locked"] == 'yes');
 $subject = htmlspecialchars(unesc($arr["subject"]));
@@ -103,7 +103,7 @@ do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET views = views + 1 WHERE id=$topici
 //------ Get post count
 
 $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid",true);
-$arr = mysql_fetch_row($res);
+$arr = mysqli_fetch_row($res);
 $postcount = $arr[0];
 
 // the message to find has been given in query string
@@ -119,13 +119,13 @@ if ($msg_number!="")
   }
   else
      $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid AND id<=$msg_number",true);
-  $arr = mysql_fetch_row($res);
+  $arr = mysqli_fetch_row($res);
   $cur_post_pos = $arr[0];
   $_GET["pages"] = ceil($cur_post_pos / $postsperpage);
 }
 
 unset($arr);
-mysql_free_result($res);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 
 
 //------ Make page menu
@@ -213,11 +213,11 @@ unset($posts);
 // set this topic as read (update the reaposts table with higher post id for this topic
 $ret=do_sqlquery("SELECT id FROM {$TABLE_PREFIX}readposts WHERE topicid=$topicid AND userid=".intval(0+$CURUSER["uid"]),true);
 // first time this user
-if (mysql_num_rows($ret)==0)
+if (mysqli_num_rows($ret)==0)
     do_sqlquery("INSERT INTO {$TABLE_PREFIX}readposts SET lastpostread=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid), topicid=$topicid, userid=".intval(0+$CURUSER["uid"]),true);
 else // update existing record
  {
-   $rp_id=mysql_fetch_row($ret);
+   $rp_id=mysqli_fetch_row($ret);
    do_sqlquery("UPDATE {$TABLE_PREFIX}readposts SET lastpostread=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid) WHERE id=".$rp_id[0],true);
 }
 //------ Mod options

@@ -1,10 +1,10 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
-// xList .::. xDNS
+// xLiST .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@
 define("IN_BTIT",true);
 
 
-$THIS_BASEPATH=dirname(__FILE__);
+$THIS_BASEPATH = dirname(__FILE__);
 require("$THIS_BASEPATH/include/functions.php");
 
 dbconn();
@@ -50,7 +50,7 @@ dbconn();
 
 
 // get user's style
-$resheet=get_result("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."",true,$btit_settings['cache_duration']);
+$resheet = get_result("SELECT * FROM {$TABLE_PREFIX}style where id=".$CURUSER["style"]."", true, $btit_settings['cache_duration']);
 if (!$resheet)
    {
 
@@ -67,13 +67,13 @@ else
     }
 
 
-$idlang=intval($_GET["language"]);
+$idlang = intval($_GET["language"]);
 
 // getting user language
-if ($idlang==0)
-   $reslang=get_result("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"],true,$btit_settings['cache_duration']);
+if ($idlang == 0)
+   $reslang = get_result("SELECT * FROM {$TABLE_PREFIX}language WHERE id=".$CURUSER["language"], true, $btit_settings['cache_duration']);
 else
-   $reslang=get_result("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang",true,$btit_settings['cache_duration']);
+   $reslang = get_result("SELECT * FROM {$TABLE_PREFIX}language WHERE id=$idlang", true, $btit_settings['cache_duration']);
 
 if (!$reslang)
    {
@@ -130,7 +130,7 @@ if ($action!="find")
 }
 else
 {
-  $res=get_result("SELECT username FROM {$TABLE_PREFIX}users WHERE id>1 AND username LIKE '%".mysql_real_escape_string($_POST["user"])."%' ORDER BY username",true,$btit_settings['cache_duration']);
+  $res = get_result("SELECT username FROM {$TABLE_PREFIX}users WHERE id>1 AND username LIKE '%".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["user"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."%' ORDER BY username", true, $btit_settings['cache_duration']);
   if (!$res or count($res)==0)
      {
          print("<center>".$language["NO_USERS_FOUND"]."!<br />");
