@@ -1,4 +1,12 @@
 <?php
+
+// xDNS.ro & xLiST.ro
+
+// xLiST .::. xDNS
+// http://xDNS.ro/
+// http://xLiST.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
