@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -45,7 +45,7 @@ if (!defined("IN_BTIT"))
 
 if (!$CURUSER || $CURUSER["uid"]==1)
    {
-   stderr($language["ERROR"],$language["ONLY_REG_COMMENT"]);
+   stderr($language["ERROR"], $language["ONLY_REG_COMMENT"]);
 }
 
 $comment = ($_POST["comment"]);
@@ -54,20 +54,20 @@ $id = $_GET["id"];
 if (isset($_GET["cid"]))
     $cid = intval($_GET["cid"]);
 else
-    $cid=0;
+    $cid = 0;
 
 
 if (isset($_GET["action"]))
  {
   if ($CURUSER["delete_torrents"]=="yes" && $_GET["action"]=="delete")
     {
-     do_sqlquery("DELETE FROM {$TABLE_PREFIX}comments WHERE id=$cid",true);
+     do_sqlquery("DELETE FROM {$TABLE_PREFIX}comments WHERE id=$cid", true);
      redirect("index.php?page=torrent-details&id=$id#comments");
      exit;
     }
  }
 
-$tpl_comment=new bTemplate();
+$tpl_comment = new bTemplate();
 
 $tpl_comment->set("language",$language);
 $tpl_comment->set("comment_id",$id);
@@ -85,7 +85,7 @@ if (isset($_POST["info_hash"])) {
      exit();
      }
 	 else{	 
-  do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . mysql_real_escape_string(StripSlashes($_POST["info_hash"])) . "\")",true);
+  do_sqlquery("INSERT INTO {$TABLE_PREFIX}comments (added,text,ori_text,user,info_hash) VALUES (NOW(),\"$comment\",\"$comment\",\"$user\",\"" . ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], StripSlashes($_POST["info_hash"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) . "\")", true);
   redirect("index.php?page=torrent-details&id=" . StripSlashes($_POST["info_hash"])."#comments");
   die();
   }

@@ -114,7 +114,7 @@ switch ($action)
             $xbt_in_db=array();
             if ($res)
                {
-               while ($result=mysql_fetch_row($res))
+               while ($result=mysqli_fetch_row($res))
                      {
                          $xbt_in_db[]=$result[0];
                      }
@@ -141,12 +141,12 @@ switch ($action)
               // insert non exist torrent into xbt_files
               do_sqlquery("INSERT INTO xbt_files (info_hash, mtime, ctime) SELECT UNHEX(info_hash), unix_timestamp(), unix_timestamp() FROM {$TABLE_PREFIX}files WHERE UNHEX(info_hash) NOT IN (SELECT info_hash FROM xbt_files) AND external='no'",true);
               // control missed field (latest xbt don't have torrent_pass field)
-              $mf=mysql_list_fields($database,"xbt_users");
+              $mf=(($___mysqli_tmp = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW COLUMNS FROM $database.xbt_users")) ? $___mysqli_tmp : false);
               $tp_present=false;
               $tpv_present=false;
-              for ($i=0;$i<mysql_num_fields($mf);$i++)
+              for ($i=0;$i<(($___mysqli_tmp = mysqli_num_fields($mf)) ? $___mysqli_tmp : false);$i++)
                 {
-                  $fn=mysql_field_name($mf,$i);
+                  $fn=((($___mysqli_tmp = mysqli_fetch_field_direct($mf, 0)->name) && (!is_null($___mysqli_tmp))) ? $___mysqli_tmp : false);
                   if ($fn=="torrent_pass")
                          $tp_present=true;
                   if ($fn=="torrent_pass_version")
@@ -194,17 +194,17 @@ switch ($action)
         }
 
         //die(implode(",",$values));
-        mysql_query("DELETE FROM {$TABLE_PREFIX}settings") or stderr($language["ERROR"],mysql_error());
-        mysql_query("INSERT INTO {$TABLE_PREFIX}settings (`key`,`value`) VALUES ".implode(",",$values).";") or stderr($language["ERROR"],mysql_error());
+        mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}settings") or stderr($language["ERROR"],((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO {$TABLE_PREFIX}settings (`key`,`value`) VALUES ".implode(",",$values).";") or stderr($language["ERROR"],((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         // update guest values for language, style, torrentsxpage etc...
-        mysql_query("UPDATE {$TABLE_PREFIX}users SET language=".sqlesc($btit_settings["default_language"]).",
+        mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$TABLE_PREFIX}users SET language=".sqlesc($btit_settings["default_language"]).",
                             style=".sqlesc($btit_settings["default_style"]).",
-                            torrentsperpage=".sqlesc($btit_settings["max_torrents_per_page"])." WHERE id=1") or stderr($language["ERROR"],mysql_error());
+                            torrentsperpage=".sqlesc($btit_settings["max_torrents_per_page"])." WHERE id=1") or stderr($language["ERROR"],((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
         if($alter===true)
         {
-            mysql_query("ALTER TABLE `{$TABLE_PREFIX}users` CHANGE `torrentsperpage` `torrentsperpage` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT ".sqlesc($btit_settings["max_torrents_per_page"]));
-            mysql_query("UPDATE `{$TABLE_PREFIX}users` SET `torrentsperpage`=".sqlesc($btit_settings["max_torrents_per_page"])." WHERE `torrentsperpage`=".sqlesc($old_setting));
+            mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE `{$TABLE_PREFIX}users` CHANGE `torrentsperpage` `torrentsperpage` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT ".sqlesc($btit_settings["max_torrents_per_page"]));
+            mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$TABLE_PREFIX}users` SET `torrentsperpage`=".sqlesc($btit_settings["max_torrents_per_page"])." WHERE `torrentsperpage`=".sqlesc($old_setting));
         }
 
         unset($values);
