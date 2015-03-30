@@ -53,10 +53,10 @@ $uid = (int)$u;  # userid from the form
 include("../include/settings.php");
 include("../include/common.php");
 require("../include/crk_protection.php");//xss fix
-mysql_select_db($database, mysql_connect($dbhost,$dbuser,$dbpass));
+((bool)mysqli_query( ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)), "USE $database"));
 
-$secsui_res=mysql_query("SELECT * FROM `{$TABLE_PREFIX}settings`");
-while($secsui_arr=mysql_fetch_assoc($secsui_res))
+$secsui_res=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM `{$TABLE_PREFIX}settings`");
+while($secsui_arr=mysqli_fetch_assoc($secsui_res))
 {
     $btit_settings[$secsui_arr["key"]]=$secsui_arr["value"];
 }
@@ -69,19 +69,19 @@ if($cookie["is_valid"]===false || $cookie["id"]==1)
 if($cookie["id"]!=$uid)
 {
     // select first owner (default id_level=8) from users table
-    $ra=mysql_fetch_assoc(mysql_query("SELECT `id` FROM `{$TABLE_PREFIX}users` WHERE `id_level`=8 ORDER BY `id` LIMIT 1"));
+    $ra=mysqli_fetch_assoc(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `id` FROM `{$TABLE_PREFIX}users` WHERE `id_level`=8 ORDER BY `id` LIMIT 1"));
     $admin_pm_id=$ra['id'];
 
     $ip=getip();
     $name="Hacker [$ip]";
     $uid=1;
     $text="[color=red][b]I am a hacker who deserves to be banned![/b][/color] :axe:";
-    $res=mysql_query("SELECT `id`, `username` FROM `{$TABLE_PREFIX}users` WHERE `cip`='$ip' ORDER BY `id` ASC");
-    if(@mysql_num_rows($res)>0)
+    $res=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `id`, `username` FROM `{$TABLE_PREFIX}users` WHERE `cip`='$ip' ORDER BY `id` ASC");
+    if(@mysqli_num_rows($res)>0)
     {
         $subject="Shoutbox hack attempt!";
         $msg="Someone with the IP Address $ip hacked the shoutbox on ".date('l jS F Y \a\\t g:ia', time()).", here is a list of potential members to check:\n\n";
-        while($row=mysql_fetch_assoc($res))
+        while($row=mysqli_fetch_assoc($res))
         {
             $msg.="[url=$BASEURL/index.php?page=userdetails&id=".$row["id"]."]".$row["username"]."[/url]\n";
         }
@@ -131,7 +131,7 @@ function addData($name,$text,$uid)
     if($GLOBALS['charset']=="UTF-8" && function_exists('mysql_set_charset'))
         mysql_set_charset('utf8',$conn);
 
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query( $conn, $sql);
     if (!$results || empty($results)) 
     {
         # echo 'There was an error creating the entry';
@@ -145,12 +145,12 @@ function getID($position) {
   
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat ORDER BY id DESC LIMIT ".$position.",1";
     $conn = getDBConnection(); 
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query( $conn, $sql);
     if (!$results || empty($results)) {
         # echo 'There was an error creating the entry';
         end;
     }
-    while ($row = mysql_fetch_array($results)) {
+    while ($row = mysqli_fetch_array($results)) {
         $id = $row[0]; # the result is converted from the db setup (see conn.php)
     }
     if ($id) {
@@ -164,7 +164,7 @@ function deleteEntries($id) {
   
     $sql =  "DELETE FROM {$TABLE_PREFIX}chat WHERE id < ".$id;
     $conn = getDBConnection();
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query( $conn, $sql);
     if (!$results || empty($results)) {
         # echo 'There was an error deletig the entries';
         end;
