@@ -50,12 +50,12 @@ if(get_remote_file("http://www.btiteam.org"))
 
 */
 
-$admin=array();
+$admin = array();
 
-$res=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}tasks");
+$res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}tasks");
 if ($res)
    {
-    while ($result=mysql_fetch_array($res))
+    while ($result = mysqli_fetch_array($res))
           {
           if ($result["task"]=="sanity")
              $admin["lastsanity"]=$language["LAST_SANITY"]."<br />\n".get_date_time($result["last_time"])."<br />\n(".$language["NEXT"].": ".get_date_time($result["last_time"]+intval($GLOBALS["clean_interval"])).")<br />\n<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=sanity&amp;action=now\">Do it now!</a><br />";
@@ -70,9 +70,9 @@ $xbt_tables=array('xbt_config','xbt_deny_from_hosts','xbt_files','xbt_files_user
 $xbt_in_db=array();
 if ($res)
    {
-   while ($result=mysql_fetch_row($res))
+   while ($result = mysqli_fetch_row($res))
          {
-             $xbt_in_db[]=$result[0];
+             $xbt_in_db[] = $result[0];
          }
  }
  $ad=array_diff($xbt_tables,$xbt_in_db);
@@ -87,7 +87,7 @@ unset($xbt_tables);
 unset($xbt_in_db);
          
 unset($result);
-mysql_free_result($res);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 
 // check torrents' folder
 if (file_exists($TORRENTSDIR))
@@ -164,10 +164,10 @@ $admin["infos"].=("<br />\n<table border=\"0\">\n");
 $admin["infos"].=("<tr><td class=\"header\" align=\"center\">Server's OS</td></tr><tr><td align=\"left\">".php_uname()."</td></tr>");
 $admin["infos"].=("<tr><td class=\"header\" align=\"center\">PHP version</td></tr><tr><td align=\"left\">".phpversion()."</td></tr>");
 
-$sqlver=mysql_fetch_row(do_sqlquery("SELECT VERSION()"));
+$sqlver = mysqli_fetch_row(do_sqlquery("SELECT VERSION()"));
 $admin["infos"].=("\n<tr><td class=\"header\" align=\"center\">MYSQL version</td></tr><tr><td align=\"left\">$sqlver[0]</td></tr>");
-$sqlver=mysql_stat();
-$sqlver=explode('  ',$sqlver);
+$sqlver = mysqli_stat($GLOBALS["___mysqli_ston"]);
+$sqlver = explode('  ',$sqlver);
 $admin["infos"].=("\n<tr><td valign=\"top\" class=\"header\" align=\"center\">MYSQL stats</td></tr>\n");
 for ($i=0;$i<count($sqlver);$i++)
       $admin["infos"].=("<tr><td align=\"left\">$sqlver[$i]</td></tr>\n");
