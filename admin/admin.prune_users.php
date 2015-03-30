@@ -54,7 +54,7 @@ if ($action=="prune")
              if ($uid==1) continue;
              $del_id[]=$uid;
              }
-     do_sqlquery("DELETE FROM {$TABLE_PREFIX}users WHERE id IN ('".implode("','",$del_id)."')",true);
+     do_sqlquery("DELETE FROM {$TABLE_PREFIX}users WHERE id IN ('".implode("','",$del_id)."')", true);
      
      if(substr($GLOBALS["FORUMLINK"],0,3)=="smf")
      {
@@ -84,7 +84,7 @@ if ($action=="prune")
                 $ipb_stats=unserialize($ipb_res[0]["cs_value"]);
                 $ipb_stats["mem_count"]-=$ipb_counter;
                 $updated_ipb_stats=serialize($ipb_stats);
-                do_sqlquery("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".mysql_real_escape_string($updated_ipb_stats)."' WHERE `cs_key`='stats'",true);
+                do_sqlquery("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $updated_ipb_stats) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `cs_key`='stats'",true);
             }
         }
     }
