@@ -51,10 +51,10 @@ class ocr_captcha {
   }
 
   function get_filename($public='') {
-    global $TORRENTSDIR;
+	global $CAPTCHA_FOLDER;
     if ($public=='')
       $public=$this->public_key;
-    return $TORRENTSDIR.'/'.$public.'.'.$this->imagetype;
+    return $CAPTCHA_FOLDER.'/'.$public.'.'.$this->imagetype;
   }
 
     // generate the private text coming from the public text, using $this->key (not to be public!!), all you have to do is here to change the algorithm

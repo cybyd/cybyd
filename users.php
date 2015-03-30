@@ -73,7 +73,7 @@ else
          $addparams="";
          if ($search!="")
             {
-            $where=" AND u.username LIKE '%".htmlspecialchars(mysql_real_escape_string($_GET["searchtext"]))."%'";
+            $where=" AND u.username LIKE '%".htmlspecialchars(((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_GET["searchtext"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")))."%'";
             $addparams="searchtext=$search";
             }
          else
