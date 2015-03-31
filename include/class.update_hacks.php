@@ -492,11 +492,10 @@ class update_hacks
 
 
       // private, used only to set errors in sql action when it fail
-      function db_error(){
+      function db_error() {
         global $j;
 
-        //$this->errors[]["message"]=mysql_error();
-        $this->_err_message(mysql_error(),"Sql","Check the query");
+        $this->_err_message(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)),"Sql","Check the query");
         $this->file[$j]["status"]="<span style=\"font-weight: bold; color:red;\">Failed</span>";
         $this->file[$j]["operation"]="Sql";
 
@@ -641,12 +640,12 @@ class update_hacks
                               $this->file[$j]["status"]="<span style=\"font-weight: bold; color:green;\">OK</span>";
 
                               require_once(dirname(__FILE__)."/settings.php");
-                              @mysql_connect($dbhost,$dbuser,$dbpass) or die("Error connecting to $dbhost!");
-                              @mysql_select_db($database) or ($this->db_error());
+                              @($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)) or die("Error connecting to $dbhost!");
+                              @((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or ($this->db_error());
                               // if we just test then that's all, else we will run the query
                               $thequery=str_replace("\"","\\\"",$hack_array[$i]["file"][$j]["operations"][$k]["data"]);
                               if (!$test)
-                                 @mysql_query(str_replace("{\$db_prefix}","$TABLE_PREFIX",$thequery));
+                                 @mysqli_query($GLOBALS["___mysqli_ston"], str_replace("{\$db_prefix}","$TABLE_PREFIX",$thequery));
                             break;
 
                           case 'copy':
