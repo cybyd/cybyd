@@ -43,7 +43,7 @@ if (!defined("IN_BTIT"))
 
 session_name("xbtit");
 session_start();
-$_SESSION=array();
+$_SESSION = array();
 setcookie("xbtit", "", time()-3600, "/");
 session_destroy();
 
@@ -57,7 +57,7 @@ function xbtit_login()
     $language["INSERT_USERNAME"]=AddSlashes($language["INSERT_USERNAME"]);
     $language["INSERT_PASSWORD"]=AddSlashes($language["INSERT_PASSWORD"]);
 
-    $login=array();
+    $login = array();
     $login["action"]="index.php?page=login&amp;returnto=".urlencode("index.php")."";
     $login["username"]=$user;
     $login["create"]="index.php?page=signup";
@@ -65,7 +65,7 @@ function xbtit_login()
     $logintpl->set("login",$login);
 }
 
-$logintpl=new bTemplate();
+$logintpl = new bTemplate();
 
 if (!$CURUSER || $CURUSER["uid"]==1)
 {
@@ -83,7 +83,7 @@ if (!$CURUSER || $CURUSER["uid"]==1)
         if (substr($FORUMLINK,0,3)=="smf")
             $smf_pass = sha1(strtolower($user) . $pwd);
 
-        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".((substr($FORUMLINK,0,3)=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`":(($FORUMLINK=="ipb")?", `u`.`ipb_fid`, `i`.`members_pass_hash`":""))." FROM `{$TABLE_PREFIX}users` `u` ".((substr($FORUMLINK,0,3)=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."":(($FORUMLINK=="ipb")?"LEFT JOIN `{$ipb_prefix}members` `i` ON `u`.`ipb_fid`=`i`.`member_id`":""))." WHERE `u`.`username` ='".AddSlashes($user)."'",true);
+        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".((substr($FORUMLINK,0,3)=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`":(($FORUMLINK=="ipb")?", `u`.`ipb_fid`, `i`.`members_pass_hash`":""))." FROM `{$TABLE_PREFIX}users` `u` ".((substr($FORUMLINK,0,3)=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."":(($FORUMLINK=="ipb")?"LEFT JOIN `{$ipb_prefix}members` `i` ON `u`.`ipb_fid`=`i`.`member_id`":""))." WHERE `u`.`username` ='".AddSlashes($user)."'", true);
         $row = mysqli_fetch_assoc($res);
 
         if (!$row)
@@ -95,8 +95,8 @@ if (!$CURUSER || $CURUSER["uid"]==1)
         }
         else
         {
-            $passtype=hash_generate($row, $pwd, $user);
-            if($row["password"]==$passtype[$row["pass_type"]]["hash"])
+            $passtype = hash_generate($row, $pwd, $user);
+            if($row["password"] == $passtype[$row["pass_type"]]["hash"])
             {
                 // We have a correct password entry
                 
@@ -119,23 +119,23 @@ if (!$CURUSER || $CURUSER["uid"]==1)
 
                 if (substr($FORUMLINK,0,3)=="smf" && $smf_pass==$row["passwd"])
                 {
-                    $new_smf_salt=substr(md5(rand()), 0, 4);
-                    do_sqlquery("UPDATE `{$db_prefix}members` SET ".(($FORUMLINK=="smf")?"`passwordSalt`":"`password_salt`")."='".$new_smf_salt."' WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"],true);
+                    $new_smf_salt = substr(md5(rand()), 0, 4);
+                    do_sqlquery("UPDATE `{$db_prefix}members` SET ".(($FORUMLINK=="smf")?"`passwordSalt`":"`password_salt`")."='".$new_smf_salt."' WHERE ".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."=".$row["smf_fid"], true);
                     set_smf_cookie($row["smf_fid"], $row["passwd"], $new_smf_salt);
                 }
                 elseif (substr($FORUMLINK,0,3)=="smf" && $row["pass_type"]==1 && $row["password"]==$row["passwd"])
                 {
-                    $salt=substr(md5(rand()), 0, 4);
+                    $salt = substr(md5(rand()), 0, 4);
                     do_sqlquery("UPDATE `{$db_prefix}members` SET `passwd`='$smf_pass', ".(($FORUMLINK=="smf")?"`passwordSalt`='$salt' WHERE `ID_MEMBER`":"`password_salt`='$salt' WHERE `id_member`")."=".$row["smf_fid"]);
                     set_smf_cookie($row["smf_fid"], $smf_pass, $salt);
                 }
                 elseif (substr($FORUMLINK,0,3)=="smf" && $row["passwd"]=="ffffffffffffffffffffffffffffffffffffffff")
                 {
-                    $fix_pass=smf_passgen($user, $pwd);
+                    $fix_pass = smf_passgen($user, $pwd);
                     do_sqlquery("UPDATE `{$db_prefix}members` SET `passwd`='".$fix_pass[0]."', ".(($FORUMLINK=="smf")?"`passwordSalt`='".$fix_pass[1]."' WHERE `ID_MEMBER`":"`password_salt`='".$fix_pass[1]."' WHERE `id_member`")."=".$row["smf_fid"]);
                     set_smf_cookie($row["smf_fid"], $fix_pass[0], $fix_pass[1]);
                 }
-                elseif($FORUMLINK=="ipb")
+                elseif($FORUMLINK == "ipb")
                 {
                     if ($row["members_pass_hash"]=="ffffffffffffffffffffffffffffffff")
                     {
@@ -152,10 +152,10 @@ if (!$CURUSER || $CURUSER["uid"]==1)
                         $registry = ipsRegistry::instance(); 
                         $registry->init();
         
-                        $password=IPSText::parseCleanValue(urldecode(trim($pwd)));
-                        $ipbhash=md5(md5($row["members_pass_salt"]).md5($password));
-                        $salt=pass_the_salt(5);
-                        $rehash=md5(md5($salt).md5($password));
+                        $password = IPSText::parseCleanValue(urldecode(trim($pwd)));
+                        $ipbhash = md5 ( md5 ($row["members_pass_salt"]).md5($password));
+                        $salt = pass_the_salt(5);
+                        $rehash = md5 ( md5 ($salt).md5($password));
 
                         IPSMember::save($row["ipb_fid"], array("members" => array("member_login_key" => "", "member_login_key_expire" => "0", "members_pass_hash" => "$rehash", "members_pass_salt" => "$salt")));
                         set_ipb_cookie($row["ipb_fid"]);
@@ -164,9 +164,9 @@ if (!$CURUSER || $CURUSER["uid"]==1)
                         set_ipb_cookie($row["ipb_fid"]);
                 }
                 if (isset($_GET["returnto"]))
-                    $url=urldecode($_GET["returnto"]);
+                    $url = urldecode($_GET["returnto"]);
                 else
-                    $url="index.php";
+                    $url = "index.php";
                 redirect($url);
                 die();
             }
