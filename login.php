@@ -83,7 +83,7 @@ if (!$CURUSER || $CURUSER["uid"]==1)
         if (substr($FORUMLINK,0,3)=="smf")
             $smf_pass = sha1(strtolower($user) . $pwd);
 
-        do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["rehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `salt`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["salt"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `pass_type`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $btit_settings["secsui_pass_type"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `dupe_hash`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["dupehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `id`=".$row["id"],true);
+        $res = do_sqlquery("SELECT `u`.`salt`, `u`.`pass_type`, `u`.`username`, `u`.`id`, `u`.`random`, `u`.`password`".((substr($FORUMLINK,0,3)=="smf") ? ", `u`.`smf_fid`, `s`.`passwd`":(($FORUMLINK=="ipb")?", `u`.`ipb_fid`, `i`.`members_pass_hash`":""))." FROM `{$TABLE_PREFIX}users` `u` ".((substr($FORUMLINK,0,3)=="smf") ? "LEFT JOIN `{$db_prefix}members` `s` ON `u`.`smf_fid`=`s`.".(($FORUMLINK=="smf")?"`ID_MEMBER`":"`id_member`")."":(($FORUMLINK=="ipb")?"LEFT JOIN `{$ipb_prefix}members` `i` ON `u`.`ipb_fid`=`i`.`member_id`":""))." WHERE `u`.`username` ='".AddSlashes($user)."'",true);
         $row = mysqli_fetch_assoc($res);
 
         if (!$row)
@@ -95,8 +95,8 @@ if (!$CURUSER || $CURUSER["uid"]==1)
         }
         else
         {
-            $passtype = hash_generate($row, $pwd, $user);
-            if($row["password"] == $passtype[$row["pass_type"]]["hash"])
+            $passtype=hash_generate($row, $pwd, $user);
+            if($row["password"]==$passtype[$row["pass_type"]]["hash"])
             {
                 // We have a correct password entry
                 
@@ -104,7 +104,7 @@ if (!$CURUSER || $CURUSER["uid"]==1)
                 if($row["pass_type"]!=$btit_settings["secsui_pass_type"])
                 {
                     // We need to update the password
-                    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysqli_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["rehash"])."', `salt`='".mysqli_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["salt"])."', `pass_type`='".mysqli_real_escape_string($btit_settings["secsui_pass_type"])."', `dupe_hash`='".mysqli_real_escape_string($passtype[$btit_settings["secsui_pass_type"]]["dupehash"])."' WHERE `id`=".$row["id"],true);
+                    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["rehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `salt`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["salt"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `pass_type`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $btit_settings["secsui_pass_type"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `dupe_hash`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $passtype[$btit_settings["secsui_pass_type"]]["dupehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `id`=".$row["id"], true);
                     // And update the values we got from the database earlier
                     $row["pass_type"]=$btit_settings["secsui_pass_type"];
                     $row["password"]=$passtype[$btit_settings["secsui_pass_type"]]["rehash"];
