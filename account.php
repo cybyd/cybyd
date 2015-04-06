@@ -45,7 +45,7 @@ if (!defined("IN_BTIT"))
 require_once(load_language("lang_account.php"));
 
 if (!isset($_POST["language"])) $_POST["language"] = max(1,$btit_settings["default_language"]);
-$idlang=intval($_POST["language"]);
+$idlang = intval($_POST["language"]);
 
 
 if (isset($_GET["uid"])) $id=intval($_GET["uid"]);

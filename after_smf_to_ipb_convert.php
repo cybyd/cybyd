@@ -1,8 +1,16 @@
 <?php
+
+// xDNS.ro & xLiST.ro
+
+// xList .::. xDNS
+// http://xDNS.ro/
+// http://xLiST.ro/
+// Modified By cybernet2u
+
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //

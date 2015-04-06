@@ -1,12 +1,14 @@
 <?php
 
-// CyBerFuN.ro & xLiST.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
 // http://xLiST.ro/
 // Modified By cybernet2u
 
+/////////////////////////////////////////////////////////////////////////////////////
+// xbtit - Bittorrent tracker/frontend
 //
 // Copyright (C) 2004 - 2015  Btiteam
 //
@@ -190,7 +192,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET image='".$file_name."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold"]. "";
 /*
 // https://sourceforge.net/p/cybyd/tickets/2/
@@ -231,7 +233,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
                 {
                     if (@move_uploaded_file($_FILES['screen1']['tmp_name'], $uploadfile1))
                     {
-                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'",true);
+                        do_sqlquery("UPDATE {$TABLE_PREFIX}files SET screen1='".$file_name_s1."' WHERE info_hash='" . $torhash . "'", true);
                         $image_drop = "" . $_POST["userfileold1"]. "";
 /*
 // https://sourceforge.net/p/cybyd/tickets/2/

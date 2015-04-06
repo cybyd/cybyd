@@ -1,6 +1,6 @@
 <?php
 
-// CyBerFuN.ro & xLiST.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
