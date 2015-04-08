@@ -1,13 +1,10 @@
 # CyByD
 
-<<<<<<< HEAD
-> THiS branch is for transition to MySQLi
-=======
-CyByD is a php torrent tracker
 
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
+> THiS branch is for transition to MySQLi
+
+**CyByD** is a php torrent tracker
+
 
 Just a few words about this piece of script and some credits ;)
 The script is released under modified BSD, which mean you can freely use and
@@ -38,4 +35,3 @@ The opensource free support forum is http://www.btiteam.org
 - new language system (array is used instead of constant)
 - smf_import script to import standard internal forum and users to smf (thank you again to petr1fied)
 - 1.4.x upgrade script
->>>>>>> master
