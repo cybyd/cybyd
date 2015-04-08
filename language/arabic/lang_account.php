@@ -19,5 +19,5 @@ $language['WEEK']='كلمة سر ضعيفة';
 $language['MEDIUM']='كلمة سر متوسطه';
 $language['SAFE']='كلمة سر آمنة';
 $language['STRONG']='كلمة سر قوية';
-$language["ERR_GENERIC"]='خطاء عام '.mysql_error();
+$language["ERR_GENERIC"]='خطاء عام '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 ?>

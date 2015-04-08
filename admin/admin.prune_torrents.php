@@ -53,15 +53,15 @@ switch ($action)
        $count=0;
        foreach($_POST["hash"] as $selected=>$hash)
               {
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"");
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}timestamps WHERE info_hash=\"$hash\"");
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}comments WHERE info_hash=\"$hash\"");
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}ratings WHERE infohash=\"$hash\"");
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\"");
-               @mysql_query("DELETE FROM {$TABLE_PREFIX}history WHERE infohash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}files WHERE info_hash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}timestamps WHERE info_hash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}comments WHERE info_hash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}ratings WHERE infohash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}peers WHERE infohash=\"$hash\"");
+               @mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}history WHERE infohash=\"$hash\"");
 
                if ($XBTT_USE)
-                  @mysql_query("UPDATE xbt_files SET flags=1 WHERE info_hash=UNHEX(\"$hash\")");
+                  @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE xbt_files SET flags=1 WHERE info_hash=UNHEX(\"$hash\")");
 
                @unlink($TORRENTSDIR."/$hash.btf");
                $count++;

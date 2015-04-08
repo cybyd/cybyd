@@ -19,5 +19,5 @@ $language['WEEK']='দুর্বল';
 $language['MEDIUM']='মধ্যম';
 $language['SAFE']='নিরাপদ';
 $language['STRONG']='শক্তিশালী';
-$language["ERR_GENERIC"]='Generic Error: '.mysql_error();
+$language["ERR_GENERIC"]='Generic Error: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 ?>

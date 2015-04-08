@@ -58,13 +58,13 @@ $sub_forums = get_result("SELECT f.*, t.lastpost, t.subject, t.locked, p.userid 
 
 $subformtpl=new bTemplate();
 
-if (mysql_num_rows($forums_res) == 0)
+if (mysqli_num_rows($forums_res) == 0)
    $forumtpl->set("NO_FORUMS",true,true);
 else
  {
    $forums=array();
    $i=0;
-   while ($forums_arr = mysql_fetch_assoc($forums_res))
+   while ($forums_arr = mysqli_fetch_assoc($forums_res))
     {
 
         $forums[$i]["name"]  = "<a href=\"index.php?page=forum&amp;action=viewforum&amp;forumid=".$forums_arr["id"]."\">".htmlspecialchars(unesc($forums_arr["name"]))."</a>";

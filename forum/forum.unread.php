@@ -42,7 +42,7 @@ if (isset($_GET["page"]) && $_GET["page"])
 $page = max(1,intval(0+$_GET["page"]));
 else $page = '';
 
-$block_title=$language["TOPIC_UNREAD_POSTS"];
+$block_title = $language["TOPIC_UNREAD_POSTS"];
 
 //------ Page links
 
@@ -58,12 +58,12 @@ $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}topics t LEFT JOIN {$TAB
                          " WHERE t.lastpost>IF(rp.lastpostread IS NULL,0, rp.lastpostread) AND IFNULL(f.minclassread,999)<=".$CURUSER["id_level"].
                          " ORDER BY lastpost DESC $limit",true);
 
-$arr = mysql_fetch_row($res);
-$numtopics=$arr[0];
-mysql_free_result($res);
+$arr = mysqli_fetch_row($res);
+$numtopics = $arr[0];
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 unset($arr);
 
-list($pagertop, $pagerbottom, $limit)=forum_pager($perpage,$numtopics, "index.php?page=forum&amp;action=viewunread&amp;");
+list($pagertop, $pagerbottom, $limit) = forum_pager($perpage,$numtopics, "index.php?page=forum&amp;action=viewunread&amp;");
 
 //------ Get topics data
 
@@ -84,9 +84,9 @@ if ($numtopics > 0)
   {
     $forumtpl->set("NO_TOPICS",false,true);
 
-    $topics=array();
+    $topics = array();
     $i=0;
-    while ($topicarr = mysql_fetch_assoc($topicsres))
+    while ($topicarr = mysqli_fetch_assoc($topicsres))
     {
       $topicid = $topicarr["id"];
       $topic_userid = $topicarr["userid"];

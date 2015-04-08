@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -111,8 +111,8 @@ if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CANCEL"]) {
   if (isset($delete)) {
         
       $query = "SELECT uid FROM {$TABLE_PREFIX}chat WHERE id = $sid";
-      $res = mysql_query($query, $conn);
-      $row = mysql_fetch_array($res);
+      $res = mysqli_query( $conn, $query);
+      $row = mysqli_fetch_array($res);
               
         # check for valid moderation
         if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$row[uid]."") {
@@ -123,7 +123,7 @@ if (isset($_POST["confirm"]) && $_POST["confirm"]==$language["FRM_CANCEL"]) {
         # actual delete
         else {
         $sql ="DELETE FROM {$TABLE_PREFIX}chat WHERE id = $sid";
-        $results = mysql_query($sql, $conn);
+        $results = mysqli_query( $conn, $sql);
           
         }
     }
@@ -157,8 +157,8 @@ header("Content-Type: text/html; charset=UTF-8");
  
 
       $query = "SELECT * FROM {$TABLE_PREFIX}chat WHERE id = $sid";
-      $res = mysql_query($query, $conn);
-      $row = mysql_fetch_array($res);
+      $res = mysqli_query( $conn, $query);
+      $row = mysqli_fetch_array($res);
 
         # check for valid moderation
         if ($CURUSER["admin_access"]!="yes" && $CURUSER["uid"]!="".$row[uid]."") {
@@ -234,7 +234,7 @@ header("Content-Type: text/html; charset=UTF-8");
  
   $sql = "UPDATE {$TABLE_PREFIX}chat SET text = '".$post."' WHERE id = '".$sid."'";
     $conn = his_getDBConnection();
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query( $conn, $sql);
 
     if (!$results || empty($results)) {
          # echo 'There was an error creating the entry';
@@ -291,10 +291,10 @@ function getData($lastID) {
   
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat WHERE id > ".$lastID." AND id != ".$sid." ORDER BY id DESC";
     $conn = his_getDBConnection(); # establishes the connection to the database
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query( $conn, $sql);
     
     # getting the data array
-    while ($row = mysql_fetch_array($results)) {
+    while ($row = mysqli_fetch_array($results)) {
     
     # creating and naming array
         $id   = $row[id];

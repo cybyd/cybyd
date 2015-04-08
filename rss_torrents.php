@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -35,9 +35,6 @@
 // LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//
-// **Edited by mcangeli on 1/24/2008 to correct torrent detail link
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +78,7 @@ print("<?xml version=\"1.0\" encoding=\"".$GLOBALS["charset"]."\"?>");
 <?php
 
   $getItems = "SELECT f.info_hash as id, f.comment as description, f.filename, $tseeds AS seeders, $tleechs as leechers, UNIX_TIMESTAMP( f.data ) as added, c.name as cname, f.size FROM $ttables LEFT JOIN {$TABLE_PREFIX}categories c ON c.id = f.category ORDER BY data DESC LIMIT 20";
-  $doGet=get_result($getItems,true,$btit_settings['cache_duration']);
+  $doGet=get_result($getItems, true, $btit_settings['cache_duration']);
 
   foreach($doGet as $id=>$item)
    {

@@ -1,13 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10.5
+-- version 4.3.13
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 04, 2012 at 09:00 PM
--- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4.14
+-- Host: localhost:3306
+-- Generation Time: Apr 06, 2015 at 08:37 PM
+-- Server version: 5.5.41-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.7
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 
 -- 
@@ -23,7 +30,7 @@ CREATE TABLE `{$db_prefix}bannedip` (
   `last` bigint(11) unsigned default NULL,
   PRIMARY KEY  (`id`),
   KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}bannedip`
@@ -114,7 +121,7 @@ CREATE TABLE `{$db_prefix}categories` (
   `sort_index` int(10) unsigned NOT NULL default '0',
   `image` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}categories`
@@ -146,7 +153,7 @@ CREATE TABLE `{$db_prefix}chat` (
   `name` tinytext NOT NULL,
   `text` text NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}chat`
@@ -168,7 +175,7 @@ CREATE TABLE `{$db_prefix}comments` (
   `info_hash` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `info_hash` (`info_hash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}comments`
@@ -187,7 +194,7 @@ CREATE TABLE `{$db_prefix}countries` (
   `flagpic` varchar(50) default NULL,
   `domain` char(3) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}countries`
@@ -570,7 +577,7 @@ CREATE TABLE `{$db_prefix}hacks` (
   `added` int(11) NOT NULL,
   `folder` varchar(100) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}hacks`
@@ -592,7 +599,7 @@ CREATE TABLE `{$db_prefix}history` (
   `active` enum('yes','no') NOT NULL default 'no',
   `agent` varchar(30) NOT NULL default '',
   UNIQUE KEY `uid` (`uid`,`infohash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}history`
@@ -610,7 +617,7 @@ CREATE TABLE `{$db_prefix}language` (
   `language` varchar(20) NOT NULL default '',
   `language_url` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}language`
@@ -654,7 +661,7 @@ CREATE TABLE `{$db_prefix}logs` (
   `user` varchar(40) default NULL,
   PRIMARY KEY  (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}logs`
@@ -750,7 +757,7 @@ CREATE TABLE `{$db_prefix}online` (
   `suffixcolor` varchar(200) NOT NULL,
   PRIMARY KEY  (`session_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}online`
@@ -785,7 +792,7 @@ CREATE TABLE `{$db_prefix}peers` (
   UNIQUE KEY `sequence` (`sequence`),
   KEY `pid` (`pid`),
   KEY `ip` (`ip`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}peers`
@@ -806,7 +813,7 @@ CREATE TABLE `{$db_prefix}poll_voters` (
   `memberid` varchar(32) default NULL,
   PRIMARY KEY  (`vid`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}poll_voters`
@@ -827,7 +834,7 @@ CREATE TABLE `{$db_prefix}poller` (
   `starterID` mediumint(8) NOT NULL default '0',
   `active` enum('yes','no') NOT NULL default 'no',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}poller`
@@ -849,7 +856,7 @@ CREATE TABLE `{$db_prefix}poller_option` (
   `pollerOrder` int(11) default NULL,
   `defaultChecked` char(1) default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}poller_option`
@@ -876,7 +883,7 @@ CREATE TABLE `{$db_prefix}poller_vote` (
   `voteDate` int(10) NOT NULL default '0',
   `memberID` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}poller_vote`
@@ -898,7 +905,7 @@ CREATE TABLE `{$db_prefix}polls` (
   `poll_question` varchar(255) default NULL,
   `status` enum('true','false') NOT NULL default 'false',
   PRIMARY KEY  (`pid`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}polls`
@@ -923,7 +930,7 @@ CREATE TABLE `{$db_prefix}posts` (
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}posts`
@@ -941,7 +948,7 @@ CREATE TABLE `{$db_prefix}ratings` (
   `rating` tinyint(3) unsigned NOT NULL default '0',
   `added` int(10) unsigned NOT NULL default '0',
   KEY `infohash` (`infohash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}ratings`
@@ -962,7 +969,7 @@ CREATE TABLE `{$db_prefix}readposts` (
   PRIMARY KEY  (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}readposts`
@@ -978,14 +985,14 @@ CREATE TABLE `{$db_prefix}settings` (
   `key` varchar(30) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY  (`key`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}settings`
 -- 
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'BTI-Tracker'),
+('name', 'CyByD'),
 ('url', 'http://127.0.0.1/dev'),
 ('announce', 'a:2:{i:0;s:30:"http://localhost/announce.php\r";i:1;s:30:"http://localhost:2710/announce";}'),
 ('email', 'admin@localhost'),
@@ -1065,7 +1072,7 @@ CREATE TABLE `{$db_prefix}style` (
   `style_url` varchar(100) NOT NULL default '',
   `style_type` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}style`
@@ -1088,7 +1095,7 @@ CREATE TABLE `{$db_prefix}tasks` (
   `task` varchar(20) NOT NULL default '',
   `last_time` int(10) NOT NULL default '0',
   PRIMARY KEY  (`task`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}tasks`
@@ -1111,7 +1118,7 @@ CREATE TABLE `{$db_prefix}timestamps` (
   `delta` smallint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`sequence`),
   KEY `sorting` (`info_hash`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}timestamps`
@@ -1128,7 +1135,7 @@ CREATE TABLE `{$db_prefix}timezone` (
   `difference` varchar(4) NOT NULL default '0',
   `timezone` text NOT NULL,
   PRIMARY KEY  (`difference`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}timezone`
@@ -1185,7 +1192,7 @@ CREATE TABLE `{$db_prefix}topics` (
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}topics`
@@ -1206,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}users` (
   `pass_type` enum('1','2','3','4','5','6','7') NOT NULL DEFAULT '1',
   `dupe_hash` varchar(20) NOT NULL DEFAULT '',
   `id_level` int(10) NOT NULL DEFAULT '1',
-  `custom_title` varchar(51) NOT NULL DEFAULT 'User' COMMENT 'Prefered to be called',
+  `custom_title` varchar(51) NOT NULL DEFAULT 'User' COMMENT 'Prefers to be called',
   `seedbonus` decimal(12,6) NOT NULL DEFAULT '0.000000',
   `random` int(10) DEFAULT '0',
   `email` varchar(50) NOT NULL DEFAULT '',
@@ -1281,7 +1288,7 @@ CREATE TABLE `{$db_prefix}users_level` (
   KEY `id_level` (`id_level`),
   KEY `smf_group_mirror` (`smf_group_mirror`),
   KEY `ipb_group_mirror` (`ipb_group_mirror`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `{$db_prefix}users_level`

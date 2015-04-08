@@ -19,7 +19,7 @@ $language['WEEK']='Svagt';
 $language['MEDIUM']='Medium';
 $language['SAFE']='Sikker';
 $language['STRONG']='Stærk';
-$language["ERR_GENERIC"]='Mysql fejl: '.mysql_error();
+$language["ERR_GENERIC"]='Mysql fejl: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 //INVITATION SYSTEM
 $language['INVIT_MSGINFO']='Du har bedt om en ny konto på '.$SITENAME.' og du har angivet denne adresse (';
 $language['INVIT_MSGINFO1']=') som kontakt adresse.<br /><br />Din konto afventer bekræftigelse af din inviter.'.

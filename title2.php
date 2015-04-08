@@ -17,7 +17,7 @@ dbconn();
   //$c=mysql_result($r,0,"seedbonus");
   $c=$CURUSER["seedbonus"];
 if($c>=$GLOBALS["price_ct"]) {
-          if (isset($_POST["title"])) $custom=mysql_escape_string($_POST["title"]);
+          if (isset($_POST["title"])) $custom=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["title"])
              else $custom = "";
     if ("$custom"=="")
         {

@@ -45,7 +45,7 @@ switch ($action)
         $modules=array();
         $i=0;
 
-        while ($row_modules=mysql_fetch_array($res))
+        while ($row_modules=mysqli_fetch_array($res))
             {
             if (unesc($row_modules["type"]=='staff'))
                 $type = $language["STAFF"];
@@ -68,11 +68,11 @@ switch ($action)
             }
         $admintpl->set("modules", $modules);
         $active_modules = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}modules WHERE activated='yes'",true);
-        $admintpl->set("nr_active_modules", mysql_result($active_modules,0,0));
+        $admintpl->set("nr_active_modules", mysqli_result($active_modules,0,0));
         $not_active_modules = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}modules WHERE activated='no'",true);
-        $admintpl->set("nr_not_active_modules", mysql_result($not_active_modules,0,0));
+        $admintpl->set("nr_not_active_modules", mysqli_result($not_active_modules,0,0));
         $total_modules = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}modules",true);
-        $admintpl->set("nr_total_modules", mysql_result($total_modules,0,0));
+        $admintpl->set("nr_total_modules", mysqli_result($total_modules,0,0));
         $admintpl->set("form_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=module_config&amp;action=add");
     break; // end of case 'manage'
     

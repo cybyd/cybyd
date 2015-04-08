@@ -67,7 +67,7 @@ function send_pm($sender,$recepient,$subject,$msg) {
         # insert message
         quickQuery("INSERT INTO `{$db_prefix}personal_messages` (".(($FORUMLINK=="smf")?"`ID_MEMBER_FROM`, `fromName`":"`id_member_from`, `from_name`").", `msgtime`, `subject`, `body`) VALUES (".$sender['smf_fid'].", ".sqlesc($sender['username']).", UNIX_TIMESTAMP(), ".$subject.", ".$msg.")");
         # get id of message
-        $pm_id=mysql_insert_id();
+        $pm_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
         # insert recepient for message
         quickQuery("INSERT INTO `{$db_prefix}pm_recipients` (".(($FORUMLINK=="smf")?"`ID_PM`, `ID_MEMBER`":"`id_pm`, `id_member`").") VALUES (".$pm_id.", ".$recepient.")");
         # notify recepient
@@ -184,7 +184,7 @@ function get_fresh_config($qrystr) {
     $cache_file=realpath(dirname(__FILE__).'/..').'/cache/'.md5($qrystr).'.txt';
 
     $mr=do_sqlquery($qrystr,true);
-    while ($mz=mysql_fetch_assoc($mr)) {
+    while ($mz=mysqli_fetch_assoc($mr)) {
         if ($mz['value']=='true')
             $return[$mz['key']]= true;
         elseif ($mz['value']=='false')
@@ -195,7 +195,7 @@ function get_fresh_config($qrystr) {
             $return[$mz['key']]= StripSlashes($mz['value']);
     }
     unset($mz);
-    mysql_free_result($mr);
+    ((mysqli_free_result($mr) || (is_object($mr) && (get_class($mr) == "mysqli_result"))) ? true : false);
 
     # write new cache
     write_file($cache_file, serialize($return));
@@ -206,9 +206,9 @@ function get_fresh_config($qrystr) {
 function do_sqlquery($qrystr,$display_error=false) {
     global $num_queries;
     $num_queries++;
-    $ret=mysql_query($qrystr);
-    if ($display_error && mysql_errno()!=0)
-        stderr('MySQL query error!',"<br />\nError: ".mysql_error()."<br />\nQuery: $qrystr<br />\n");
+    $ret = mysqli_query($GLOBALS["___mysqli_ston"], $qrystr);
+    if ($display_error && ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))!=0)
+        stderr('MySQL query error!',"<br />\nError: ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."<br />\nQuery: $qrystr<br />\n");
     return $ret;
 }
 
@@ -257,11 +257,11 @@ function get_result($qrystr,$display_error=false,$cachetime=0) {
 
     $return=array();
     $mr=do_sqlquery($qrystr,$display_error);
-    while ($mz=mysql_fetch_assoc($mr))
+    while ($mz=mysqli_fetch_assoc($mr))
         $return[]=$mz;
 
     unset($mz);
-    mysql_free_result($mr);
+    ((mysqli_free_result($mr) || (is_object($mr) && (get_class($mr) == "mysqli_result"))) ? true : false);
 
     if ($cachetime>0)
         write_file($cache_file, serialize($return));
@@ -350,7 +350,7 @@ if(!function_exists("hex2bin"))
 function quickQuery($query) {
     $results = do_sqlquery($query);
     if (!is_bool($results))
-        mysql_free_result($results);
+        ((mysqli_free_result($results) || (is_object($results) && (get_class($results) == "mysqli_result"))) ? true : false);
     else
         return $results;
     return true;
@@ -835,7 +835,7 @@ function test_my_cookie()
 }
 
 function sqlesc($x) {
-  return '\''.mysql_real_escape_string($x).'\'';
+  return '\''.((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $x) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")).'\'';
 }
 
 ?>

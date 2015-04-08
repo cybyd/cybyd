@@ -52,13 +52,13 @@ switch ($action)
           $id=max(0,$_GET["id"]);
           // controle if this level can be cancelled
           $rcanc=do_sqlquery("SELECT can_be_deleted FROM {$TABLE_PREFIX}users_level WHERE id=$id");
-          if (!$rcanc || mysql_num_rows($rcanc)==0)
+          if (!$rcanc || mysqli_num_rows($rcanc)==0)
             {
              err_msg($language["ERROR"], $language["ERR_CANT_FIND_GROUP"]);
              stdfoot(false,false,true);
              die;
             }
-          $rcancanc=mysql_fetch_array($rcanc);
+          $rcancanc=mysqli_fetch_array($rcanc);
           if ($rcancanc["can_be_deleted"]=="yes")
              {
              do_sqlquery("DELETE FROM {$TABLE_PREFIX}users_level WHERE id=$id",true);
@@ -118,9 +118,9 @@ switch ($action)
           {
               $current_group["forumlist"].=$language["IPB_LIST"];
               $res=do_sqlquery("SELECT * FROM `{$ipb_prefix}forum_perms` ORDER BY `perm_id` ASC",true);
-              if(@mysql_num_rows($res)>0)
+              if(@mysqli_num_rows($res)>0)
               {
-                  while($row=mysql_fetch_assoc($res))
+                  while($row=mysqli_fetch_assoc($res))
                   {
                       $current_group["forumlist"].=$row["perm_name"] . " = " . $row["perm_id"] . "<br />";
                   }
@@ -138,7 +138,7 @@ switch ($action)
           $admintpl->set("language",$language);
           $frm_dropdown="\n<select name=\"base_group\" size=\"1\">";
           $rlevel=do_sqlquery("SELECT DISTINCT id_level,predef_level FROM {$TABLE_PREFIX}users_level ORDER BY id_level",true);
-          while($level=mysql_fetch_array($rlevel))
+          while($level=mysqli_fetch_array($rlevel))
                 $frm_dropdown.="\n<option value=\"".$level["id_level"]."\">".$level["predef_level"]."</option>";
           $frm_dropdown.="\n</select>";
           $admintpl->set("groups_combo",$frm_dropdown);
@@ -209,7 +209,7 @@ switch ($action)
           $rlevel=do_sqlquery("SELECT * from {$TABLE_PREFIX}users_level ORDER BY id_level",true);
           $groups=array();
           $i=0;
-          while ($level=mysql_fetch_array($rlevel))
+          while ($level=mysqli_fetch_array($rlevel))
             {
                 $groups[$i]["user"]="<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=groups&amp;action=edit&amp;id=".$level["id"]."\">".unesc($level["prefixcolor"]).unesc($level["level"]).unesc($level["suffixcolor"])."</a>";
                 $groups[$i]["torrent_aut"]=$level["view_torrents"]."/".$level["edit_torrents"]."/".$level["delete_torrents"];
@@ -229,7 +229,7 @@ switch ($action)
           }
 
           unset($level);
-          mysql_free_result($rlevel);
+          ((mysqli_free_result($rlevel) || (is_object($rlevel) && (get_class($rlevel) == "mysqli_result"))) ? true : false);
 
           $admintpl->set("groups",$groups);
 

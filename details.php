@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -216,7 +216,7 @@ if ($row["username"]!=$CURUSER["username"] && $CURUSER["uid"]>1)
    {
    $ratings = array(5 => $language["FIVE_STAR"] ,4 =>$language["FOUR_STAR"] ,3 =>$language["THREE_STAR"] ,2 =>$language["TWO_STAR"] ,1 =>$language["ONE_STAR"] );
    $xres = do_sqlquery("SELECT rating, added FROM {$TABLE_PREFIX}ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"], true);
-   $xrow = @mysql_fetch_array($xres);
+   $xrow = @mysqli_fetch_array($xres);
    if ($xrow)
        $s = $totrate. " (".$language["YOU_RATE"]." \"" . $ratings[$xrow["rating"]] . "\")";
    else {
@@ -361,7 +361,7 @@ else {
      foreach ($subres as $subrow) {
 // Custom title - start
 	$level = do_sqlquery("SELECT level FROM {$TABLE_PREFIX}users_level WHERE id_level='$subrow[id_level]'");
-       $lvl = mysql_fetch_assoc($level);
+        $lvl = mysqli_fetch_assoc($level);
        if (!$subrow[uid])
         $title = "orphaned";
        elseif (!"$subrow[custom_title]")
@@ -369,11 +369,11 @@ else {
        else
         $title = unesc($subrow["custom_title"]);
 // Custom title - end
-       $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
+        $comments[$count]["user"]="<a href=\"index.php?page=userdetails&amp;id=".$subrow["uid"]."\">" . unesc($subrow["user"]);
 // Custom title - start
 	$comments[$count]["user"].="</a> .::. ".$title;
 // Custom title - end
-       $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
+        $comments[$count]["date"]=date("d/m/Y H.i.s",$subrow["data"]-$offset);
        // only users able to delete torrents can delete comments...
        if ($CURUSER["delete_torrents"]=="yes")
          $comments[$count]["delete"]="<a onclick=\"return confirm('". str_replace("'","\'",$language["DELETE_CONFIRM"])."')\" href=\"index.php?page=comment&amp;id=$id&amp;cid=" . $subrow["id"] . "&amp;action=delete\">".image_or_link("$STYLEPATH/images/delete.png","",$language["DELETE"])."</a>";

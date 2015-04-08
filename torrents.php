@@ -120,7 +120,7 @@ if (isset($_GET["search"])) {
    if ($_GET["search"]!="")
       $search = "search=" . implode("+",$testocercato);
     for ($k=0; $k < count($testocercato); $k++) {
-        $query_select .= " filename LIKE '%" . mysql_real_escape_string($testocercato[$k]) . "%'";
+        $query_select .= " filename LIKE '%" . ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $testocercato[$k]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) . "%'";
         if ($k<count($testocercato)-1)
            $query_select .= " AND ";
     }

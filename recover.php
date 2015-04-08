@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -44,8 +44,8 @@ if (!defined("IN_BTIT"))
 
 require_once(load_language("lang_recover.php"));
 
-if (isset($_GET["act"])) $act=$_GET["act"];
-  else $act="recover";
+if (isset($_GET["act"])) $act = $_GET["act"];
+  else $act = "recover";
 
 
 
@@ -56,7 +56,7 @@ if ($act == "takerecover")
     stderr($language["ERROR"],$language["ERR_NO_EMAIL"]);
 
   $res = do_sqlquery("SELECT id, email FROM {$TABLE_PREFIX}users WHERE email=".sqlesc($email)." LIMIT 1",true);
-  $arr = mysql_fetch_assoc($res) or stderr($language["ERROR"],$language["ERR_EMAIL_NOT_FOUND_1"]." <b>$email</b> ".$language["ERR_EMAIL_NOT_FOUND_2"]);
+  $arr = mysqli_fetch_assoc($res) or stderr($language["ERROR"],$language["ERR_EMAIL_NOT_FOUND_1"]." <b>$email</b> ".$language["ERR_EMAIL_NOT_FOUND_2"]);
 if ($USE_IMAGECODE)
 {
   if (extension_loaded('gd'))
@@ -67,7 +67,7 @@ if ($USE_IMAGECODE)
         $public=$_POST['public_key'];
         $private=$_POST['private_key'];
 
-          $p=new ocr_captcha();
+          $p = new ocr_captcha();
 
           if ($p->check_captcha($public,$private) != true)
               {
@@ -77,8 +77,8 @@ if ($USE_IMAGECODE)
        else
          {
            include("$THIS_BASEPATH/include/security_code.php");
-           $scode_index=intval($_POST["security_index"]);
-           if ($security_code[$scode_index]["answer"]!=$_POST["scode_answer"])
+           $scode_index = intval($_POST["security_index"]);
+           if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
               {
               err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
               stdfoot();
@@ -101,8 +101,8 @@ if ($USE_IMAGECODE)
 else
   {
     include("$THIS_BASEPATH/include/security_code.php");
-    $scode_index=intval($_POST["security_index"]);
-    if ($security_code[$scode_index]["answer"]!=$_POST["scode_answer"])
+    $scode_index = intval($_POST["security_index"]);
+    if ($security_code[$scode_index]["answer"] != $_POST["scode_answer"])
        {
        err_msg($language["ERROR"],$language["ERR_IMAGE_CODE"]);
        stdfoot();
@@ -116,13 +116,13 @@ srand((double)microtime()*1000000);
 $random = rand($floor, $ceiling);
 
 do_sqlquery("UPDATE {$TABLE_PREFIX}users SET random='$random' WHERE id='".$arr["id"]."'",true);
-if (mysql_affected_rows()==0)
+if (mysqli_affected_rows($GLOBALS["___mysqli_ston"])==0)
     stderr($language["ERROR"],"".$language["ERR_DB_ERR"].",".$arr["id"].",".$email.",".$random."");
 
 $user_temp_id = $arr["id"];
 $user_temp_email = $email;
 
-$body=sprintf($language["RECOVER_EMAIL_1"],$email,$_SERVER["REMOTE_ADDR"],"$BASEURL/index.php?page=recover&act=generate&id=$user_temp_id&random=$random",$SITENAME);
+$body = sprintf($language["RECOVER_EMAIL_1"],$email,$_SERVER["REMOTE_ADDR"],"$BASEURL/index.php?page=recover&act=generate&id=$user_temp_id&random=$random",$SITENAME);
 
   send_mail( $arr["email"], "$SITENAME ".$language["PASS_RESET_CONF"], $body) or stderr($language["ERROR"],$language["ERR_SEND_EMAIL"]);
   success_msg($language["SUCCESS"],$language["SUC_SEND_EMAIL"]." <b>$email</b>.\n".$language["SUC_SEND_EMAIL_2"]);
@@ -142,20 +142,20 @@ if (!$id || !$random || empty($random) || $random==0)
     stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
 
 $res = do_sqlquery("SELECT `username`, `email`, `random`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf") ? ", `smf_fid`" : (($GLOBALS["FORUMLINK"]=="ipb")?", ipb_fid":""))." FROM `{$TABLE_PREFIX}users` WHERE `id` = $id",true);
-$arr = mysql_fetch_array($res);
+$arr = mysqli_fetch_array($res);
 
 if ($random!=$arr["random"])
     stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
 
     $email = $arr["email"];
 
-    $newpassword=pass_the_salt(30);
-    $multipass=hash_generate(array("salt" => ""), $newpassword, $arr["username"]);
-    $i=$btit_settings["secsui_pass_type"];
+    $newpassword = pass_the_salt(30);
+    $multipass = hash_generate(array("salt" => ""), $newpassword, $arr["username"]);
+    $i = $btit_settings["secsui_pass_type"];
 
-    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysql_real_escape_string($multipass[$i]["rehash"])."', `salt`='".mysql_real_escape_string($multipass[$i]["salt"])."', `pass_type`='".$i."', `dupe_hash`='".mysql_real_escape_string($multipass[$i]["dupehash"])."' WHERE `id`=$id AND `random`=$random",true);
+    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $multipass[$i]["rehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `salt`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $multipass[$i]["salt"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `pass_type`='".$i."', `dupe_hash`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $multipass[$i]["dupehash"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `id`=$id AND `random`=$random", true);
 
-    if (!mysql_affected_rows())
+    if (!mysqli_affected_rows($GLOBALS["___mysqli_ston"]))
         stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
 
     if(substr($GLOBALS["FORUMLINK"],0,3)=="smf")
@@ -182,7 +182,7 @@ if ($random!=$arr["random"])
         IPSMember::save($arr["ipb_fid"], array("members" => array("member_login_key" => "", "member_login_key_expire" => "0", "members_pass_hash" => "$ipbhash[0]", "members_pass_salt" => "$ipbhash[1]")));
     }
 
-$body=sprintf($language["RECOVER_EMAIL_2"],$arr["username"],$newpassword,"$BASEURL/index.php?page=login",$SITENAME);
+$body = sprintf($language["RECOVER_EMAIL_2"],$arr["username"],$newpassword,"$BASEURL/index.php?page=login",$SITENAME);
 
   send_mail($email, "$SITENAME ".$language["ACCOUNT_DETAILS"], $body) or stderr($language["ERROR"],$language["ERR_SEND_EMAIL"]);
   redirect("index.php?page=recover&act=recover_ok&id=$id&random=$random");
@@ -196,8 +196,8 @@ elseif ($act=="recover_ok")
   if (!$id || !$random || empty($random) || $random==0)
        stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);
 
-  $res = do_sqlquery("SELECT `username`, `email`, `random`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf") ? ", `smf_fid`" : "")." FROM `{$TABLE_PREFIX}users` WHERE `id` = $id",true);
-  $arr = mysql_fetch_array($res);
+  $res = do_sqlquery("SELECT `username`, `email`, `random`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf") ? ", `smf_fid`" : "")." FROM `{$TABLE_PREFIX}users` WHERE `id` = $id", true);
+  $arr = mysqli_fetch_array($res);
 
   if ($random!=$arr["random"])
        stderr($language["ERROR"],$language["ERR_UPDATE_USER"]);

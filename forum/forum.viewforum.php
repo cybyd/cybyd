@@ -88,10 +88,10 @@ $block_title="<a href=\"index.php?page=forum\">".$language["FORUM"]."</a>&nbsp;&
 $perpage = $CURUSER["topicsperpage"];
 if (!$perpage) $perpage = 20;
 
-$res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}topics WHERE forumid=$forumid",true);
-$arr = mysql_fetch_row($res);
+$res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}topics WHERE forumid=$forumid", true);
+$arr = mysqli_fetch_row($res);
 $numtopics=$arr[0];
-mysql_free_result($res);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 unset($arr);
 
 list($pagertop, $pagerbottom, $limit)=forum_pager($perpage,$numtopics, "index.php?page=forum&amp;action=viewforum&amp;forumid=$forumid&amp;");
@@ -182,9 +182,9 @@ $sub_forums = get_result("SELECT f.*, t.lastpost, t.subject, t.locked, p.userid 
                           " FROM {$TABLE_PREFIX}topics WHERE forumid=f.id)) AND f.minclassread<=".intval($CURUSER["id_level"]).
                           " AND f.id_parent=$forumid ORDER BY sort,name",true);
 
-if (count($sub_forums)>0)
+if (count($sub_forums) > 0)
   {
-   $subforms=array();
+   $subforms = array();
    $i=0;
    foreach($sub_forums as $id=>$subfor)
       {
@@ -219,6 +219,6 @@ $forumtpl->set("can_create",$user_can_create,true);
 
 unset($topics);
 unset($topicarr);
-mysql_free_result($topicsres);
+((mysqli_free_result($topicsres) || (is_object($topicsres) && (get_class($topicsres) == "mysqli_result"))) ? true : false);
 
 ?>

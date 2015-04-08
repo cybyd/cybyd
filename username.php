@@ -17,15 +17,15 @@ dbconn();
   //$c=mysql_result($r,0,"seedbonus");
   $c=$CURUSER["seedbonus"];
 if($c>=$GLOBALS["price_name"]) {
-          if (isset($_POST["name"])) $custom=mysql_escape_string($_POST["name"]);
+          if (isset($_POST["name"])) $custom=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["name"])
              else $custom = "";
     if ("$custom"=="")
         {
         }
     else
         {
-          $res=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE username='".htmlspecialchars($custom)."'",true);
-          if (mysql_num_rows($res) > 0){}else
+          $res=do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users WHERE username='".htmlspecialchars($custom)."'", true);
+          if (mysqli_num_rows($res) > 0){}else
           {do_sqlquery("UPDATE {$TABLE_PREFIX}users SET username='".htmlspecialchars($custom)."' WHERE id=$CURUSER[uid]");
           if ($FORUMLINK=="smf")
                 {do_sqlquery("UPDATE {db_prefix}members SET  memberName='".htmlspecialchars($custom)."' WHERE ID_MEMBER=".$CURUSER["smf_fid"]);}

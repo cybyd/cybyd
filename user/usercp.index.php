@@ -132,7 +132,7 @@ switch ($do)
        $random=max(0,$_GET["random"]);
        $idlevel=$CURUSER["id_level"];
        // Get the members random number, current email and temp email from their record
-       $getacc=mysql_fetch_assoc(do_sqlquery("SELECT `u`.`random`, `u`.`email`, `u`.`temp_email`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf")?", `u`.`smf_fid`, `ul`.`smf_group_mirror`":(($GLOBALS["FORUMLINK"]=="ipb")?", `u`.`ipb_fid`, `ul`.`ipb_group_mirror`":""))." FROM `{$TABLE_PREFIX}users` `u` ".((substr($GLOBALS["FORUMLINK"],0,3)=="smf" || $GLOBALS["FORUMLINK"]=="ipb")?"LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON 3=`ul`.`id`":"")." WHERE `u`.`id`=".$id,true));
+       $getacc = mysqli_fetch_assoc(do_sqlquery("SELECT `u`.`random`, `u`.`email`, `u`.`temp_email`".((substr($GLOBALS["FORUMLINK"],0,3)=="smf")?", `u`.`smf_fid`, `ul`.`smf_group_mirror`":(($GLOBALS["FORUMLINK"]=="ipb")?", `u`.`ipb_fid`, `ul`.`ipb_group_mirror`":""))." FROM `{$TABLE_PREFIX}users` `u` ".((substr($GLOBALS["FORUMLINK"],0,3)=="smf" || $GLOBALS["FORUMLINK"]=="ipb")?"LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON 3=`ul`.`id`":"")." WHERE `u`.`id`=".$id, true));
        $oldmail=$getacc["email"];
        $dbrandom=$getacc["random"];
        $mailcheck=$getacc["temp_email"];
@@ -149,7 +149,7 @@ switch ($do)
            }
 
             // Update their tracker member record with the now verified email address
-            do_sqlquery("UPDATE {$TABLE_PREFIX}users SET email='".mysql_real_escape_string($newmail)."' WHERE id='".$id."'",true);
+            do_sqlquery("UPDATE {$TABLE_PREFIX}users SET email='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $newmail) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE id='".$id."'", true);
 
             // If using SMF, update their record on that too.            
             if(substr($GLOBALS["FORUMLINK"],0,3)=="smf")
@@ -158,7 +158,7 @@ switch ($do)
                 $language2=$language;
                 require_once($basedir."/smf/Settings.php");
                 $language=$language2;
-                do_sqlquery("UPDATE `{$db_prefix}members` SET `email".(($GLOBALS["FORUMLINK"]=="smf")?"A":"_a")."ddress`='".mysql_real_escape_string($newmail)."' WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$getacc["smf_fid"],true);
+                do_sqlquery("UPDATE `{$db_prefix}members` SET `email".(($GLOBALS["FORUMLINK"]=="smf")?"A":"_a")."ddress`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $newmail) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE ".(($GLOBALS["FORUMLINK"]=="smf")?"`ID_MEMBER`":"`id_member`")."=".$getacc["smf_fid"], true);
             }
             elseif($GLOBALS["FORUMLINK"]=="ipb")
                 IPSMember::save($getacc["ipb_fid"], array("members" => array("email" => "$newmail")));

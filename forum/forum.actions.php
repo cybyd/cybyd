@@ -51,8 +51,8 @@ switch ($action)
 
         foreach($rtopics as $id=>$rt)
           {
-           $rp=get_result("SELECT id FROM {$TABLE_PREFIX}readposts WHERE topicid=".$rt["id"]." AND userid=".$CURUSER["uid"]);
-           if (count($rp)>0)
+           $rp = get_result("SELECT id FROM {$TABLE_PREFIX}readposts WHERE topicid=".$rt["id"]." AND userid=".$CURUSER["uid"]);
+           if (count($rp) > 0)
               do_sqlquery("UPDATE {$TABLE_PREFIX}readposts SET lastpostread=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=".$rt["id"].") WHERE topicid=".$rt["id"]." AND userid=".$CURUSER["uid"],true);
            else
               do_sqlquery("INSERT INTO {$TABLE_PREFIX}readposts SET lastpostread=(SELECT MAX(id) FROM {$TABLE_PREFIX}posts WHERE topicid=".$rt["id"]."), topicid=".$rt["id"].", userid=".$CURUSER["uid"],true);
@@ -78,13 +78,13 @@ switch ($action)
           information_msg($language["FRM_CONFIRM"]."?",$language["ERR_DELETE_TOPIC"]."&nbsp;<a href=\"index.php?page=forum&amp;action=deletetopic&amp;topicid=$topicid&amp;sure=1&amp;forumid=$forumid\">".$language["HERE"]."</a>&nbsp;".$language["IF_YOU_ARE_SURE"]."<br />");
         }
 
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}topics WHERE id=$topicid",true);
-        $numtopic=mysql_affected_rows();
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid",true);
-        $numposts=mysql_affected_rows();
-        do_sqlquery("DELETE FROM {$TABLE_PREFIX}readposts WHERE topicid=$topicid",true);
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}topics WHERE id=$topicid", true);
+        $numtopic = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid", true);
+        $numposts = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
+        do_sqlquery("DELETE FROM {$TABLE_PREFIX}readposts WHERE topicid=$topicid", true);
 
-        do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-$numtopic,postcount=postcount-$numposts WHERE id=$forumid",true);
+        do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-$numtopic,postcount=postcount-$numposts WHERE id=$forumid", true);
 
         redirect("index.php?page=forum&action=viewforum&forumid=$forumid");
     
@@ -102,27 +102,27 @@ switch ($action)
 
         $res = do_sqlquery("SELECT minclasswrite FROM {$TABLE_PREFIX}forums WHERE id=$forumid",true);
 
-        if (mysql_num_rows($res) != 1)
+        if (mysqli_num_rows($res) != 1)
             stderr($language["ERROR"],$language["ERR_FORUM_NOT_FOUND"]);
 
-        $arr = mysql_fetch_row($res);
+        $arr = mysqli_fetch_row($res);
 
         if ($CURUSER["id_level"] < $arr[0])
             stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
 
         $res = do_sqlquery("SELECT subject,forumid FROM {$TABLE_PREFIX}topics WHERE id=$topicid",true);
 
-        if (mysql_num_rows($res) != 1)
+        if (mysqli_num_rows($res) != 1)
             stderr($language["ERROR"],$language["TOPIC_NOT_FOUND"]);
 
-        $arr = mysql_fetch_assoc($res);
+        $arr = mysqli_fetch_assoc($res);
 
         if ($arr["forumid"] != $forumid)
           do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET forumid=$forumid WHERE id=$topicid",true);
 
         // modifying count topics & post
         $res=do_sqlquery("SELECT count(*) as numposts FROM {$TABLE_PREFIX}posts WHERE topicid=$topicid",true);
-        $numposts=mysql_result($res,0,0);
+        $numposts=mysqli_result($res,0,0);
 
         do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount-1, postcount=postcount-$numposts WHERE id=".$arr["forumid"]);
         do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET topiccount=topiccount+1, postcount=postcount+$numposts WHERE id=$forumid");
@@ -156,7 +156,7 @@ switch ($action)
             stderr($language["ERROR"],$language["BAD_TOPIC_ID"]);
 
         $sticky = sqlesc($_POST["sticky"]);
-        do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET sticky=$sticky WHERE id=$topicid",true);
+        do_sqlquery("UPDATE {$TABLE_PREFIX}topics SET sticky=$sticky WHERE id=$topicid", true);
 
         redirect(urldecode($_POST[returnto]));
         die();
@@ -204,8 +204,8 @@ switch ($action)
 
       //------- Get topic id
 
-      $res = do_sqlquery("SELECT (SELECT COUNT(*) FROM {$TABLE_PREFIX}posts WHERE topicid=p.topicid) as total_posts,topicid FROM {$TABLE_PREFIX}posts p WHERE id=$postid",true);
-      $arr = mysql_fetch_assoc($res) or stderr($language["ERROR"],$language["ERR_POST_NOT_FOUND"]);
+      $res = do_sqlquery("SELECT (SELECT COUNT(*) FROM {$TABLE_PREFIX}posts WHERE topicid=p.topicid) as total_posts,topicid FROM {$TABLE_PREFIX}posts p WHERE id=$postid", true);
+      $arr = mysqli_fetch_assoc($res) or stderr($language["ERROR"],$language["ERR_POST_NOT_FOUND"]);
       $topicid = intval($arr["topicid"]);
 
       if ($arr["total_posts"] < 2)
@@ -217,8 +217,8 @@ switch ($action)
       }
 
       //------- Delete post
-      do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE id=$postid",true);
-      $numposts=mysql_affected_rows();
+      do_sqlquery("DELETE FROM {$TABLE_PREFIX}posts WHERE id=$postid", true);
+      $numposts=mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
     
       // update post's count
       do_sqlquery("UPDATE {$TABLE_PREFIX}forums SET postcount=postcount-$numposts WHERE id=$forumid");

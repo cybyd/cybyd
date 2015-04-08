@@ -79,10 +79,10 @@ die("Sorry, Shoutbox is not available...");
 
     $sql =  "SELECT * FROM {$TABLE_PREFIX}chat WHERE id > ".$lastID." ORDER BY id DESC LIMIT 10";
     $conn = getDBConnection(); # establishes the connection to the database
-    $results = mysql_query($sql, $conn);
+    $results = mysqli_query ( $conn, $sql );
     
     # getting the data array
-    while ($row = mysql_fetch_array($results)) {
+    while ($row = mysqli_fetch_array($results)) {
     
     # getting the data array
         $id   = $row[id];

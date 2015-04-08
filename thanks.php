@@ -1,10 +1,10 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
-// xList .::. xDNS
+// xLiST .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 if (isset($_POST["infohash"]))
@@ -25,32 +25,32 @@ if (isset($_POST["infohash"]))
 
   $out="";
 
-  $rt = mysql_query("SELECT uploader FROM {$TABLE_PREFIX}files WHERE info_hash=$infohash AND uploader=$uid");
+  $rt = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT uploader FROM {$TABLE_PREFIX}files WHERE info_hash=$infohash AND uploader=$uid");
   // he's not the uploader
-  if (mysql_num_rows($rt) == 0)
+  if (mysqli_num_rows($rt) == 0)
      $button = true;
   else
      $button = false;
 
-  // saying thank you.
+// saying thank you.
   if (isset($_POST["thanks"]) && $button)
   {
-      mysql_free_result($rt);
-      $rt = mysql_query("SELECT userid FROM {$TABLE_PREFIX}files_thanks WHERE userid=$uid AND infohash=$infohash");
-      // never thanks for this file
-      if (mysql_num_rows($rt) == 0)
-        {
-           @mysql_query("INSERT INTO {$TABLE_PREFIX}files_thanks (infohash, userid) VALUES ($infohash, $uid)");
-      }
+	((mysqli_free_result($rt) || (is_object($rt) && (get_class($rt) == "mysqli_result"))) ? true : false);
+	$rt = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT userid FROM {$TABLE_PREFIX}files_thanks WHERE userid=$uid AND infohash=$infohash");
+	// never thanks for this file
+	if (mysqli_num_rows($rt) == 0)
+	{
+           @@mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO {$TABLE_PREFIX}files_thanks (infohash, userid) VALUES ($infohash, $uid)");
+	}
   }
 
-  mysql_free_result($rt);
-$rt = mysql_query("SELECT u.id, u.username, ul.prefixcolor, ul.suffixcolor FROM {$TABLE_PREFIX}files_thanks t LEFT JOIN {$TABLE_PREFIX}users u ON u.id=t.userid LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE infohash=$infohash");
+((mysqli_free_result($rt) || (is_object($rt) && (get_class($rt) == "mysqli_result"))) ? true : false);
+$rt = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.id, u.username, ul.prefixcolor, ul.suffixcolor FROM {$TABLE_PREFIX}files_thanks t LEFT JOIN {$TABLE_PREFIX}users u ON u.id=t.userid LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE infohash=$infohash");
   if (mysql_num_rows($rt) == 0)
      $out = $language["THANKS_BE_FIRST"];
 
 
-  while ($ty = mysql_fetch_assoc($rt))
+  while ($ty = mysqli_fetch_assoc($rt))
     {
       if ($ty["id"] == $uid) // already thank
         $button = false;

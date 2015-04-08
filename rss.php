@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
 // xList .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -35,8 +35,6 @@
 // LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// **Edited by mcangeli on 1/24/2008 to correct torrent detail link
 //
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -132,8 +130,8 @@ if ($CURUSER["view_torrents"]=="yes")
 // forums
 if ($CURUSER["view_forum"]=="yes")
 {
-  $getItems = "select t.id as topicid, p.id as postid, f.name, u.username,t.subject,p.added, p.body from {$TABLE_PREFIX}topics t inner join {$TABLE_PREFIX}posts p on p.topicid=t.id inner join {$TABLE_PREFIX}forums f on t.forumid=f.id inner join {$TABLE_PREFIX}users u on u.id=p.userid ORDER BY added DESC LIMIT 50";
-  $doGet=get_result($getItems,true,$btit_settings['cache_duration']);
+  $getItems = "SELECT t.id as topicid, p.id as postid, f.name, u.username,t.subject,p.added, p.body from {$TABLE_PREFIX}topics t inner join {$TABLE_PREFIX}posts p on p.topicid=t.id inner join {$TABLE_PREFIX}forums f on t.forumid=f.id inner join {$TABLE_PREFIX}users u on u.id=p.userid ORDER BY added DESC LIMIT 50";
+  $doGet=get_result($getItems, true, $btit_settings['cache_duration']);
 
   foreach($doGet as $id=>$item)
    {

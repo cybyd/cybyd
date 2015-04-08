@@ -43,24 +43,24 @@ function in($file, $string) {
   return false;
 } 
 	  
-$action=isset($_GET["action"])?htmlentities($_GET["action"]):$action='';
+$action = isset($_GET["action"])?htmlentities($_GET["action"]):$action='';
 $returnto = "index.php?page=admin&user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=php_log";
 switch($action)
 {
 case 'clear':
 
-$today=date("d.m.y");
+$today = date("d.m.y");
 foreach (glob($btit_settings["php_log_path"]."/".$btit_settings["php_log_name"]."*.log") as $logname)
-        if(!in($logname,$today))
+        if (!in($logname,$today))
 		unlink($logname);
 		header("Location: $BASEURL/$returnto");
 break;
 
 case 'save':
     
-	(isset($_POST["php_log_path"]) && !empty($_POST["php_log_path"])) ? $log_settings["php_log_path"]=mysql_real_escape_string(str_replace("\\", "/", $_POST["php_log_path"])) : $log_settings["php_log_path"]="";
-	$log_settings["php_log_name"]=isset($_POST["php_log_name"])?mysql_real_escape_string(htmlentities($_POST["php_log_name"])):$log_settings["php_log_name"]="";
-	$log_settings["php_log_lines"]=isset($_POST["php_log_lines"])?mysql_real_escape_string(intval(0+$_POST["php_log_lines"])):$log_settings["php_log_lines"]="";
+	(isset($_POST["php_log_path"]) && !empty($_POST["php_log_path"])) ? $log_settings["php_log_path"]=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], str_replace("\\", "/", $_POST["php_log_path"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $log_settings["php_log_path"]="";
+	$log_settings["php_log_name"]=isset($_POST["php_log_name"])?((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], htmlentities($_POST["php_log_name"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")):$log_settings["php_log_name"]="";
+	$log_settings["php_log_lines"]=isset($_POST["php_log_lines"])?((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], intval(0+$_POST["php_log_lines"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")):$log_settings["php_log_lines"]="";
     
 	foreach($log_settings as $key=>$value)
           {
@@ -70,72 +70,72 @@ case 'save':
             $values[]="(".sqlesc($key).",".sqlesc($value).")";
         }
 		$Match = "php_log_";
-        mysql_query("DELETE FROM {$TABLE_PREFIX}settings WHERE `key` LIKE '%".$Match."%'") or stderr($language["ERROR"],mysql_error());
-        mysql_query("INSERT INTO {$TABLE_PREFIX}settings (`key`,`value`) VALUES ".implode(",",$values).";") or stderr($language["ERROR"],mysql_error());
+        mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM {$TABLE_PREFIX}settings WHERE `key` LIKE '%".$Match."%'") or stderr($language["ERROR"],((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO {$TABLE_PREFIX}settings (`key`,`value`) VALUES ".implode(",",$values).";") or stderr($language["ERROR"],((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         header("Location: $BASEURL/$returnto");
 break;
 
 case '':
 default;
-      $new=array();
-	  $j=0;
-      $num_lines=$btit_settings["php_log_lines"];
-      $log=$btit_settings["php_log_path"]."/".$btit_settings["php_log_name"]."_".date("d.m.y")."_.log";
+      $new = array();
+	  $j = 0;
+      $num_lines = $btit_settings["php_log_lines"];
+      $log = $btit_settings["php_log_path"]."/".$btit_settings["php_log_name"]."_".date("d.m.y")."_.log";
       $admintpl->set("language",$language);
-	  if(file_exists($log))//check first otherwise more errors
+	  if (file_exists($log)) // check first otherwise more errors
 	  {
 	  // Open file and read contents
-      $fd=fopen($log, "r");
-      $data=fread($fd, filesize($log));
-      fclose($fd);
+      $fd = fopen($log, "r");
+      $data = fread($fd, filesize($log));
+      fclose ($fd);
       // Create an array out of each line
-      $data_array=explode("\n", $data);
+      $data_array = explode("\n", $data);
       // Find the last key in the array
-      $last_key=count($data_array)-1;
+      $last_key = count($data_array) - 1;
       // If the last line is empty revise the last key downwards until there's actually something there
       while(empty($data_array[$last_key]))
       {
-      $last_key-=1;
+      $last_key -= 1;
       }
       // Figure out the first key based upon the value set for the number of lines to display
-      $first_key=$last_key-($num_lines-1);
+      $first_key = $last_key - ($num_lines - 1);
       // Start a new array to store the last X lines in
-      $final_array=array();
+      $final_array = array();
       // Work through the array and only add the last X lines to it.
       foreach($data_array as $key => $value)
       {
       if($key >= $first_key && $key <= $last_key)
       {
-      $final_array[]=$value;
+      $final_array[] = $value;
       }
       }
      // Output the final data
      foreach ($final_array as $value)
      {
-      $new[$j]["line"]= $value."\n";
+      $new[$j]["line"] = $value."\n";
 	  $j++;
      }
 	 $admintpl->set("error_logs",$new);
 	 }
-	 else{
+	 else {
 	 //nothing
 	 }
 	  $admintpl->set("error_log_exists",(file_exists($log)?true:false),true);
 	  $Match = "php_log_";
-	  $loglist=get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings where `key` LIKE '%".$Match."%'");
-	  $exp=explode("/", str_replace("\\", "/", $THIS_BASEPATH));
-      $last_key=(count($exp)-1);
+	  $loglist = get_fresh_config("SELECT `key`,`value` FROM {$TABLE_PREFIX}settings where `key` LIKE '%".$Match."%'");
+	  $exp = explode("/", str_replace("\\", "/", $THIS_BASEPATH));
+      $last_key = (count($exp)-1);
       unset($exp[$last_key]);
-	  $exp=str_replace($find,$replace,$exp);
-      $recommended=implode("/",$exp)."/xbtit-error-logs";
+	  $exp = str_replace($find,$replace,$exp);
+      $recommended = implode("/",$exp)."/xbtit-error-logs";
       $loglist["php_log_path_find"]=$recommended;
 	  $admintpl->set("frm_action", "index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=php_log&amp;action=save");
 	  $admintpl->set("config",$loglist);
-	  $today=date("d.m.y");
-	  $list=array();
-	  $i=0;
+	  $today = date("d.m.y");
+	  $list = array();
+	  $i = 0;
 	  foreach (glob($btit_settings["php_log_path"]."/".$btit_settings["php_log_name"]."*.log") as $logname){
-	  $logname=str_replace($btit_settings["php_log_path"]."/","",$logname);
+	  $logname = str_replace($btit_settings["php_log_path"]."/","",$logname);
 	  if(!in($logname,$today))
 	  $list[$i]["file"]=$logname."<br />";
 	  $i++;

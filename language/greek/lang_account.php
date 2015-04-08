@@ -19,5 +19,5 @@ $language["WEEK"]="Αδύναμος";
 $language["MEDIUM"]="Μεσαίος";
 $language["SAFE"]="Ασφαλής";
 $language["STRONG"]="Ισχυρός";
-
+$language["ERR_GENERIC"]='Generic Error: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 ?>

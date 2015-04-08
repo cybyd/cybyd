@@ -8,7 +8,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -48,8 +48,8 @@ error_reporting(E_ALL ^ E_NOTICE);
 require_once($CURRENTPATH.'/conextra.php');
 $signon = getConnection ();
 $prefix = getPrefix ();
-$logname = mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_name' LIMIT 1", $signon));
-$logpath = mysql_fetch_row(mysql_query("SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_path' LIMIT 1", $signon));
+$logname = mysqli_fetch_row(mysqli_query($signon, "SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_name' LIMIT 1"));
+$logpath = mysqli_fetch_row(mysqli_query($signon, "SELECT `value` FROM {$prefix}settings WHERE `key`='php_log_path' LIMIT 1"));
 $when = date("d.m.y");
 ini_set('log_errors','On'); // enable or disable php error logging (use 'On' or 'Off')
 ini_set('error_log',''.$logpath[0].'/'.$logname[0].'_'.$when.'_.log'); // path to server-writable log file
@@ -110,14 +110,15 @@ if (!isset($TRACKER_ANNOUNCEURLS)) {
 // Gold/Silver Torrent v 1.2 by Losmi / start
 function getStatus($gold=0)
 {
-    if($gold == 0)
+	if ($gold == 0)
     {
         return 'Classic';
     }
-    if($gold == 1)
+	if ($gold == 1)
     {
         return 'Silver';
-    }if($gold == 2)
+    }
+	if ($gold == 2)
     {
         return 'Gold';
     }
@@ -131,11 +132,11 @@ function createUsersLevelCombo($selected=0)
     $ret = array();
     $res = do_sqlquery("SELECT * FROM {$TABLE_PREFIX}users_level ORDER BY id");
 
-    while ($row = mysql_fetch_assoc($res))
+    while ($row = mysqli_fetch_assoc($res))
         $ret[] = $row;
 
     unset($row);
-    mysql_free_result($res);
+    ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 
     $gold_select_box = "
       <select name='level' >";
@@ -264,8 +265,8 @@ function get_microtime() {
 }
 
 function cut_string($ori_string,$cut_after) {
-  $rchars=array('_','.','-');
-  $ori_string=str_replace($rchars,' ',$ori_string);
+  $rchars = array('_','.','-');
+  $ori_string = str_replace($rchars,' ',$ori_string);
   if (strlen($ori_string)>$cut_after && $cut_after>0)
     return substr($ori_string,0,$cut_after).'...';
   return $ori_string;
@@ -273,7 +274,7 @@ function cut_string($ori_string,$cut_after) {
 
 function print_debug($level=3, $key=' - ') {
     global $time_start, $gzip, $num_queries, $cached_querys;
-    $time_end=get_microtime();
+    $time_end = get_microtime();
     switch ($level) {
         case '4':
             if (function_exists('memory_get_usage')) {
@@ -285,7 +286,7 @@ function print_debug($level=3, $key=' - ') {
         case '3':
             $return[]='[ GZIP: '.$gzip.' ]';
         case '2':
-            $return[]='[ Script Execution: '.number_format(($time_end-$time_start),4).' sec. ]';
+            $return[]='[ Script Execution: '.number_format(($time_end-$time_start), 4).' sec. ]';
         case '1':
             $return[]='[ Queries: '.$num_queries.'|'.$cached_querys.' ]';
             break;
@@ -298,7 +299,7 @@ function print_debug($level=3, $key=' - ') {
 function print_version() {
   global $tracker_version, $CyByD_v;
 
-  return '[ <a href="https://github.com/cybernet/cybyd" target="_blank">CyByD`</a> '.$CyByD_v.' MoDDed by <b>cybernet2u</b> @ <b><a href="http://xList.ro" target="_blank">xList.ro</b></a> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
+  return '[ <a href="https://github.com/cybyd/cybyd" target="_blank">CyByD`</a> '.$CyByD_v.' MoDDed by <b>cybernet2u</b> @ <b><a href="http://xLiST.ro" target="_blank">xLiST.ro</b></a> ] [&nbsp;&nbsp;<u>xBTiT '.$tracker_version.' By</u>: <a href="http://www.btiteam.org/" target="_blank">BTiTEAM</a>&nbsp;]';
 }
 
 function print_designer() {
@@ -343,7 +344,7 @@ function check_online($session_id, $location)
     {
         @quickQuery("UPDATE {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, location=$location, user_id=$uid, lastaction=UNIX_TIMESTAMP() $where");
         // record don't already exist, then insert it
-        if (mysql_affected_rows()==0)
+        if (mysqli_affected_rows($GLOBALS["___mysqli_ston"])==0)
         { 
             @quickQuery("UPDATE {$TABLE_PREFIX}users SET lastconnect=NOW() WHERE id=$uid AND id>1");
             @quickQuery("INSERT INTO {$TABLE_PREFIX}online SET session_id='$session_id', user_name=$uname, user_group=$ugroup, prefixcolor=$prefix, suffixcolor=$suffix, user_id=$uid, user_ip='$ip', location=$location, lastaction=UNIX_TIMESTAMP()");
@@ -631,7 +632,7 @@ function userlogin()
     if($id>1)
     {
         $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.seedbonus, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = $id LIMIT 1;", true);
-        $row = mysql_fetch_assoc($res);
+        $row = mysqli_fetch_assoc($res);
 
         if($btit_settings["secsui_cookie_type"]==1)
         {
@@ -722,10 +723,10 @@ function userlogin()
                 $id=1;
         }
     }
-    if($id==1)
+    if($id == 1)
     {
         $res = do_sqlquery("SELECT u.salt, u.pass_type, u.lip, u.cip, $udownloaded as downloaded, $uuploaded as uploaded, u.seedbonus, u.smf_fid, u.ipb_fid, u.topicsperpage, u.postsperpage,u.torrentsperpage, u.flag, u.avatar, UNIX_TIMESTAMP(u.lastconnect) AS lastconnect, UNIX_TIMESTAMP(u.joined) AS joined, u.id as uid, u.username, u.password, u.random, u.email, u.language,u.style, u.time_offset, ul.*, `s`.`style_url`, `s`.`style_type`, `l`.`language_url` FROM $utables INNER JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id LEFT JOIN `{$TABLE_PREFIX}style` `s` ON `u`.`style`=`s`.`id` LEFT JOIN `{$TABLE_PREFIX}language` `l` ON `u`.`language`=`l`.`id` WHERE u.id = 1 LIMIT 1;", true);
-        $row = mysql_fetch_assoc($res);
+        $row = mysqli_fetch_assoc($res);
     }
 
     // CHECK FOR INSTALLATION FOLDER WITHOUT INSTALL.ME
@@ -751,34 +752,34 @@ function userlogin()
     $_SESSION["CURUSER_EXPIRE"] = (time()+$btit_settings["cache_duration"]);
     $GLOBALS["CURUSER"] = $_SESSION["CURUSER"];
 
-    mysql_free_result($res);
+    ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
     unset($row);
 }
 
-function dbconn($do_clean=false) {
+function dbconn($do_clean = false) {
   global $dbhost, $dbuser, $dbpass, $database, $language;
 
   if ($GLOBALS['persist'])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass);
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
   else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass);
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
 
   if (!$conres) {
-    switch (mysql_errno()) {
+    switch (((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
       case 1040:
       case 2002:
         if ($_SERVER['REQUEST_METHOD'] == 'GET')
           die('<html><head><meta http-equiv=refresh content="20;'.$_SERVER['REQUEST_URI'].'"></head><body><table border="0" width="100%" height="100%"><tr><td><h3 align="center">'.$language['ERR_SERVER_LOAD'].'</h3></td></tr></table></body></html>');
         die($language['ERR_CANT_CONNECT']);
       default:
-        die('['.mysql_errno().'] dbconn: mysql_connect: '.mysql_error());
+        die('['.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)).'] dbconn: mysql_connect: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
   }
 
-  if($GLOBALS["charset"]=="UTF-8")
+  if($GLOBALS["charset"] == "UTF-8")
       do_sqlquery("SET NAMES utf8");
 
-  mysql_select_db($database) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.mysql_error());
+  ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or die($language['ERR_CANT_OPEN_DB'].' '.$database.' - '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
   userlogin();
 
@@ -805,7 +806,7 @@ function cleandata() {
   if ($ts + $clean_interval > $now)
     return;
   do_sqlquery("UPDATE {$TABLE_PREFIX}tasks SET last_time=$now WHERE task='sanity' AND last_time = $ts");
-  if (!mysql_affected_rows())
+  if (!mysqli_affected_rows($GLOBALS["___mysqli_ston"]))
     return;
 
   require_once $CURRENTPATH.'/sanity.php';
@@ -834,7 +835,7 @@ function updatedata() {
     return;
 
   do_sqlquery("UPDATE {$TABLE_PREFIX}tasks SET last_time=$now WHERE task='update' AND last_time = $ts");
-  if (!mysql_affected_rows())
+  if (!mysqli_affected_rows($GLOBALS["___mysqli_ston"]))
     return;
 
   $res = get_result("SELECT announce_url FROM {$TABLE_PREFIX}files WHERE external='yes' ORDER BY lastupdate ASC LIMIT 1", true, $btit_settings['cache_duration']);
@@ -1524,7 +1525,7 @@ function sqlerr($file='',$line='') {
   <table border="0" bgcolor="" align=left cellspacing=0 cellpadding=10 style="background: blue">
     <tr>
           <td class=embedded><font color="#FFFFFF"><h1><?php echo ERR_SQL_ERR; ?></h1>
-            <b><?php echo mysql_error().$file;?></b></font></td>
+            <b><?php echo ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)).$file;?></b></font></td>
         </tr>
     </table>
 <?php
@@ -1923,8 +1924,8 @@ function ipb_make_post($forum_id, $forum_subj, $forum_post, $poster_id=0, $updat
         $mycount=0;
     else
     {
-        $res = get_result("SELECT `t`.* FROM `{$ipb_prefix}topics` `t` LEFT JOIN `{$ipb_prefix}posts` `p` ON `t`.`tid`=`p`.`topic_id` WHERE `t`.`forum_id`=".$forum_id." AND `t`.`title`='".mysql_real_escape_string($clean_subj)."' AND `t`.`last_post`=`p`.`post_date` AND `t`.`last_poster_id`=`p`.`author_id`");
-        $mycount=count($res);
+        $res = get_result("SELECT `t`.* FROM `{$ipb_prefix}topics` `t` LEFT JOIN `{$ipb_prefix}posts` `p` ON `t`.`tid`=`p`.`topic_id` WHERE `t`.`forum_id`=".$forum_id." AND `t`.`title`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $clean_subj) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' AND `t`.`last_post`=`p`.`post_date` AND `t`.`last_poster_id`=`p`.`author_id`");
+        $mycount = count($res);
     }
     if($mycount>0)
     {
@@ -1944,6 +1945,14 @@ function ipb_make_post($forum_id, $forum_subj, $forum_post, $poster_id=0, $updat
     }
     return $topicID;
 }
+
+// for MySQLi
+function mysqli_result($res, $row, $field=0) {
+    $res->data_seek($row);
+    $datarow = $res->fetch_array();
+    return $datarow[$field];
+} 
+// for MySQLi
 
 // EOF
 ?>

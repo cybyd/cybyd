@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -39,17 +39,17 @@ if (!defined("IN_ACP"))
 if(isset($_POST) && !empty($_POST))
 {
     (isset($_POST["secsui_quarantine_search_terms"]) && !empty($_POST["secsui_quarantine_search_terms"])) ? $secsui_quarantine_search_terms=
-    mysql_real_escape_string(strtolower(str_replace(array("\r\n", "\n\r", " "), array(",", ",", ""), $_POST["secsui_quarantine_search_terms"]))) : $secsui_quarantine_search_terms="";
-    (isset($_POST["secsui_quarantine_dir"]) && !empty($_POST["secsui_quarantine_dir"])) ? $secsui_quarantine_dir=mysql_real_escape_string(str_replace("\\", "/", $_POST["secsui_quarantine_dir"])) : $secsui_quarantine_dir="";
+    ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], strtolower(str_replace(array("\r\n", "\n\r", " "), array(",", ",", ""), $_POST["secsui_quarantine_search_terms"]))) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_quarantine_search_terms="";
+    (isset($_POST["secsui_quarantine_dir"]) && !empty($_POST["secsui_quarantine_dir"])) ? $secsui_quarantine_dir=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], str_replace("\\", "/", $_POST["secsui_quarantine_dir"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_quarantine_dir="";
     (isset($_POST["secsui_quarantine_pm"]) && !empty($_POST["secsui_quarantine_pm"]) && is_numeric($_POST["secsui_quarantine_pm"]) && $_POST["secsui_quarantine_pm"]>=2) ? $secsui_quarantine_pm=(int)0+$_POST["secsui_quarantine_pm"] : $secsui_quarantine_pm=2;
     (isset($_POST["secsui_pass_type"]) && !empty($_POST["secsui_pass_type"]) && is_numeric($_POST["secsui_pass_type"]) && $_POST["secsui_pass_type"]>=1 && $_POST["secsui_pass_type"]<=6) ? $secsui_pass_type=(int)0+$_POST["secsui_pass_type"] : $secsui_pass_type=1;
-    (isset($_POST["secsui_ss"]) && !empty($_POST["secsui_ss"])) ? $secsui_ss=mysql_real_escape_string($_POST["secsui_ss"]) : $secsui_ss="";
+    (isset($_POST["secsui_ss"]) && !empty($_POST["secsui_ss"])) ? $secsui_ss=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["secsui_ss"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_ss="";
     (isset($_POST["secsui_cookie_type"]) && !empty($_POST["secsui_cookie_type"]) && is_numeric($_POST["secsui_cookie_type"]) && $_POST["secsui_cookie_type"]>=1 && $_POST["secsui_cookie_type"]<=3) ? $secsui_cookie_type=(int)0+$_POST["secsui_cookie_type"] : $secsui_cookie_type=1;
     (isset($_POST["secsui_cookie_exp1"]) && !empty($_POST["secsui_cookie_exp1"]) && is_numeric($_POST["secsui_cookie_exp1"]) && $_POST["secsui_cookie_exp1"]>=1) ? $secsui_cookie_exp1=(int)0+$_POST["secsui_cookie_exp1"] : $secsui_cookie_exp1=1;
     (isset($_POST["secsui_cookie_exp2"]) && !empty($_POST["secsui_cookie_exp2"]) && is_numeric($_POST["secsui_cookie_exp2"]) && $_POST["secsui_cookie_exp2"]>=1 && $_POST["secsui_cookie_exp2"]<=6) ? $secsui_cookie_exp2=(int)0+$_POST["secsui_cookie_exp2"] : $secsui_cookie_exp2=2;
-    (isset($_POST["secsui_cookie_name"]) && !empty($_POST["secsui_cookie_name"])) ? $secsui_cookie_name=mysql_real_escape_string(preg_replace('/[^A-Za-z0-9]/', '', $_POST["secsui_cookie_name"])) : $secsui_cookie_name="";
-    (isset($_POST["secsui_cookie_path"]) && !empty($_POST["secsui_cookie_path"])) ? $secsui_cookie_path=mysql_real_escape_string($_POST["secsui_cookie_path"]) : $secsui_cookie_path="";
-    (isset($_POST["secsui_cookie_domain"]) && !empty($_POST["secsui_cookie_domain"])) ? $secsui_cookie_domain=mysql_real_escape_string($_POST["secsui_cookie_domain"]) : $secsui_cookie_domain="";
+    (isset($_POST["secsui_cookie_name"]) && !empty($_POST["secsui_cookie_name"])) ? $secsui_cookie_name=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], preg_replace('/[^A-Za-z0-9]/', '', $_POST["secsui_cookie_name"])) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_cookie_name="";
+    (isset($_POST["secsui_cookie_path"]) && !empty($_POST["secsui_cookie_path"])) ? $secsui_cookie_path=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["secsui_cookie_path"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_cookie_path="";
+    (isset($_POST["secsui_cookie_domain"]) && !empty($_POST["secsui_cookie_domain"])) ? $secsui_cookie_domain=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["secsui_cookie_domain"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")) : $secsui_cookie_domain="";
     (isset($_POST["pass_min_char"]) && !empty($_POST["pass_min_char"]) && is_numeric($_POST["pass_min_char"]) && $_POST["pass_min_char"]>=4) ? $pass_min_char=(int)0+$_POST["pass_min_char"] : $pass_min_char=4;
     (isset($_POST["pass_min_lct"]) && !empty($_POST["pass_min_lct"]) && is_numeric($_POST["pass_min_lct"]) && $_POST["pass_min_lct"]>=0) ? $pass_min_lct=(int)0+$_POST["pass_min_lct"] : $pass_min_lct=0;
     (isset($_POST["pass_min_uct"]) && !empty($_POST["pass_min_uct"]) && is_numeric($_POST["pass_min_uct"]) && $_POST["pass_min_uct"]>=0) ? $pass_min_uct=(int)0+$_POST["pass_min_uct"] : $pass_min_uct=0;
@@ -122,12 +122,12 @@ if(isset($_POST) && !empty($_POST))
             }
         }
         shuffle($cookie_items_arr);
-        $secsui_cookie_items=mysql_real_escape_string(implode(",", $cookie_items_arr));
+        $secsui_cookie_items=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], implode(",", $cookie_items_arr)) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     }
     else
     {
         $cookie_items_changed=true;
-        $secsui_cookie_items=mysql_real_escape_string("1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0");
+        $secsui_cookie_items=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], "1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0") : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     }
 
     if($secsui_cookie_type==2)
@@ -208,7 +208,7 @@ if(isset($_POST) && !empty($_POST))
     }
 }
 
-$get_pm_user=get_result("SELECT `u`.`username`, `ul`.`prefixcolor`, `ul`.`suffixcolor` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON `u`.`id_level`=`ul`.`id` WHERE `u`.`id`=".mysql_real_escape_string($btit_settings["secsui_quarantine_pm"]), true, $btit_settings["cache_duration"]);
+$get_pm_user=get_result("SELECT `u`.`username`, `ul`.`prefixcolor`, `ul`.`suffixcolor` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON `u`.`id_level`=`ul`.`id` WHERE `u`.`id`=".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $btit_settings["secsui_quarantine_pm"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : "")), true, $btit_settings["cache_duration"]);
 
 $btit_settings["secsui_quarantine_search_terms"]=str_replace(",", "\n", $btit_settings["secsui_quarantine_search_terms"]);
 $btit_settings["secsui_quarantine_user"]=((count($get_pm_user)==1)?"<a href='index.php?page=userdetails&id=".$btit_settings["secsui_quarantine_pm"]."'>".unesc($get_pm_user[0]["prefixcolor"].$get_pm_user[0]["username"].$get_pm_user[0]["suffixcolor"])."</a>":"<span style='background-color:#FF0000;color:#FFFF00;font-weight:bold;'>".$language["SETTING_QUAR_INV_USR"]."</span>");

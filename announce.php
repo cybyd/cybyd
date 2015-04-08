@@ -8,7 +8,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -41,7 +41,7 @@ ignore_user_abort(1);
 $GLOBALS["peer_id"] = "";
 $summaryupdate = array();
 
-$BASEPATH=dirname(__FILE__);
+$BASEPATH = dirname(__FILE__);
 require("$BASEPATH/include/config.php");
 require("$BASEPATH/include/common.php");
 
@@ -113,11 +113,11 @@ function summaryAdd($column, $value, $abs = false)
 
 // connect to db
 if ($GLOBALS["persist"])
-    $conres=mysql_pconnect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass)) or show_error("Tracker error - mysqli_connect: " . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 else
-    $conres=mysql_connect($dbhost, $dbuser, $dbpass) or show_error("Tracker error - mysql_connect: " . mysql_error());
+    $conres = ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass)) or show_error("Tracker error - mysqli_connect: " . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
-    mysql_select_db($database) or show_error("Tracker error - $database - ".mysql_error());
+    ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database")) or show_error("Tracker error - $database - ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
 // connection is done ok
 
@@ -150,14 +150,14 @@ else
     $peer_id = bin2hex($_GET["peer_id"]);
 }
 
-$iscompact=(isset($_GET["compact"])?$_GET["compact"]=='1':false);
+$iscompact = (isset($_GET["compact"])?$_GET["compact"]=='1':false);
 
 // controll if client can handle gzip
 if ($GZIP_ENABLED)
     {
     if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0)
         {
-        if (ini_get('output_handler')!='ob_gzhandler' && !$iscompact)
+        if (ini_get('output_handler') != 'ob_gzhandler' && !$iscompact)
             {
             // only for non compact
             ob_start("ob_gzhandler");
@@ -178,7 +178,7 @@ header("Content-type: text/plain");
 header("Pragma: no-cache");
 
 // Error: no web browsers allowed
-$agent = mysql_real_escape_string($_SERVER["HTTP_USER_AGENT"]);
+$agent = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_SERVER["HTTP_USER_AGENT"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 // Deny access made with a browser...
 
 if (preg_match("/^Mozilla|^Opera|^Links|^Lynx/i", $agent))
@@ -196,8 +196,8 @@ $ip = getip();
 
 // IP Banned ??
 $nip = ip2long($ip);
-$res = mysql_query("SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last") or error_log(__FILE__." - ".__LINE__);
-if (mysql_num_rows($res) > 0)
+$res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM {$TABLE_PREFIX}bannedip WHERE $nip >= first AND $nip <= last") or error_log(__FILE__." - ".__LINE__);
+if (mysqli_num_rows($res) > 0)
  {
    show_error("You are not authorized to use this tracker (".$SITENAME.") -- Your IP address (".$ip.") is BANNED.");
    die();
@@ -207,8 +207,8 @@ if (mysql_num_rows($res) > 0)
 
 // only for internal tracked torrent!
 // maybe ExT2
-$res_tor =mysql_query("SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
-if (mysql_num_rows($res_tor)==0)
+$res_tor = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT UNIX_TIMESTAMP(data) as data, uploader FROM {$TABLE_PREFIX}files WHERE external='no' AND info_hash='".$info_hash."'");
+if (mysqli_num_rows($res_tor) == 0)
    show_error("Torrent is not authorized for use on this tracker.");
 
 
@@ -229,12 +229,12 @@ if ($pid=="" || !$pid)
 
 // PID turned on
 if ($PRIVATE_ANNOUNCE) {
-  $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
-  if (!$respid || mysql_num_rows($respid)!=1)
+  $respid = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE pid='".$pid."' LIMIT 1");
+  if (!$respid || mysqli_num_rows($respid)!=1)
      show_error("Invalid PID (private announce): $pid. Please redownload torrent from $BASEURL.");
   else
       {
-      $rowpid=mysql_fetch_assoc($respid);
+      $rowpid=mysqli_fetch_assoc($respid);
       if ($rowpid["can_download"]!="yes" && $PRIVATE_ANNOUNCE)
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
@@ -245,7 +245,7 @@ if ($PRIVATE_ANNOUNCE) {
         else
             $ratio=0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added=mysqli_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
         if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
@@ -259,29 +259,29 @@ if ($PRIVATE_ANNOUNCE) {
   }
 } else {
 // PID turned off
-   $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.cip='$ip' LIMIT 1");
-   if (!$respid || mysql_num_rows($respid)!=1)
+   $respid = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.cip='$ip' LIMIT 1");
+   if (!$respid || mysqli_num_rows($respid) != 1)
      // maybe it's guest with new query I must found at least guest user
-    $respid = mysql_query("SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
-    if (!$respid || mysql_num_rows($respid)!=1)
+    $respid = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.*, level, can_download, WT FROM {$TABLE_PREFIX}users u INNER JOIN {$TABLE_PREFIX}users_level ul on u.id_level=ul.id WHERE u.id=1 LIMIT 1");
+    if (!$respid || mysqli_num_rows($respid) != 1)
       {
         // do nothing but tracker is misconfigured!!!
         // guest user not found...
       }
     else
       {
-      $rowpid=mysql_fetch_assoc($respid);
-      if ($rowpid["can_download"]!="yes")
+      $rowpid = mysqli_fetch_assoc($respid);
+      if ($rowpid["can_download"] != "yes")
          show_error("Sorry your level ($rowpid[level]) is not allowed to download from $BASEURL.");
       //waittime
-      elseif ($rowpid["WT"]>0) {
-        $wait=0;
-        if (intval($rowpid['downloaded'])>0)
-           $ratio=number_format($rowpid['uploaded']/$rowpid['downloaded'],2);
+      elseif ($rowpid["WT"] > 0) {
+        $wait = 0;
+        if (intval($rowpid['downloaded']) > 0)
+           $ratio = number_format($rowpid['uploaded'] / $rowpid['downloaded'], 2);
         else
-            $ratio=0.0;
+            $ratio = 0.0;
 
-        $added=mysql_fetch_assoc($res_tor);
+        $added = mysqli_fetch_assoc($res_tor);
         $vz = $added["data"];
         $timer = floor((time() - $vz) / 3600);
         if($ratio<1.0 && $rowpid['id']!=$added["uploader"]){
@@ -308,12 +308,12 @@ if (!isset($GLOBALS["ip_override"]))
 
 if (isset($_GET["numwant"]))
     if ($_GET["numwant"] < $GLOBALS["maxpeers"] && $_GET["numwant"] >= 0)
-        $GLOBALS["maxpeers"]=$_GET["numwant"];
+        $GLOBALS["maxpeers"] = $_GET["numwant"];
 
 if (isset($_GET["trackerid"]))
 {
     if (is_numeric($_GET["trackerid"]))
-        $GLOBALS["trackerid"] = mysql_real_escape_string($_GET["trackerid"]);
+        $GLOBALS["trackerid"] = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_GET["trackerid"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 }
 if (!is_numeric($port) || !is_numeric($downloaded) || !is_numeric($uploaded) || !is_numeric($left))
     show_error("Invalid numerical field(s) from client");
@@ -360,21 +360,21 @@ function getPeerInfo($user, $hash)
     if (isset($GLOBALS["trackerid"]))
     {
         $query = "SELECT peer_id,bytes,ip,port,status,lastupdate,sequence FROM {$TABLE_PREFIX}peers WHERE sequence=\"".$GLOBALS["trackerid"]."\" AND infohash=\"$hash\"";
-        $results = mysql_query($query) or show_error("Tracker error: invalid torrent");
-        $data = mysql_fetch_assoc($results);
+        $results = mysqli_query($GLOBALS["___mysqli_ston"], $query) or show_error("Tracker error: invalid torrent");
+        $data = mysqli_fetch_assoc($results);
         if (!$data || $data["peer_id"] != $user)
         {
             // Damn, but don't crash just yet.
             $query = "SELECT peer_id,bytes,ip,port,status,lastupdate,sequence from {$TABLE_PREFIX}peers where peer_id=\"$user\" AND infohash=\"$hash\"";
-            $results = mysql_query($query) or show_error("Tracker error: invalid torrent");
-            $data = mysql_fetch_assoc($results);
+            $results = mysqli_query($GLOBALS["___mysqli_ston"], $query) or show_error("Tracker error: invalid torrent");
+            $data = mysqli_fetch_assoc($results);
         }
     }
     else
     {
         $query = "SELECT peer_id,bytes,ip,port,status,lastupdate,sequence from {$TABLE_PREFIX}peers where peer_id=\"$user\" AND infohash=\"$hash\"";
-        $results = mysql_query($query) or show_error("Tracker error: invalid torrent");
-        $data = mysql_fetch_assoc($results);
+        $results = mysqli_query($GLOBALS["___mysqli_ston"], $query) or show_error("Tracker error: invalid torrent");
+        $data = mysqli_fetch_assoc($results);
     }
 
     if (!($data))
@@ -396,15 +396,15 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
     {
         // compact check: valid IP address:
         if ($_GET["ip"]!=long2ip(ip2long($_GET["ip"])))
-            show_error("Invalid IP address. Must be standard dotted decimal (hostnames not allowed)");
+            show_error("Invalid IP address. Must be standard dotted decimal ( hostnames not allowed )");
 
-        $ip = mysql_real_escape_string($_GET["ip"]);
+        $ip = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_GET["ip"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     }
     else
         $ip = getip();
 
-    $ip = mysql_real_escape_string($ip);
-    $agent = mysql_real_escape_string($_SERVER["HTTP_USER_AGENT"]);
+    $ip = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $ip) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $agent = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_SERVER["HTTP_USER_AGENT"]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     $remotedns = gethostbyaddr($ip);
 
     if (isset($_GET["ip"])) $nuIP = $_GET["ip"];
@@ -416,7 +416,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
         $remotedns = strtoupper($remotedns);
         preg_match('/^(.+)\.([A-Z]{2,3})$/', $remotedns, $tldm);
     if (!empty($tldm[2]))
-          $remotedns = mysql_real_escape_string($tldm[2]);
+          $remotedns = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tldm[2]) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
     else
       $remotedns = "AA";
       }
@@ -433,18 +433,18 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
 
 
 
-    $compact = mysql_real_escape_string(str_pad(pack('Nn', ip2long($ip), $port),6));
-    $peerid = mysql_real_escape_string('2:ip' . strlen($ip) . ':' . $ip . '7:peer id20:' . hex2bin($peer_id) . "4:porti{$port}e");
-    $no_peerid = mysql_real_escape_string('2:ip' . strlen($ip) . ':' . $ip . "4:porti{$port}e");
+    $compact = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], str_pad(pack('Nn', ip2long($ip), $port),6)) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $peerid = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], '2:ip' . strlen($ip) . ':' . $ip . '7:peer id20:' . hex2bin($peer_id) . "4:porti{$port}e") : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $no_peerid = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], '2:ip' . strlen($ip) . ':' . $ip . "4:porti{$port}e") : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
 
-    $results = @mysql_query("INSERT INTO {$TABLE_PREFIX}peers SET infohash=\"$info_hash\", peer_id=\"$peer_id\", port=\"$port\", ip=\"$ip\", lastupdate=UNIX_TIMESTAMP(), bytes=\"$left\", status=\"$status\", natuser=\"$nat\", client=\"$agent\", dns=\"$remotedns\", downloaded=$downloaded, uploaded=$uploaded, pid=\"$upid\"");
+    $results = @mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO {$TABLE_PREFIX}peers SET infohash=\"$info_hash\", peer_id=\"$peer_id\", port=\"$port\", ip=\"$ip\", lastupdate=UNIX_TIMESTAMP(), bytes=\"$left\", status=\"$status\", natuser=\"$nat\", client=\"$agent\", dns=\"$remotedns\", downloaded=$downloaded, uploaded=$uploaded, pid=\"$upid\"");
 
 
     // Special case: duplicated peer_id.
     if (!$results)
     {
-        if (mysql_errno()==1062)
+         if (((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))==1062)
         {
             // Duplicate peer_id! Check IP address
             $peer = getPeerInfo($peer_id, $info_hash);
@@ -457,12 +457,12 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded=0, $uploaded
             quickQuery("UPDATE {$TABLE_PREFIX}peers SET ip=\"$ip\", compact=\"$compact\", with_peerid=\"$peerid\", without_peerid=\"$no_peerid\" WHERE peer_id=\"$peer_id\"  AND infohash=\"$info_hash\"");
             return "WHERE natuser='N'";
         }
-        error_log("BtiTracker: start: ".mysql_error());
+        error_log("BtiTracker: start: ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         show_error("Tracker/database error. The details are in the error log.");
     }
-    $GLOBALS["trackerid"] = mysql_insert_id();
+    $GLOBALS["trackerid"] = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
-    @mysql_query("UPDATE {$TABLE_PREFIX}peers SET sequence=\"".$GLOBALS["trackerid"]."\", compact=\"$compact\", with_peerid=\"$peerid\", without_peerid=\"$no_peerid\" WHERE peer_id=\"$peer_id\" AND infohash=\"$info_hash\"");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$TABLE_PREFIX}peers SET sequence=\"".$GLOBALS["trackerid"]."\", compact=\"$compact\", with_peerid=\"$peerid\", without_peerid=\"$no_peerid\" WHERE peer_id=\"$peer_id\" AND infohash=\"$info_hash\"");
 
     if ($left == 0)
     {
@@ -503,19 +503,19 @@ function sendRandomPeers($info_hash)
         echo "12:min intervali".$GLOBALS["min_interval"]."e";
     echo "5:peers";
 
-    $result = @mysql_query($query);
+    $result = @mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     if (isset($_GET["compact"]) && $_GET["compact"] == '1')
       {
         $p='';
-        while ($row = mysql_fetch_assoc($result))
+        while ($row = mysqli_fetch_assoc($result))
             $p .= str_pad(pack("Nn", ip2long($row["ip"]), $row["port"]), 6);
         echo strlen($p).':'.$p;
     }
     else // no_peer_id or no feature supported
     {
         echo 'l';
-        while ($row = mysql_fetch_assoc($result))
+        while ($row = mysqli_fetch_assoc($result))
         {
             echo "d2:ip".strlen($row["ip"]).":".$row["ip"];
             if (isset($row["peer_id"]))
@@ -528,7 +528,7 @@ function sendRandomPeers($info_hash)
         echo "10:tracker id".strlen($GLOBALS["trackerid"]).":".$GLOBALS["trackerid"];
     echo "e";
 
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 
 
@@ -558,7 +558,7 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
     }
 
     quickQuery("DELETE FROM {$TABLE_PREFIX}peers WHERE peer_id=\"$userid\" AND infohash=\"$hash\"");
-    if (mysql_affected_rows() == 1)
+    if (mysqli_affected_rows($GLOBALS["___mysqli_ston"]) == 1)
     {
         if ($peer["status"] == "leecher")
             summaryAdd("leechers", -1);
@@ -574,15 +574,15 @@ function killPeer($userid, $hash, $left, $assumepeer = false)
 }
 
 // Gold/Silver Torrent v 1.2 by Losmi / start - Gold method checks is torrent set to gold silver or classic
-function checkGold($info_hash,$downloaded)
+function checkGold($info_hash, $downloaded)
 {
     global $TABLE_PREFIX;
-     $re=mysql_query("SELECT gold FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
-     $gold=mysql_fetch_assoc($re);
+     $re = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT gold FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
+     $gold = mysqli_fetch_assoc($re);
 
-    if ($gold['gold']==1) // silver torrent go go leach
+    if ($gold['gold'] == 1) // silver torrent go go leach
      {
-        $downloaded = (int)$downloaded/2;
+        $downloaded = (int)$downloaded / 2;
      }
      else if($gold['gold'] == 2) // gold torrent go go leach
      {
@@ -602,9 +602,9 @@ function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
 
   global $TABLE_PREFIX;
 
-    $peerid=$peer["peer_id"];
+    $peerid = $peer["peer_id"];
 // Gold/Silver Torrent v 1.2 by Losmi / start
-     $downloaded = checkGold($info_hash,$downloaded);
+     $downloaded = checkGold($info_hash, $downloaded);
 // Gold/Silver Torrent v 1.2 by Losmi / end
 
     if (!$GLOBALS["countbytes"])
@@ -629,8 +629,8 @@ function runSpeed($info_hash, $delta)
         quickQuery("INSERT IGNORE INTO {$TABLE_PREFIX}timestamps (info_hash, bytes, delta, sequence) SELECT '$info_hash' AS info_hash, dlbytes, UNIX_TIMESTAMP() - lastSpeedCycle, NULL FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
 
         // mysql blows sometimes so we have to read the data into php before updating it
-        $results = mysql_query('SELECT (MAX(bytes)-MIN(bytes))/SUM(delta), COUNT(*), MIN(sequence) FROM '.$TABLE_PREFIX.'timestamps WHERE info_hash="'.$info_hash.'"' );
-        $data = mysql_fetch_row($results);
+        $results = mysqli_query($GLOBALS["___mysqli_ston"], 'SELECT (MAX(bytes)-MIN(bytes))/SUM(delta), COUNT(*), MIN(sequence) FROM '.$TABLE_PREFIX.'timestamps WHERE info_hash="'.$info_hash.'"' );
+        $data = mysqli_fetch_row($results);
 
         summaryAdd("speed", $data[0], true);
         summaryAdd("lastSpeedCycle", "UNIX_TIMESTAMP()", true);
@@ -649,11 +649,11 @@ function runSpeed($info_hash, $delta)
 
 
 // select how many users with same pid or ip
-$results = mysql_query("SELECT status, count(status) FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\" AND peer_id<>\"$peer_id\" GROUP BY status") or show_error("Tracker error: invalid torrent");
+$results = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT status, count(status) FROM {$TABLE_PREFIX}peers WHERE ".($PRIVATE_ANNOUNCE?"pid=\"$pid\"":"ip=\"$ip\"")." AND infohash=\"$info_hash\" AND peer_id<>\"$peer_id\" GROUP BY status") or show_error("Tracker error: invalid torrent");
 $status = array();
 
-while ($resstat = mysql_fetch_row($results))
-  $status[$resstat[0]]=$resstat[1];
+while ($resstat = mysqli_fetch_row($results))
+  $status[$resstat[0]] = $resstat[1];
 
 if (!isset($status["leecher"]))
     $status["leecher"]=0;
@@ -665,24 +665,24 @@ if ($status["seeder"]>=$GLOBALS["maxseeds"] || $status["leecher"]>=$GLOBALS["max
 // end select
 
 unset($status);
-mysql_free_result($results);
+((mysqli_free_result($results) || (is_object($results) && (get_class($results) == "mysqli_result"))) ? true : false);
 
 // UPDATE users ratio down/up for every event on every announce
 // only with the difference between stored down/up and sended by client
 if ($LIVESTATS)
   {
-     $resstat = mysql_query("SELECT `uploaded`, `downloaded` FROM `{$TABLE_PREFIX}peers` WHERE ".(($PRIVATE_ANNOUNCE)?"`pid`='".$pid."'":"`ip`='".$ip."'")." AND `infohash`='".$info_hash."' AND `peer_id`='".$peer_id."'");
-     if ($resstat && mysql_num_rows($resstat)>0)
+     $resstat = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `uploaded`, `downloaded` FROM `{$TABLE_PREFIX}peers` WHERE ".(($PRIVATE_ANNOUNCE)?"`pid`='".$pid."'":"`ip`='".$ip."'")." AND `infohash`='".$info_hash."' AND `peer_id`='".$peer_id."'");
+     if ($resstat && mysqli_num_rows($resstat) > 0)
          {
-         $livestat=mysql_fetch_assoc($resstat);
+         $livestat = mysqli_fetch_assoc($resstat);
          // only if uploaded/downloaded are >= stored data in peer list
          //if ($uploaded>=$livestat["uploaded"])
-               $newup=max(0,($uploaded-$livestat["uploaded"]));
+               $newup = max(0,($uploaded-$livestat["uploaded"]));
          //else
          //      $newup=$uploaded;
 
          //if ($downloaded>=$livestat["downloaded"])
-               $newdown=max(0,($downloaded-$livestat["downloaded"]));
+               $newdown = max(0,($downloaded-$livestat["downloaded"]));
          //else
          //      $newdown=$downloaded;
          // rev 485
@@ -691,19 +691,19 @@ if ($LIVESTATS)
 // Gold/Silver Torrent v 1.2 by Losmi / end
          quickquery("UPDATE {$TABLE_PREFIX}users SET downloaded=IFNULL(downloaded,0)+$newdown, uploaded=IFNULL(uploaded,0)+$newup WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")."");
          }
-       mysql_free_result($resstat);
+       ((mysqli_free_result($resstat) || (is_object($resstat) && (get_class($resstat) == "mysqli_result"))) ? true : false);
 
        // begin history - also this is registered live or not
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysqli_num_rows($resu) == 1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysqli_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set uploaded=IFNULL(uploaded,0)+$newup, downloaded=IFNULL(downloaded,0)+$newdown WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
-          mysql_free_result($resu);
+          ((mysqli_free_result($resu) || (is_object($resu) && (get_class($resu) == "mysqli_result"))) ? true : false);
        }
        // end history    }
 }
@@ -722,17 +722,17 @@ switch ($event)
        // begin history
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysqli_num_rows($resu) == 1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysqli_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='yes',agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
               // record is not present, create it (only if not seeder: original seeder don't exist in history table, other already exists)
-              if (mysql_affected_rows()==0 && $left>0)
+              if (mysqli_affected_rows($GLOBALS["___mysqli_ston"]) == 0 && $left > 0)
                  quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,active,agent) VALUES (".$curuid["id"].",'$info_hash','yes','".getagent($agent,$peer_id)."')");
             }
-          mysql_free_result($resu);
+          ((mysqli_free_result($resu) || (is_object($resu) && (get_class($resu) == "mysqli_result"))) ? true : false);
        }
        // end history
     break;
@@ -749,20 +749,20 @@ switch ($event)
 // Gold/Silver Torrent v 1.2 by Losmi / start
 		{
 		$downloaded = checkGold($info_hash,$downloaded);
-		@mysql_query("UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");
+		@mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$TABLE_PREFIX}users SET uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'")." AND id>1 LIMIT 1");
 		}
 // Gold/Silver Torrent v 1.2 by Losmi / end
        // begin history - if LIVESTAT, only the active/agent part
        if ($LOG_HISTORY)
          {
-          $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+          $resu = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
           // if found at least one user should be 1
-          if ($resu && mysql_num_rows($resu)==1)
+          if ($resu && mysqli_num_rows($resu)==1)
             {
-              $curuid=mysql_fetch_assoc($resu);
+              $curuid = mysqli_fetch_assoc($resu);
               quickQuery("UPDATE {$TABLE_PREFIX}history set active='no',".($LIVESTATS?"":" uploaded=IFNULL(uploaded,0)+$uploaded, downloaded=IFNULL(downloaded,0)+$downloaded,")." agent='".getagent($agent,$peer_id)."' WHERE uid=".$curuid["id"]." AND infohash='$info_hash'");
             }
-          mysql_free_result($resu);
+          ((mysqli_free_result($resu) || (is_object($resu) && (get_class($resu) == "mysqli_result"))) ? true : false);
        }
        // end history    }
     break;
@@ -799,11 +799,11 @@ switch ($event)
         // begin history
         if ($LOG_HISTORY)
           {
-           $resu=mysql_query("SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
+           $resu=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT id FROM {$TABLE_PREFIX}users WHERE ".($PRIVATE_ANNOUNCE?"pid='$pid'":"cip='$ip'") ." ORDER BY lastconnect DESC LIMIT 1");
            // if found at least one user should be 1
-           if ($resu && mysql_num_rows($resu)==1)
+           if ($resu && mysqli_num_rows($resu)==1)
              {
-               $curuid=mysql_fetch_assoc($resu);
+               $curuid=mysqli_fetch_assoc($resu);
                // if user has already completed this torrent, mysql will give error because of unique index (uid+infohash)
                // upload/download will be updated on stop event...
                // record should already exist (created on stated event)
@@ -813,7 +813,7 @@ switch ($event)
                   quickQuery("INSERT INTO {$TABLE_PREFIX}history (uid,infohash,date,active,agent) VALUES (".$curuid["id"].",'$info_hash',UNIX_TIMESTAMP(),'yes','".getagent($agent,$peer_id)."')");
 
              }
-           mysql_free_result($resu);
+           ((mysqli_free_result($resu) || (is_object($resu) && (get_class($resu) == "mysqli_result"))) ? true : false);
         }
         // end history
     break;
@@ -861,8 +861,8 @@ switch ($event)
 if ($GLOBALS["countbytes"])
 {
     // Once every minute or so, we run the speed update checker.
-    $query = @mysql_query("SELECT UNIX_TIMESTAMP() - lastSpeedCycle FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
-    $results = mysql_fetch_row($query);
+    $query = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT UNIX_TIMESTAMP() - lastSpeedCycle FROM {$TABLE_PREFIX}files WHERE info_hash=\"$info_hash\"");
+    $results = mysqli_fetch_row($query);
     if ($results[0] >= 120)
        @runSpeed($info_hash, $results[0]);
 }
@@ -876,11 +876,11 @@ if (!empty($summaryupdate))
     {
         $stuff .= ', '.$column. ($value[1] ? "=".$value[0] : "=IF(($column<" . abs($value[0])." AND ".$value[0]."<0),0,$column+".$value[0].")");
     }
-    mysql_query("UPDATE {$TABLE_PREFIX}files SET ".substr($stuff, 1)." WHERE info_hash=\"$info_hash\"");
+    mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$TABLE_PREFIX}files SET ".substr($stuff, 1)." WHERE info_hash=\"$info_hash\"");
 }
 
 // generaly not needed, but
 // just in case server don't close connection
-mysql_close();
+((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
 ?>

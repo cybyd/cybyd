@@ -43,7 +43,7 @@ INSERT INTO `{$db_prefix}blocks` ( `blockid` , `content` , `position` , `sortid`
 -- login box by cybernet2u / end
 
 -- Custom Title - start
-ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 51 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'User' COMMENT 'Prefered to be called' AFTER `id_level`;
+ALTER TABLE `{$db_prefix}users` ADD `custom_title` VARCHAR( 51 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'User' COMMENT 'Prefers to be called' AFTER `id_level`;
 ALTER TABLE `{$db_prefix}users` ADD INDEX ( `custom_title` );
 -- Custom Title - end
 
@@ -62,7 +62,7 @@ CREATE TABLE `{$db_prefix}bonus` (
   `traffic` bigint(20) unsigned NOT NULL default '0',
   `gb` int(9) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `{$db_prefix}bonus` (`id`, `name`, `points`, `traffic`, `gb`) VALUES (NULL, '1', 030.0, 1073741824, 1),
 (NULL, '2', 050.0, 2147483648, 2),

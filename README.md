@@ -1,5 +1,8 @@
 # CyByD
 
+<<<<<<< HEAD
+> THiS branch is for transition to MySQLi
+=======
 CyByD is a php torrent tracker
 
   - Type some Markdown on the left
@@ -35,3 +38,4 @@ The opensource free support forum is http://www.btiteam.org
 - new language system (array is used instead of constant)
 - smf_import script to import standard internal forum and users to smf (thank you again to petr1fied)
 - 1.4.x upgrade script
+>>>>>>> master

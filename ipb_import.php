@@ -1,16 +1,16 @@
 <?php
 
-// CyBerFuN.ro & xList.ro
+// xDNS.ro & xLiST.ro
 
-// xList .::. xDNS
+// xLiST .::. xDNS
 // http://xDNS.ro/
-// http://xLIST.ro/
+// http://xLiST.ro/
 // Modified By cybernet2u
 
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -55,15 +55,15 @@ $registry = ipsRegistry::instance();
 $registry->init();
 
 // Lets open a connection to the database
-mysql_select_db($database, mysql_connect($dbhost,$dbuser,$dbpass));
+((bool)mysqli_query( ($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)), "USE $database"));
 
 $cookie=test_my_cookie();
 
 if($cookie["is_valid"]===true)
 {
-    $res=mysql_query("SELECT `ul`.`admin_access` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON `u`.`id_level`=`ul`.`id` WHERE `u`.`id`=".$cookie["id"]);
-    if(@mysql_num_rows($res)==1)
-        $row=mysql_fetch_assoc($res);
+    $res=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `ul`.`admin_access` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}users_level` `ul` ON `u`.`id_level`=`ul`.`id` WHERE `u`.`id`=".$cookie["id"]);
+    if(@mysqli_num_rows($res)==1)
+        $row=mysqli_fetch_assoc($res);
 }
 if(!isset($row["admin_access"]))
     $row["admin_access"]="no";
@@ -71,7 +71,7 @@ if(!isset($row["admin_access"]))
 if($cookie["is_valid"]===false || $row["admin_access"]=="no")
     die($lang[38]);
 
-$lock=mysql_fetch_assoc(mysql_query("SELECT `random` FROM `{$TABLE_PREFIX}users` WHERE `id`=1"));
+$lock=mysqli_fetch_assoc(mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `random` FROM `{$TABLE_PREFIX}users` WHERE `id`=1"));
 if($lock["random"]==12321)
     die($lang[26] . $lang[27] . $lang[35]);
 
@@ -153,8 +153,8 @@ if($act=="")
     // (There should be 128 as of v3.2.2 but lets be generous and ensure
     // there are at least 100 IPB tables)
     $count=0;
-    $tablelist=mysql_query("SHOW TABLES LIKE '".$ipb_prefix."%'"); 
-    $count=mysql_num_rows($tablelist);
+    $tablelist=mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '".$ipb_prefix."%'"); 
+    $count=mysqli_num_rows($tablelist);
     (($count<100) ? $ipb_installed=$lang[1] : $ipb_installed=$lang[0]);
     
     echo $lang[10] . (($ipb_installed==$lang[0]) ? "#00FF00" : "#FF0000") . $lang[4] . $ipb_installed .  $lang[5];
@@ -199,8 +199,8 @@ elseif($act=="init_setup"  && $confirm=="yes")
     }
 
     // Purge the current forum settings we're about to rebuild
-    @mysql_query("TRUNCATE TABLE `{$ipb_prefix}forum_perms`");
-    @mysql_query("TRUNCATE TABLE `{$ipb_prefix}groups`");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "TRUNCATE TABLE `{$ipb_prefix}forum_perms`");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "TRUNCATE TABLE `{$ipb_prefix}groups`");
 
     // Get current tracker ranks
     $query ="SELECT `id`, `level`, `edit_forum`, `admin_access` ";
@@ -208,10 +208,10 @@ elseif($act=="init_setup"  && $confirm=="yes")
     $query.="WHERE `id`>=1 ";
     $query.="ORDER BY `id` ASC";
     
-    $getranks=mysql_query($query);
+    $getranks=mysqli_query($GLOBALS["___mysqli_ston"], $query);
     $ranklist=",";
     $ranklist2=",";
-    while($rank=mysql_fetch_assoc($getranks))
+    while($rank=mysqli_fetch_assoc($getranks))
     {
         if($rank["id"]>2)
             $ranklist.=$rank["id"].",";
@@ -251,25 +251,25 @@ elseif($act=="init_setup"  && $confirm=="yes")
 (".$rank["id"].", 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, '".$rank["level"]."', 1, 0, 0, 0, '', 500, '', '', 50, 5, 0, 0, '-1&-1', 0, 0, ".$rank["id"].", '50:150:150', 0, 1, 0, 0, 0, 1, 3, 30, 0, 10, 1, '0:::::', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
         }
         // Run the queries
-        @mysql_query($query1);
-        @mysql_query($query2);
+        @mysqli_query($GLOBALS["___mysqli_ston"], $query1);
+        @mysqli_query($GLOBALS["___mysqli_ston"], $query2);
     }
     // Force the group cache to rebuild
-    @mysql_query("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='a:0:{}', `cs_updated`=0 WHERE `cs_key`='group_cache'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='a:0:{}', `cs_updated`=0 WHERE `cs_key`='group_cache'");
     // Allow all ranks to see the initial test forum
-    @mysql_query("UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='', `perm_3`='', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=1") or die(mysql_error()."<br /><br />"."UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='', `perm_3`='', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=1");
-    @mysql_query("UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='*', `perm_3`='".$ranklist."', `perm_4`='".$ranklist."', `perm_5`='".$ranklist."', `perm_6`='".$ranklist."', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=2");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='', `perm_3`='', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=1") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."<br /><br />"."UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='', `perm_3`='', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=1");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='*', `perm_3`='".$ranklist."', `perm_4`='".$ranklist."', `perm_5`='".$ranklist."', `perm_6`='".$ranklist."', `perm_7`='' WHERE `app`='forums' AND `perm_type`='forum' AND `perm_type_id`=2");
     // Setup the calendar permissions
-    @mysql_query("UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='".$ranklist."', `perm_3`='".$ranklist2."', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='calendar' AND `perm_type`='calendar'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}permission_index` SET `perm_view`='*', `perm_2`='".$ranklist."', `perm_3`='".$ranklist2."', `perm_4`='', `perm_5`='', `perm_6`='', `perm_7`='' WHERE `app`='calendar' AND `perm_type`='calendar'");
 
     // Disable forum registration
-    $res=mysql_query("SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='settings'");
-    $row=mysql_fetch_assoc($res);
+    $res=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='settings'");
+    $row=mysqli_fetch_assoc($res);
     $array=unserialize($row["cs_value"]);
     $array["no_reg"]=1;
     $cs_value=serialize($array);
-    @mysql_query("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".mysql_real_escape_string($cs_value)."' WHERE `cs_key`='settings'");
-    @mysql_query("UPDATE {$ipb_prefix}core_sys_conf_settings` SET `conf_value`=1 WHERE `conf_key`='no_reg'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $cs_value) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `cs_key`='settings'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE {$ipb_prefix}core_sys_conf_settings` SET `conf_value`=1 WHERE `conf_key`='no_reg'");
 
     // Update the registration closed message to something more appropriate
 
@@ -289,16 +289,16 @@ elseif($act=="init_setup"  && $confirm=="yes")
     fwrite($fd,$lang_data);
     fclose($fd);
 
-    @mysql_query("UPDATE `{$ipb_prefix}core_sys_lang_words` SET `word_default`='".mysql_real_escape_string($lang_replace)."' WHERE `lang_id`=1 AND
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}core_sys_lang_words` SET `word_default`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $lang_replace) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `lang_id`=1 AND
     `word_pack`='public_error' AND `word_key`='registration_disabled'");
 
     // Make sure there is an ipb_fid column in the users table, if not add one
-    $query=mysql_query("SHOW COLUMNS FROM `{$TABLE_PREFIX}users` WHERE `Field`='ipb_fid'");
-    $count=mysql_num_rows($query);
+    $query=mysqli_query($GLOBALS["___mysqli_ston"], "SHOW COLUMNS FROM `{$TABLE_PREFIX}users` WHERE `Field`='ipb_fid'");
+    $count=mysqli_num_rows($query);
     if ($count==0)
     {
-        @mysql_query("ALTER TABLE `{$TABLE_PREFIX}users` ADD `ipb_fid` INT(11) NOT NULL DEFAULT '0'");
-        @mysql_query("ALTER TABLE `{$TABLE_PREFIX}users` ADD INDEX (`ipb_fid`)");
+        @mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE `{$TABLE_PREFIX}users` ADD `ipb_fid` INT(11) NOT NULL DEFAULT '0'");
+        @mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE `{$TABLE_PREFIX}users` ADD INDEX (`ipb_fid`)");
     }
     die($lang[24] . $lang[25] . $lang[35]);
 }
@@ -312,25 +312,25 @@ elseif($act=="member_import" && $confirm=="yes")
     
     if($lastacc==0)
     {
-        $last=mysql_query("SELECT `id` FROM `{$TABLE_PREFIX}users` ORDER BY `id` DESC LIMIT 1");
-        $acc=mysql_fetch_assoc($last);
+        $last=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT `id` FROM `{$TABLE_PREFIX}users` ORDER BY `id` DESC LIMIT 1");
+        $acc=mysqli_fetch_assoc($last);
         $lastacc=$acc["id"];
     }
 
     // Import Tracker accounts to the forum
 
     $query="SELECT `u`.`id`, `u`.`username`, `u`.`id_level`, `u`.`password`, `u`.`pass_type`, `u`.`email`, UNIX_TIMESTAMP(`u`.`joined`) `joined`, `u`.`lip`, COUNT(`p`.`userid`) `posts`, `u`.`time_offset` FROM `{$TABLE_PREFIX}users` `u` LEFT JOIN `{$TABLE_PREFIX}posts` `p` ON `u`.`id`=`p`.`userid` WHERE `u`.`id` >=$start AND `u`.`id` <=$end GROUP BY `u`.`id` ORDER BY `u`.`id` ASC";
-    $list=mysql_query($query);
-    $count=mysql_num_rows($list);
+    $list=mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $count=mysqli_num_rows($list);
     if($start==2)
     {
-        @mysql_query("TRUNCATE TABLE `{$ipb_prefix}members`");
-        @mysql_query("TRUNCATE TABLE `{$ipb_prefix}pfields_content`");
-        @mysql_query("TRUNCATE TABLE `{$ipb_prefix}profile_portal`");
+        @mysqli_query($GLOBALS["___mysqli_ston"], "TRUNCATE TABLE `{$ipb_prefix}members`");
+        @mysqli_query($GLOBALS["___mysqli_ston"], "TRUNCATE TABLE `{$ipb_prefix}pfields_content`");
+        @mysqli_query($GLOBALS["___mysqli_ston"], "TRUNCATE TABLE `{$ipb_prefix}profile_portal`");
     }
     if($count>0)
     {
-        while ($account=mysql_fetch_assoc($list))
+        while ($account=mysqli_fetch_assoc($list))
         {
             $counter++;
             $username=str_replace(array('<', '>', '"'), '', $account["username"]);
@@ -348,17 +348,17 @@ elseif($act=="member_import" && $confirm=="yes")
             $ip_address=long2ip($account["lip"]);
             $posts=(($account["id"]==2)?($account["posts"]+1):$account["posts"]);
 
-            @mysql_query("INSERT INTO `{$ipb_prefix}members` (`name`, `member_group_id`, `email`, `joined`, `ip_address`, `posts`, `allow_admin_mails`, `time_offset`, `language`, `members_display_name`, `members_seo_name`, `members_created_remote`, `members_l_display_name`, `members_l_username`, `members_pass_hash`, `members_pass_salt`, `bday_day`, `bday_month`, `bday_year`, `msg_show_notification`, `last_visit`, `last_activity`) VALUES ('".mysql_real_escape_string($username)."', ".$id_level.", '".mysql_real_escape_string($email)."', ".$joined.", '".mysql_real_escape_string($ip_address)."', ".$posts.", 1, '".$account["time_offset"]."', 1, '".mysql_real_escape_string($username)."', '".mysql_real_escape_string($seo_username)."', 1, '".mysql_real_escape_string($l_username)."', '".mysql_real_escape_string($l_username)."', '".mysql_real_escape_string($hash)."', '".mysql_real_escape_string($salt)."', 0, 0, 0, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
-            $ipb_fid=mysql_insert_id();
-            @mysql_query("INSERT INTO `{$ipb_prefix}pfields_content` (`member_id`) VALUES (".$ipb_fid.")");
-            @mysql_query("INSERT INTO `{$ipb_prefix}profile_portal` (`pp_member_id`, `pp_setting_count_friends`, `pp_setting_count_comments`) VALUES (".$ipb_fid.", 1, 1)");
-            @mysql_query("UPDATE `{$TABLE_PREFIX}users` SET `ipb_fid`=".$ipb_fid." WHERE `id`=".$account["id"]);
+            @mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO `{$ipb_prefix}members` (`name`, `member_group_id`, `email`, `joined`, `ip_address`, `posts`, `allow_admin_mails`, `time_offset`, `language`, `members_display_name`, `members_seo_name`, `members_created_remote`, `members_l_display_name`, `members_l_username`, `members_pass_hash`, `members_pass_salt`, `bday_day`, `bday_month`, `bday_year`, `msg_show_notification`, `last_visit`, `last_activity`) VALUES ('".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', ".$id_level.", '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $email) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', ".$joined.", '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $ip_address) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', ".$posts.", 1, '".$account["time_offset"]."', 1, '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $seo_username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', 1, '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $l_username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $l_username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $hash) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', '".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $salt) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', 0, 0, 0, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+            $ipb_fid=((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+            @mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO `{$ipb_prefix}pfields_content` (`member_id`) VALUES (".$ipb_fid.")");
+            @mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO `{$ipb_prefix}profile_portal` (`pp_member_id`, `pp_setting_count_friends`, `pp_setting_count_comments`) VALUES (".$ipb_fid.", 1, 1)");
+            @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$TABLE_PREFIX}users` SET `ipb_fid`=".$ipb_fid." WHERE `id`=".$account["id"]);
 
             if($account["id"]==2)
             {
-                @mysql_query("UPDATE `{$ipb_prefix}forums` SET `last_poster_id`='".$ipb_fid."', `last_poster_name`='".mysql_real_escape_string($username)."' WHERE `id`=2");
-                @mysql_query("UPDATE `{$ipb_prefix}posts` SET `author_id`= '".$ipb_fid."', `author_name`='".mysql_real_escape_string($username)."' WHERE `pid`=1");
-                @mysql_query("UPDATE `{$ipb_prefix}topics` SET `starter_id`='".$ipb_fid."', `last_poster_id`='".$ipb_fid."', `starter_name`='".mysql_real_escape_string($username)."', `last_poster_name`='".mysql_real_escape_string($username)."', `seo_last_name`='".mysql_real_escape_string($seo_username)."', `seo_first_name`='".mysql_real_escape_string($seo_username)."' WHERE `tid`=1");
+                @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}forums` SET `last_poster_id`='".$ipb_fid."', `last_poster_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `id`=2");
+                @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}posts` SET `author_id`= '".$ipb_fid."', `author_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `pid`=1");
+                @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}topics` SET `starter_id`='".$ipb_fid."', `last_poster_id`='".$ipb_fid."', `starter_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `last_poster_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `seo_last_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $seo_username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."', `seo_first_name`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $seo_username) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."' WHERE `tid`=1");
             }
 
         }
@@ -369,23 +369,23 @@ elseif($act=="member_import" && $confirm=="yes")
         print("<script LANGUAGE=\"javascript\">window.location.href='".$_SERVER["PHP_SELF"]."?act=member_import&confirm=yes&start=$newstart&counter=$counter&lastacc=$lastacc'</script>");
     }
     
-    $myres=mysql_query("SELECT (SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='stats') `cs_value`, (SELECT `ipb_fid` FROM `{$TABLE_PREFIX}users` ORDER BY `ipb_fid` DESC LIMIT 1) `ipb_fid`, (SELECT `username` FROM `{$TABLE_PREFIX}users` ORDER BY `ipb_fid` DESC LIMIT 1) `username`");
-    $myrow=mysql_fetch_assoc($myres);
+    $myres=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT (SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='stats') `cs_value`, (SELECT `ipb_fid` FROM `{$TABLE_PREFIX}users` ORDER BY `ipb_fid` DESC LIMIT 1) `ipb_fid`, (SELECT `username` FROM `{$TABLE_PREFIX}users` ORDER BY `ipb_fid` DESC LIMIT 1) `username`");
+    $myrow=mysqli_fetch_assoc($myres);
     $in=unserialize($myrow["cs_value"]);
     $in["mem_count"]=$counter;
     $in["last_mem_name"]=str_replace(array('<', '>', '"'), '', $myrow["username"]);;
     $in["last_mem_id"]=$myrow["ipb_fid"];
     $in["last_mem_name_seo"]=IPSText::makeSeoTitle($myrow["username"]);
     $out=serialize($in);
-    @mysql_query("UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".mysql_real_escape_string($out)."'  WHERE `cs_key`='stats'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $out) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""))."'  WHERE `cs_key`='stats'");
     print("<script LANGUAGE=\"javascript\">window.location.href='".$_SERVER["PHP_SELF"]."?act=completed&counter=$counter'</script>");
 }
 elseif($act=="completed")
 {
     // Lock import file from future use and change to ipb mode
-    @mysql_query("UPDATE `{$TABLE_PREFIX}settings` SET `value` ='ipb' WHERE `key`='forum'");
-    @mysql_query("UPDATE `{$TABLE_PREFIX}users_level` SET `ipb_group_mirror`=`id`");
-    @mysql_query("UPDATE `{$TABLE_PREFIX}users` SET `random`=12321 WHERE `id`=1");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$TABLE_PREFIX}settings` SET `value` ='ipb' WHERE `key`='forum'");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$TABLE_PREFIX}users_level` SET `ipb_group_mirror`=`id`");
+    @mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE `{$TABLE_PREFIX}users` SET `random`=12321 WHERE `id`=1");
     echo $lang[32] . $lang[48] . " <b>". $counter . "</b> " . $lang[44] . $lang[49];
 }
 

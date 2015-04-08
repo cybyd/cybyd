@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2012  Btiteam
+// Copyright (C) 2004 - 2015  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -41,11 +41,11 @@ function read_styles()
     {
         global $TABLE_PREFIX, $language, $CURUSER, $admintpl, $STYLEPATH;
 
-        $sres=style_list();
+        $sres = style_list();
         for ($i=0;$i<count($sres);$i++)
            {
-            $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}users WHERE style = " . $sres[$i]["id"],true);
-            $sres[$i]["style_users"]=mysql_result($res,0,0);
+            $res = do_sqlquery("SELECT COUNT(*) FROM {$TABLE_PREFIX}users WHERE style = " . $sres[$i]["id"], true);
+            $sres[$i]["style_users"]=mysqli_result($res,0,0);
             $sres[$i]["style"]=unesc($sres[$i]["style"]);
             $sres[$i]["style_url"]=unesc($sres[$i]["style_url"]);
             $sres[$i]["style_type"]=(($sres[$i]["style_type"]==1)?$language["CLA_STYLE"]:(($sres[$i]["style_type"]==2)?$language["ATM_STYLE"]:(($sres[$i]["style_type"]==3)?$language["PET_STYLE"]:$language["UNKNOWN"])));
@@ -57,7 +57,7 @@ function read_styles()
         $admintpl->set("styles",$sres);
         $admintpl->set("style_add_new","<a href=\"index.php?page=admin&amp;user=".$CURUSER["uid"]."&amp;code=".$CURUSER["random"]."&amp;do=style&amp;action=add\">".$language["STYLE_ADD"]."</a>");
         unset($sres);
-        mysql_free_result($res);
+        ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 
 }
 
@@ -67,9 +67,9 @@ function styles_combo($all=false,$selected="")
       global $THIS_BASEPATH, $language;
       if (!$all)
         {
-            $sr=style_list();
+            $sr = style_list();
             foreach ($sr as $s)
-              $news[]=$s["style_url"];
+              $news[] = $s["style_url"];
        }
       $dir = @opendir("$THIS_BASEPATH/style");
       $lc="\n<select name=\"style_url\" size=\"1\">";
@@ -127,7 +127,7 @@ switch($action)
         {
           // we should get only 1 style, selected with radio ...
           $id=max(0,$_GET["id"]);
-          $sres=get_result("SELECT style, style_url, style_type FROM {$TABLE_PREFIX}style WHERE id=$id",true);
+          $sres=get_result("SELECT style, style_url, style_type FROM {$TABLE_PREFIX}style WHERE id=$id", true);
           $admintpl->set("style_add",true,true);
           $admintpl->set("language",$language);
           $admintpl->set("style_name",$sres[0]["style"]);

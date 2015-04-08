@@ -20,5 +20,5 @@ $language['WEEK'] = 'Svagt';
 $language['MEDIUM'] = 'Medium';
 $language['SAFE'] = 'Säkert Lösenord';
 $language['STRONG'] = 'Starkt Lösenord';
-
+$language['ERR_GENERIC']='Generic Error: '.((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
 ?>

@@ -150,11 +150,11 @@ $timespanfmt = '%s days, %s hours, %s minutes and %s seconds';
 /**
  * Sends the query and buffers the result
  */
-$res = @mysql_query('SHOW STATUS') or Die(mysql_error());
-    while ($row = mysql_fetch_row($res)) {
+$res = @mysqli_query($GLOBALS["___mysqli_ston"], 'SHOW STATUS') or Die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    while ($row = mysqli_fetch_row($res)) {
         $serverStatus[$row[0]] = $row[1];
     }
-@mysql_free_result($res);
+@((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 unset($res);
 unset($row);
 
@@ -163,8 +163,8 @@ unset($row);
  * Displays the page
  */
 //Uptime calculation
-$res = @mysql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']);
-$row = mysql_fetch_row($res);
+$res = @mysqli_query($GLOBALS["___mysqli_ston"], 'SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']);
+$row = mysqli_fetch_row($res);
 //echo sprintf("Server Status Uptime", timespanFormat($serverStatus['Uptime']), localisedDate($row[0])) . "\n";
 ?>
 <table align="center" width="99%" class="lista" border="1" cellpadding="2" cellspacing="1">
@@ -181,7 +181,7 @@ print("\tThis MySQL server has been running for ". timespanFormat($serverStatus[
 
 <?php
 
-mysql_free_result($res);
+((mysqli_free_result($res) || (is_object($res) && (get_class($res) == "mysqli_result"))) ? true : false);
 unset($res);
 unset($row);
 //Get query statistics
