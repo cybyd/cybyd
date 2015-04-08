@@ -15,8 +15,8 @@ if (isset($_POST["infohash"]))
   include(load_language("lang_torrents.php"));
   dbconn();
 
-  $uid = intval(0+$CURUSER['uid']);
-  if(preg_match("/([a-z0-9]{40})/",$_POST['infohash']))
+  $uid = intval (0 + $CURUSER['uid']);
+  if(preg_match("/([a-z0-9]{40})/", $_POST['infohash']))
   {
   $infohash = ($_POST["infohash"]);
   } else {
@@ -46,7 +46,7 @@ if (isset($_POST["infohash"]))
 
 ((mysqli_free_result($rt) || (is_object($rt) && (get_class($rt) == "mysqli_result"))) ? true : false);
 $rt = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.id, u.username, ul.prefixcolor, ul.suffixcolor FROM {$TABLE_PREFIX}files_thanks t LEFT JOIN {$TABLE_PREFIX}users u ON u.id=t.userid LEFT JOIN {$TABLE_PREFIX}users_level ul ON u.id_level=ul.id WHERE infohash=$infohash");
-  if (mysql_num_rows($rt) == 0)
+  if (mysqli_num_rows($rt) == 0)
      $out = $language["THANKS_BE_FIRST"];
 
 
@@ -56,7 +56,7 @@ $rt = @mysqli_query($GLOBALS["___mysqli_ston"], "SELECT u.id, u.username, ul.pre
         $button = false;
       $out .= "<a href=\"$BASEURL/index.php?page=userdetails&amp;id=".$ty["id"]."\">".unesc($ty["prefixcolor"].$ty["username"].$ty["suffixcolor"])."</a> ";
   }
-  if ($button && $CURUSER["uid"]>1)
+  if ($button && $CURUSER["uid"] > 1)
      $out .= "|0";
   else
      $out .= "|1";
