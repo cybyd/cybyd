@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.3.3
   - 5.3
   - 5.4
   - 5.5
@@ -8,8 +7,6 @@ php:
 env:
   - DB=mysql
 
-services:
-  - redis-server
 
 install:
   - sh -c "if [ '$DB' = 'mariadb' ]; then travis/setup-mariadb.sh; fi"
