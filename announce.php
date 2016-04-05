@@ -1,5 +1,7 @@
 <?php
 
+// buddy.works - TeST
+
 // xLiST .::. xDNS
 // http://xDNS.ro/
 // http://xLiST.ro/
