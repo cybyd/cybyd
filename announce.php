@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2015  Btiteam
+// Copyright (C) 2004 - 2017  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -606,7 +606,7 @@ function collectBytes($peer, $hash, $left, $downloaded=0, $uploaded=0, $pid="")
 
     $peerid = $peer["peer_id"];
 // Gold/Silver Torrent v 1.2 by Losmi / start
-     $downloaded = checkGold($info_hash, $downloaded);
+    $downloaded = checkGold($info_hash, $downloaded);
 // Gold/Silver Torrent v 1.2 by Losmi / end
 
     if (!$GLOBALS["countbytes"])
@@ -655,12 +655,12 @@ $results = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT status, count(status
 $status = array();
 
 while ($resstat = mysqli_fetch_row($results))
-  $status[$resstat[0]] = $resstat[1];
+	$status[$resstat[0]] = $resstat[1];
 
 if (!isset($status["leecher"]))
-    $status["leecher"]=0;
+	$status["leecher"] = 0;
 if (!isset($status["seeder"]))
-    $status["seeder"]=0;
+	$status["seeder"] = 0;
 
 if ($status["seeder"]>=$GLOBALS["maxseeds"] || $status["leecher"]>=$GLOBALS["maxleech"])
    show_error("Sorry max peers reached! Redownload torrent from $BASEURL");
